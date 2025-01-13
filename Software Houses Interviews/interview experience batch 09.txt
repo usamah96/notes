@@ -1,0 +1,707 @@
+
+
+http://stackoverflow.com/questions/38549/difference-between-inner-and-outer-join
+http://en.wikipedia.org/wiki/Rule_of_three_(C%2B%2B_programming)
+what is the defference b/w unique key and prime key??
+Shallow copy vs Deep copy:
+Deep copy is necessary because in shallow copy, the copied object simply "points" to the pointer members of the original object, and doesn't allocate new memory for the copied object. If shallow copy is done, and the original object is deleted, the copied object would have dangling pointers left behind pointing to locations which have been deleted along with the original object.
+Q: Find N/2 th element of a link list ? complexity => O(n)
+Reverse an array of n number without using xtra memory and via single pass !! mtlab complexity should be O(n)
+Write a program to find if 2 strings are anagrams.
+http://en.wikipedia.org/wiki/Subset_sum_problem
+https://www.facebook.com/photo.php?fbid=10151273678691887&set=gm.445304085547333&type=1&theater
+folio3 question 1:check that the first and last digit of an integer is even. Solution:  for last digit: mod 10 ,for first digit: loop with condition (num /10 > 10)., loop body: num = num/10 , after getting both the numbers, check num MOD 2, if both are 0 then the first and last digits of the number are even.
+Design a program to list down all Prime numbers before a given number.
+Interface and Abstract Class
+how AJAX works what are backend transfer procedures of post and other methods of PHP... What is OOP nd what is difference btw abstract class and class and interface class .. y to use interface class if u can have inheritance .. Other then that is threads per kaam kia hai ?? (to nhi kia tha).. What is Design Patterns (Dn't KNow) .. What are web services ? kaisay implement hoti hai and kia karti hai n kabhi use ki hai (best ans tht came in my mind was "yeh kia hota hai ") ... If u are mentioning any projects then u must have complete knowledge regarding tht .. One db schema question for file / folder system to store in db and then tell is it normalized or not .. and donu normalized and denormalized bana kar dikhao .. Fyp mai kia kar rahay ho ?? details batao and us ka technical architecture banao
+
+http://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem
+without virtual function, compile time pe binding hoti hay islye error ata hay...with virtual, run time pe binding hoti hay... Which is called late binding. or dynamic binding...
+
+1.Difference between abstract class and interface class
+2.Reference types and value types
+3.Difference between private and protected
+4. Write a code to change the string "hello i am here" to "here am i hello"
+5.How many times the recursive function will call itself
+(i) func(i)
+if (i==0) return 10
+else func(i--);
+(ii)func(i)
+if (i==0) return 10
+else func(--i);
+6.difference between structure and classes
+7. All types of link lists
+8. scenarios in which we use arrays over link lists and vice versa
+9. Composition and aggregation with code
+
+TPS Question asked by me
+1- What is wi??
+Write a detailed code which shows polymorphism.
+2- What is Abstract class??
+3- Does Interface class is an abstract class??
+4- What is Normalization
+5- What are anomalies??
+6- Write a code with correct syntax of reversing string given in char[] array "hello"
+7- Write a code for reversing words order "Hello I am here" to "Here I am hello"
+8- Make ERD
+9- Write Query to that ERD which contains Join and aggregate function...
+
+what is app domain?
+using self join find 2nd highest from student table having student id and number only? 
+
+Since I stated db as my interest, they gave a scenario of uni student... Had to make erd... Then had to write a query that required me to combine two tables... Then had to modify this same query for even more joining...Then asked me to explain join types with examples Then gave me a question in which I had to substitute spaces in a string with increasing number of * signs
+
+Streebo Questions:
+
+1. Difference between abstract class & interface class.
+2. Inheritance (sami wala scene k derived class instance can't call constructor of base class) 
+3. Why do u need interface class when u have abstract class
+4. Palindrome wala program
+5. You have a string of alphabets, sort it in alphabetical order, and if any alphabet is repeated, delete that
+6. Swap 2 variables WITHOUT using a 3rd variable.
+7. You have an int 12345, convert that int into 54321 by using math operations only
+8. Pointer aur double pointer mein kya farq hai
+9. Virtual inheritance kya hoti hai
+10. ERD of student,courses,teachers (sab k beech mein many-to-many relationship tha)
+11. Self Join ki query likhni thi
+12. What is a cloud.
+13. What is socket programming.
+14. Difference between stored procedure & function
+15. What is a garbage collector? Why do we use garbage collector when we have a destructor
+16. Kuch IQ questions bhi thay
+
+1) Class B inherits Class A with boht classes having foo function printing their class names now what will be th output of following.. A a = new B() and B b = new A()
+a) a.foo();
+b) b.foo();
+2) delete a node from linked list.
+3) Breath first search algorithm.
+4) Threads and Processes , race condition and locks.
+5) What if class is static? what if function is static?
+6) Interface vs Abstract class
+7) Pros and cons of Arrays and linkedlist.
+8) What if hashing produce same index?
+9) Recursive Factorial function
+10) final keyword in java. 
+11) Inner class concepts.
+12) garbage collector.
+
+write a code for the output;
+here N = 4;
+
+*
+**
+***
+****
+
+then for this one
+
+****
+***
+**
+*
+
+and for this one
+
+****
+_***
+__**
+___*
+
+here _ = space.. 
+
+What is the difference between primary key, foreign key, unique key.
+What is foreign key in perspective of single table.
+What is self join.
+What is inline query -> query inside query is inline query like: select * from emp where id in (select id from company where cid=4);
+what is difference between 'in' and '=' in inline query -> in return all the rows while = returns only single first row.
+Does indexing slows down the query or fast it -> causes fast execution.
+Does indexing slows down the computer.
+What is stored procedures, functions, triggers and cursors.
+What is the difference between functions and stored procedures.
+What are the views.
+What is overloading.
+In the following scenario which function will be called:
+class itisclass{
+void input (char i, char j);
+void input (char i, int j);
+}
+int main()
+{
+itisclass classobj;
+classobj.input('1','1');
+}
+What is overriding.
+In following exception handling first catch is general exception including Arithmetic Exception which exception will run -> Code will not run.
+try{
+int i=20/0;
+}
+catch(Exception e)
+{
+e.Message();
+}
+catch(ArithmeticExceptionError e)
+{
+e.Message();
+}
+catch(IndexOutOfBound e)
+{
+e.Message();
+}
+
+Asked from Junaid:
+How can we connect two PCs -> via sockets
+
+Asked from Akhmas:
+What are the key concepts of OOP -> Encapsulation, Polymorphism, abstraction and inheritance.
+
+1- Convert a int like 48343 to string
+2- Find if a given integer occurs twice in a array without using nested loops
+3- Asked me about my subjects, specifically High Performance computing mein platforms and types of programs you have made, and have you worked in Linux and c++?
+4- How is intraprocess communication between two processes on the same system archived?
+5- How will you debug a software if you have no knowledge of how it works. as in what kinds of tests will you try on it? 
+6- What kinds of security techniques can be implemented on a website? (to prevent illegal login or encryption breaking)
+7- Tell me about your FYP and what challenges are being faced 
+8- Try/Catch blocks explain karo and what kinds of exceptions can you handle?
+9- Aap bhi photography kerte hen? (asked by HR head. Answer is yes :p)
+
+http://web.uettaxila.edu.pk/CMS/SP2011/teOOPbs/notes%5Cobject_oriented_programming_in_c++_4th_edition.pdf
+
+Avanza Second Interview ..
+
+Make a complete Queue class and all its funtions
+
+1) Enqueue
+2) Dequeue
+3) Print Queue
+4) isEmpty
+5) isFull
+
+
+- Technical interview started with:
+OOP questions
+1- What is OOP? Qualities of OOP?
+2- if you make an object of derived class. then in which order will constructors be called ?
+3- Explain public, protected, private with examples.
+3- What happens if base class constructor is private? when is it needed? show example
+4- What is singleton design pattern and how do you implement it? 
+5- Explain static keyword when used in classes or just generally.
+6- Run-time/Compile time binding ka difference aur polymorphism ka kia faida hota hai? What if you pass a pointer of base class (holding derived object) to a function as reference?
+
+Java questions:
+7- what superclass extends all classes in java?
+8- Immutable variables kia hotay hain? is it possible to manipulate a value in immutable String in Java? how can you copy immutable value to mutable variable? and what is base class of String in java?
+9- Explain garbage collector working. can you explicitly invoke garbage collector in Java?
+10- Interface and abstract ka difference. When should you use which?
+
+Data Structures:
+11- Show BFS working
+12- Singly linked list ka midpoint kese nikalain, show algo.
+13- Assume you have no way to access HEAD pointer in Linked list. Then if you have a function which deletes any Link List node passed in a function, is it possible to implement it: function prototype is: void delete(node *temp) // mene kaha not possible as prev node reference is not available and will break linked list
+14- Reverse a linked list with RECURSION.
+15- Say you have two linked lists A and B, and they merge at some point but you don't know which. Find that node at which they merge. 
+// I solved this using nested iteration in O(A*B) time. Then they asked me to do it in o(a+b) time. And then even implement it in log time.
+16- If you have a array with sorted but some repeating integers such that 1 2 2 3 3 3 3 4 5 5... return only the integers which occur once. Limit is: you cannot use another array to store count of numbers (i did it using nested loops, and using vector to insert uniquely occuring numbers)
+
+Other questions:
+17- Generate this using recursion only, you may use a total of just two variables in your program: 1 2 3 4 5 4 3 2 1 
+prototype: int printpattern(int n) { }
+called with printpattern(5)
+18- Explain difference between POST/GET.
+19- Explain HTML5.
+20- How does a web service work?
+21- About my HPC course, they asked me to explain threads, locks, communication between two threads, and synchronous/asynchronous comm? Also a little bit about Hadoop, OpenMPI , MPI and when to use which.
+22- If a function is called in int main(), is it a synchronous or asynchronous call?
+
+Maths/IQ
+23- You have a path in shape of a triangle and a person is standing at each corner. Suppose they all start walking and each has 50% probability to walk in a particular direction (each person has two directions available to them) ... find out % probability of them colliding.
+24- Person is stuck at bottom of a well and he has to climb 4 stars to get out... with each 2 climbs he falls 1 down. how many climbs will it take to get out of well?
+
+
+make erd of some example 
+
+Sort a large array of integers in O(N)?
+Radix Sort .
+http://www.folkstalk.com/2012/01/sql-interview-questions-basics-part-1.html
+
+TPS Interview Questions
+
+OS:-
+What is a thread? What is a process? Why is thread called lightweight? Why do we use thread when same thing can be done by process? Why do we use shared memory? What is context switching? What is Mutex? What is Semaphore(with types)? Examples of Mutex and semaphores? 
+
+Networks:
+Tell TCP/IP layers
+
+Concurrent:-
+What is socket? initialize socket? What are different types of Inter Process Communication? What is the best way of intra process communication
+
+IPT:
+What is REST? What is RPC? 
+
+OOP:-
+4 pillars of OOP? What is abstraction itself, don't give me ghissi pitti examples o vehicle-car-truck class?
+What is Encapsulation?
+Shallow copy vs Deep Copy?
+
+Copy Constructor mein if we pass by object like this A(A x), instead of passing by reference A(A &x).... answer is k recursive scene hojata hai... pbject k andar object call, multiple time constructor call hota jaye gaa... will be infinite
+
+Inheritance mein wohi concept k you cant call constructor of base with derived object ptr?
+Pehle base constructor call hota hai ya derived? pehle kya destruct hota hai?
+
+Program 1: A linked list which has no head ptr, now delete a particular node
+Program 2: Write program for finding anagrams in a file (this cant be done by nested loop, i tried that but he caught me in a logical error)
+
+DB:-
+Normalization questions. Find the no of projects done by each employee. What is indexing. DB ki harddisk space mein farq aaye gaa if we do indexing?
+
+Catalyst test:
+
+Comprised of 3 sections
+> oop
+> database
+> Java ( swing also )
+
+
+Avanza asked me a question. I cant remember properly. but was some thing like this:
+
+Considering two methods of function calling, and that both perform the same thing, which one is better? (ignore syntax and other errors)
+
+//Function calls it self recursively
+void func
+{
+int i=0;
+while(i<10)
+{ 
+func();
+i++;
+}
+}
+
+And
+
+//Function called inside a for loop
+for(i=0;i<10;i++)
+{
+func();
+}
+
+Q: Which method is more efficient?
+
+Q: tell me about yourself? 
+he make him more deadly for me when he said only English. 
+then 2nd question:
+Q:why you want to be web developer ?
+Q:rate your self as a programmer ?
+Q: you have undefined length string , you have to print all possible combinations of it. make a logical function.
+Q: they gave me 3 type of linked list , linear,circular,cycle he said if i call your function with this linked list ,then return with the name of the linked list type. 
+
+There are three differences:
+
+- Interfaces can only declare public methods (i.e. no protected or package-private visible methods) and can not declare any fields
+- Subclasses can only extend at most one abstract class, but can implement any number of interfaces
+- The abstract class can also have implementations for some or all of the methods
+
+Mujhay to sab se behtar yaheen lageen. 
+Not sure about Pure Abstract and Interfaces.
+
+TPS Interview Questions (TIME: 1.75 hours) :
+
+-How will a constructor and destructor be called of classes using inheritence. class Base{}; class D1:public base{}; class D2:public D1{};
+
+-Which is true/false? BASE b=new D1(); ....// he did many initilizations like this for quering the correct and wrong intilizations. 
+
+-What is difference between abstract & interface? If both classes have declarations then why is the need of interface?
+
+-What is polymorphism?
+
+-What is overloading and overriding? What are signature in overloading?
+
+(and Many OOP questions that don't come to my mind right now) The interviewer on every answer cross questioned and sometime emphasized and the wrong answer to be correct, you have to be very firm giving your answers if they are correct. 
+
+Algorithm and Coding :
+
+-Write a function that reverses and integer: int reverse(int value)// you can't use string.
+
+-Write a function that detects palindrom: bool isPalin(string value).
+
+-Write a function using recursion that returns: int factorial(int fact).
+
+Database:
+
+-ACID Properties
+
+-Transaction
+
+-Normalization of a table that interviewer gave
+
+-SQL QUERIES : -Count the number of courses, mr x is taking, - Count the number of courses each Mr x is taking.
+
+-What is Indexing, is Insertion on table increases the time if table is indexed? 
+
+-What happens when an update occurs on an index table?
+
+...some more questions that don't come to my mind right now.
+
+what is the angle between the needles(hour and min) of clock at 315?
+
+
+http://www.maxi-pedia.com/what+is+heap+and+stack
+plz view this concept of memory allocation that might be new for few of you. I was Confuse when TPS person ask me what's the difference in memory for following
+1) int x;
+2) int *x = new int();
+
+
+1) What is your FYP?
+2) Architecture Diagram of FYP ? ( Me: I am not developing application that have DB  i am working on Android open source library)
+3) Work expereince? ( Me: worked at my relatve's office) they asked location and role that i played in internship
+4) Rate yourself for CSS ot of 5 (me: 3.75 aur bola k kabhi kabhi compatibility issues aate hai but resolve hojate hai !
+5) Define OOP?
+6) Define Abstraction?
+7) Write code for method overriding and overloading ( Pakore beche hai is k jawab mae to bcz i was confused 
+8) What is polymorphism?
+9) What is inheritance?
+10) Jab inheritance karte hai to ek keywork likhte hai ( e.g Class B : <keyword> A) use kia bolte hai ? (Me: Access specifier)
+11) Types of access specifier.
+12) Friend Function.
+13) Jo kaam LOOP se hota hai wo OOP se Q karte hai ? 
+14) iOS development mae kia kia aata hai ?
+15) Android mae kia aata hai ?
+16) 
+String a="helloworld";
+print(a+"abc);
+print(a); // what will be the output of this ?
+
+17) Swap two values using no other variable? ( using no predefined function )
+18) Integer 12345 ko 54321 mae convert karo.
+19) Baki thodi si query likhwai .( 1) Get second highest pay of an employee 2) Get employee id of maximum paid employee)
+20) Define Binary Tree ? Binary Q bolte hai ? Insertion kaise hoti hai ? 
+21) Binary mae Small value left and large value Right pe q jati hia? 
+22) Heap kia hote hai ?
+23) Difference b/w Binary and Heap?
+24) Heap mae insertion kaise hoti hai and element remove kaise hota hai ?
+25) Stack ? Operations on Stack?
+25) Kia Array ko as a stack use kar sakta hoo ? If yes, minimum chizein batao jo required hogi ! 
+26) Define Queue ? Operations ? 
+27) Kia simple aray ko queue bana sakte hai ?If yes, minimum chizein batao jo required hogi ! 
+28) Pass by value and pass by reference mae kia farq hai ?
+29) When do we use pass by reference and pass by value ? 
+In the end they said k OOP k concepts aur pakke karo ...and said k ab HR will contact you...
+So ye thi meri dhukh bhari dastaann...agar kisi ko rona agaya ho to sorry... And thaks for all those who shared their experience of Streebo !  
+I would suggest k sirf wo Words bolo jo aate ho bcz wo log har word pe nazar rakhte hai and ask every single thing about it... ! 
+
+tps Second interview
+what is your fyp
+reverse a slingly linked list
+ given a number in string convert it to int
+given a machine with 2 processes... how can they communicate with each other(inter process communication batana tha like pipe shared memory share files and sockets)
+
+Systems 1st Interview Questions
+1) What are distributed Systems why do we need them.. What are disadvantages
+2) What is Cluster
+3) Socket Programming k baray me Questions
+4) Questions on threads
+5) What are Function Signatrue
+6) Access modifiers .. What is their use
+7) Extends keyword 
+8) Difference between runtime and compile time errors, how to avoid runtime errors
+9) What is JIT
+10) Define the use of interface 
+11) How much have you used database.. 
+12) Explain all types of Join
+13) What is Association
+14) What is Composition
+15) What is the name of Amazon EC2 cloud.. Microsoft? IBM? 
+16) Name microsoft's Cloud Service
+17) Have you used any cloud ?
+18) Explain Design Patterns (Shit mene to course hi nahi liya tha :P)
+19) Does java support passing by reference?
+20) Use of Super in java
+21) can a thread be called .start() twice ?
+22) what is singleton..... choro ye to tumhe pata hi nahi hoga (O.o)
+
+ArpaTech Test Questions 
+1) Explain your "That Awesome moment" in your academic life in 100 words
+2) Your best friend's mother is ill, and his manager is not letting him having a day off.. Some of your friend got access to your friend's mangaer computer and Hacked his facebook account... and asking you to troll him with his profile and pictures.. What will be your reaction..?
+3) 3 philosophers was discussing on the concept of creation of everything... And while discussing they slept.. in meanwhile 3 owls on the tree branch completed their digestive process and Deliverd a pleasant present at forehead of each philosopher.. when they woke up they all start laughing at each other... On suddenly stop laughing .. WHy ? 
+4) Output of a Java program on threads execution
+5) Output of a program Using Inheritence and method overriding
+6) Output of the program passing values to objects
+7) Output of a program whose constructor was kept private.
+
+
+-> A relationship, student and class table 
+-> A program simple one ,,
+-> Interface & abstract
+-> One Inheritance Question 
+-> Asp.net , Repeater and GridView
+
+
+venture drive : 
+what is your understanding of OOP
+ what is sigleton class
+ what is race condition
+ you are given an array of unknown size... the array is of data type float... it contains number between 1 and 2500... number are like 1.56 243 5.76 100.23 and so on... all are unique numbers except one number which reaqeats twice... what is that number... find this in O(n) complexity
+ 
+ http://math.ucsd.edu/~wgarner/personal/puzzles/fillin_puzzle_sol.htm
+ 
+ I was asked to make a database for Family Tree (shajra) ... I did it by having family table(person_id,name,father_id) but after that the interviewer ask write query to find all the childs of third generation. Is ka kia table structure hona chahiya tha? and what could be its query ?
+ 
+ 
+ CoreZee.
+
+> First, 1.5 hours test, 12 pages, 12 (easy) programs to write (in C language)
+- check if an unsigned int has even or odd parity (no. of 1s in binary)
+- write fav. sort
+- is string palindrome
+- insert in circular list
+- reverse words in a string "hello world" -> "olleh dlrow"
+etc. mostly string and list stuff.
+
+> Second, HR interview [15 min]
+- same old stuff. expected salary etc.
+
+> Third, Tech interview - C language and CN stuff [30 min]
+- have you programmed on linux? what commands? [gcc, ping]
+- what does ping do?
+- ?#?include?, ?#?define? - what else?
+- diff. b/w '#define a 1' and 'const int a 1;'
+- what sorts do you know?
+- difference b/w selection & insertion sort
+- difference b/w merge & quick sort
+- what searches do you know? [linear, binary...]
+- whats binary search?
+- what are the 2 main elements of a graph
+- how do you represent a graph on a computer
+----
+- given x=5, y=7, what will be the value of x if...
+x = x+++y++
+x = ++x+++y
+----
+- what will happen if... and then how to correct the problem?
+void func (char *ch) { ch=malloc(5); }
+main () { char * ch; func (ch); } 
+----
+- OSI stack layers?
+- protocols on each layer?
+- what is HTTP and other weird protocols
+- TCP/IP
+- packet headers
+- TTL
+- TTL is on which layer?
+etc.
+
+> Notes:
+- They ONLY work on C language, writing device drivers and such stuff.
+- 9.30 to 6 timings
+- Sab Linux khol ke bethay thay
+
+
+
+Table:
+Student (student id, student name ,percentage)
+
+Result:
+I need student name, percentage + an extra column 'status'
+
+Note: Values for Status ('Pass' if percentage >= 50, 'Fail' if percentage < 50)
+
+Single & efficient query plz 
+
+
+
+One of my friend had given test at Primatics , I know few things about Primatics Test..
+
+Get yourself Prepared for...
+
+1) English Grammar e.g snonyms
+2) Mathematics e.g sequence numbers
+3) ERD Diagram
+4) Stored Procedure
+5) DB join queries
+6) Functions e.g reverse string 
+
+
+Table A has a,b,c .... Table B has 1,2,3 
+Select * from A,B.... what will be the result !!...
+
+
+
+
+SELECT 1 FROM Table_Name WHERE 1=1
+SELECT 1 FROM Table_Name WHERE 2=2
+SELECT 1 FROM Table_Name WHERE NULL=NULL
+SELECT 1 FROM Table_Name WHERE NULL IS NULL
+
+Output kya hoga
+
+
+ difference between new and malloc ?
+Is it possible to call a constructor from another constructor (within the same class, not from a subclass)? 
+
+Pehle 10mins ka analytical test hoga in which they'll ask you some trick questions, like the one asked at VentureDive test. Then 10mins ka maths ka test hoga .. It would be easy, simultaneous equations wagera solve krni hoti hain 1 2 .. Then written test hoga 30mins ka related to your field !! .. And then technical interview .. He asked me to code a B+ tree in C language, Inheritance k questions thay bachon walay .. 1 query thi jis main 3 join lagne thay .. That's all I remember ..
+
+Their technical had questions about design patterns, asked me to write a binary tree node insertion code, same old string reverse, asked me trick questions to several for loops execution, ah and there was one in my last that there is a file and 4 processes are reading it, and each write and commit 1 by 1, what would be the end result written on the file
+
+
+TRG/Data analyst.
+
+in depth statistical stuff the guy asked. normal distributions and confidence intervals, kuch yaad hi nahin tha  heck didnt even know what a random variable is. if anyone is planning to go, do probability and statistics seriously, and then give it a shot.
+
+- Asked some mind games kinda questions that you can lookup on their website.
+- Everything was abstract, if he will ask for a SQL query - you only have to explain verbally how you would do it. Take join here there, order by this that... no syntax.
+- Programs will be pseudocodes. again nothing syntactical.
+
+In a nutshell, like the interviewer himself said - this job is 70% thinking and 30% coding. and you have to be VERY strong in mathematics, probability and stats. Its a team of 15 people and there are PHDs, local and foreign masters, and bachelors. only thing common is they are extremely good in math, probability and stats.
+
+
+q1 basic oop concepts
+q2 reverse string
+q3 join query
+
+
+AoA, i was too lazy to post the question yesterday , It was a 2 hours + interview in TPS  . My interview was conduted by .net team instead of socket (C++) team so kafi tough tha ,full exhaust kr dia  
+------------------start of interview ----------------------------
+1) why do we use object oriented programming , i answered it and then he asked that header files me bhi to wo kaam ho sakta hai ,kaafi ghumaya us ne  
+2) encapsulation ?? i answered data adding k context me bataya but he said data hiding hoti hai :S which i said k wo to abstraction hoti hai .
+3)implementation of stack , private , public attributes kia kia hongai etc
+4) Abstract class , benefits 
+5)interface , benefits , diff between interface and abstarct class . 
+6) abstract class se 3 multi level inheritence ker k 5 initialization k code likh diay , jo sahi hai us p tick kro , like base se child k pointer initialize krwaya etc 
+7)output of code using x++ , and ++x 
+8)overloading , and same function with same parameters me kon sa call hoga , and return type different ho to kon sa call hoga 
+9)Polymorphism , benefits , implementation etc , difference bw polymorph and overloading 
+10)thread level p kaam kia hai ? lol kia issue ata hai , i told dependency , kese resolve hoga?? etc etc 
+-----------------then the coding part --------------
+1)ek prototype likh di jis me parameter int tha and return type bhi int thi , and int ko reverse kr k int me hi bethana tha not in array and int ki length fix nahi thi , eg 123 ko 321 , i did it easily 
+2)implementataion of fibonacci series ,
+3)recursion , compute factorial
+4)binary trees (traverse, ascending logic)
+5)sorting algos (most efficiennt)
+6)searching algos 
+-----------------Database part -----------------
+1)Views
+2)stored procedures 
+3)function 
+4)benefits , diff ,bw them etc , kafi dimagh khaya 
+5)ek table ko normalize krwaya final state me ,
+6)query chalani thi count ki , on normalized table jo kia tha
+7)join ki and cont ki query mila k chalani thi ek
+and kuch aur questions thy , i dun remember 
+----------------IQ---------------------------------
+ye questions b bech bech a k tang krrahey thy bara  but 1 k ilawa baqi sab sahi kr liay 
+1)3 litre bucket , 5 litre bucket , measure 4 litre of water
+2)1 pan , 9 balls , same weight , 1 ball has different weight , pan can be used 2 times only , fingd out the ball that has diff weight
+3) 1 room , 1 door , no window , 3 bulbs inside room , switches outside the room , can enter room 1 time only , har bulb ka switch batao :S , nahi hua ye  lol
+
+
+http://stackoverflow.com/questions/979211/struct-inheritance-in-c
+
+reverse link list 
+find loop in linklist in frst path
+find first 100 prime numbers
+find whether a string is palindrome or not
+without recursion find factorial
+find half of the link list in one pass
+find thrd last element of link list in one pass
+best sorting algorithm 
+....
+and if 2 hours ka test hai to one hour would be of Logical MCQ's (wid negative marking)
+
+
+System's Interview Questions
+HR interview is going to be in english , so be prepared 
+
+Technical-
+Fyp related question , libraries , functions etc jo jo kia hai 
+oop basics 
+oop Pillars 
+Polymorphism types , overriding , overloading
+Prime numbers code 
+Session , cookies ,
+how to maintain state in web application 
+truth table ki if then else statement , basically he wanted to see optimized code , but he didnt ask for me , so agar koi bht easy question ajae to try to write optimized code , not dirty working code 
+overloading ki return type change kr den to ???
+derived class d = new base(); possible or not , benefits , i asked sir rafi , it is possible but agar derived ka destructor call hogaya to base ka destrusctor call hone se reh jae ga , do check urself ,
+
+
+* differnce btw multiple and multivalue inheritance
+* concept of signature in polymorphism
+* types of polymorphism
+* write a program to check prime number
+
+
+http://bigocheatsheet.com/
+
+
+TRG 1st interview
+Fyp related questions 
+recursion
+1 logic building question , 
+database self join query 
+etc etc
+
+ It was just a 30 mins or less interview and asked the following:
+* About myself
+* Asked for my cv, and short info about the project in the cv plus fyp
+* What is OOP?
+* Define pillars of OOP?
+* What is Array, ArrayList, List, Collection, IEnumerable, IDictionary, HashTable?
+* Insertion of a value will be fast in which of the following: Array, ArrayList, List, Collection, IEnumerable, IDictionary, HashTable?
+* Deletion of a value will be fast in which of the following: Array, ArrayList, List, Collection, IEnumerable, IDictionary, HashTable?
+* What is CLR?
+* What is static class & why we use them?
+* Do you know design patterns? I said i haven't studied the course but just upper upper se pata hai.
+* What is singleton?
+* If you want to develop your new language from scratch in c# how will you do it? Explain all the steps?
+* Suppose saudi client wants us to develop a new web app. What will you define the architecture of the system? Explain all the tiers?
+* What is namespace?
+* Does static class comes inside or outside the namespace?
+* If have an activity and you are using it in your application but have not listed in the manifest file what will happen? I said app will not run and crash? He said it will not there is also another way. And asked me have you worked on Guava... Don't know the exact name. I said no!
+
+Thats all guys...
+
+
+1. Map windows file structure as a Database 
+2. SQL Queries.
+3. String concatenation.
+4. iOS (Interest area specefic) questions
+
+
+http://www.1keydata.com/sql/sql.html
+
+
+
+TRG Interview - Database developer
+
+1. What is SDLC?
+2. Why do we need SDLC?
+3. What are views?
+4. Advantages of views?
+5. What is stored procedure?
+6. Difference in stored procedure & function?
+7. What is trigger?
+8. Diff b/w PK and FK?
+9. Diff b/w PK & unique Key?
+10. How many null values allowed for Unique Key?
+11. What are db indexes?
+12. Types of db indexes (describe)?
+13. SQL Query - 2 tables of Dept & employee. Find no of employees for each dept where salary is > 50000 and joining date after 1 March 2010.
+14. ERD of your Database project in 5th Semester.
+
+
+
+Okay having finally... finally... secured a job (alhamdolilah  ) and being a veteran of many screwed up interviews .. I have a bit of interview tips for the fellows who are still in search of a job...
+
+Tip 1: Always stay confident. Always!
+Tip 2: Don't go with the 'if you don't know something then say you don't know ' thats silly... If you don't know something suggest at least 3 4 alternatives that you do know of, then you can say that .. Perhaps my approach is not what you were looking for?... or basically soften the blow..
+Tip 3: Try to learn as much as you can, beforehand... Not because the interviewer will cover everything .. But because it boosts up your confidence...
+Tip 4: If you can't learn everything then make your strong points stronger... And try to keep the interviewer busy in that...
+Tip 5: (This one is just a repetition of what Musa earlier said, thanks mate  ) The 'tell us about yourself' part... this is the time when you can steer the interview to where you want.... If your fyp was good try to steer it there...
+Tip 6: chill out! Panic most certainly screws it up  TRG and TPS aise hi nikla mera dost.. Confidence remember 
+
+That's all i guess... Inshallah everyone of the batch gets a job.. Ameen.. If I know of an opening, I will most certainly put it up here. 
+
+
+
+4 hours at TenPearls today. Started off with a basic HR interview, then a computerized test (IQ, analytic, math, OOP, DB), followed by two technical interviews, the first by a senior developer (included questions about DB, networks, OS, OOP, data structures and logic) and the second by a project manager (mostly about OOAD and SQA).
+
+

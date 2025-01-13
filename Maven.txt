@@ -1,0 +1,85 @@
+Maven
+--------------------------------
+
+-Project management Tool
+-Helps in managing all the dependencies.
+-We dont have to manually add all the dependencies jar files into our
+project and build path.
+-Maven also further download dependecies like Spring hibernate depends 
+upon common logging.
+-It will help us download the required dependencies according to the
+config files (pom.xml).
+
+Cordinates
+The GAV (Group Id, Artifact Id and Version)
+
+Group Id -> package name
+Artifact Id -> application name
+Version -> version number
+
+GA is mandatory and V is optional
+
+Defining Our Project
+
+<groupId>com.uaspring</groupId>
+<artifactId>SpringMvc</groupId>
+<vresion>1.0</version>
+
+For eg to fetch spring framework
+<dependencies>
+ <dependency>
+  <groupId>org.springframework</groupId>
+  <artifactId>spring-context</artifactId>
+  <version>5.0.0.RELEASE</version>
+ </dependency>
+</dependencies>
+
+To find the suitable dependency go to "search.maven.org" and we can find
+the cordinates for the dependency
+
+
+Maven Archetypes is use to create the new projct
+maven-archetype-quickstart -> for simple project
+maven-archetype->webapp -> for web application
+
+
+Creating Java Project
+
+Create New Maven Project -> Write quickstart in filter and choose the option
+Set the cordinates and Finish
+Default version of Java is 5
+To change the version add these lines inside properties
+..
+<maven.compiler.target>1.8</maven.compiler.target>
+<maven.compiler.source>1.8</maven.compiler.source>
+
+Select Project properties -> Maven -> Update Project
+It will convert the Java to version 8
+
+
+Creating Java Web App Project
+
+Create New Maven Project -> Write webapp in filter and choose the option
+Set the cordinates and Finish
+Default the javax.servlet-api is not set so it will show error in index.jsp
+file. We need to add the dependency for that
+Search for javax.servlet-api in search.maven.org and copy the dependency
+
+<dependency>
+  <groupId>javax.servlet</groupId>
+  <artifactId>servlet-api</artifactId>
+  <version>3.0-alpha-1</version>
+</dependency>
+
+
+To Add the additonal dependency that is not in the Maven repository,
+we add the dependecy and we also need to specify the url fot that repositor 
+like
+..
+<repositories>
+  <repository>
+    <id> atlassian </id>
+    <name> the atlassian mail </name>
+    <url> https://www.........com </url>
+  </repository>
+</repositories>

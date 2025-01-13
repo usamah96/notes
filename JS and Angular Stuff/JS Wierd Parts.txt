@@ -1,0 +1,29 @@
+JS Wierd Parts
+------------------------
+
+Global execution context created with running of a javasript file
+-Things we get
+  -this keyword
+  -window object
+  -outer enviroment
+  -our js code
+
+-Outer enviroment is null for global execution context
+-Outer enviroment points to the outer code when execution contex is other than global eg: Inside a function.
+
+
+
+-Where the function is written the scope chain is difference. JS looks backs into the lexical enviroment
+where that function is written.
+..
+eg:
+
+function b(){ console.log(myVar); }
+function a(){ var myVar = 1; b(); }
+
+var myVar = 2;
+a(); // Output: 2
+
+
+function a(){ var myVar = 1; function b(){ console.log(myVar); }  b(); }
+a(); // Output: 1

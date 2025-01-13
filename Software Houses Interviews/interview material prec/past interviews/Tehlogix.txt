@@ -1,0 +1,32 @@
+Mahzain:
+	1st interview:
+		Discussion on FYP (10 min)
+		make erd of school managment system
+		write a query to print the name and id of the student who got highest marks in a particular class in a particular subjct.
+		how good are you at PHP?
+		rate yourself (1-10) in programming
+		You are given two srtrings
+			print the longest common subsring.
+			i.e "microsoft" "software" = "soft"
+			"abcdefgghhkdl" "cdhhkd" = "hhkd"
+			"aabcdefghijkk" "abcdefbcdefghijk" = "bcdefghijk"
+		
+		At 12 o'clock the hour and the minute hand are pointing to the exact same spot -
+		what is the next time they will be pointing to the same spot ?
+		Ans = 1:05 (1:05:27 if seconds are considered)
+		(it meets 11 times in 12 hrs =  720 minutes ( from 12am to 12 pm (excluding 12 pm)) . 
+		(720/11 = 65.45454545) meets after 65.454545 minutes (i.e 1.090909 hrs = 1 hours 5.4545 minutes = 1 hr 5 min 27.2727 seconds)
+		01:05:27  02:10:55  03:16:22  04:21:49  05:27:16  06:32:44  07:38:11  08:43:38  09:49:05  10:54:33  12:00:00
+		
+	2nd interview:	
+		Your intro 
+		FYP discussion
+		Your part in FYP
+		How many siblings :P
+		Plan for masters? 
+		Strengths
+		weaknesses
+		1. You are given two candles of equal size, which can burn 1 hour each. 
+		You have to do something that they both burn in exactly 45 minutes. (you can see the time)
+		
+		

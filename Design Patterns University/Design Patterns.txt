@@ -1,0 +1,151 @@
+1) Strategy Pattern
+-The strategy pattern (also known as the policy pattern) is a behavioral software design 
+pattern that enables selecting an algorithm at runtime. Instead of implementing a single 
+algorithm directly, code receives run-time instructions as to which in a family of 
+algorithms to use.
+
+Problem
+-We have a fighter class which has features like jump, kick, punch. Fighter 'Ruy',
+'ChunLi' will extend Fighter class to override the methods but what if some fighter dont
+have the feature for jump or kick of punch. Then every inherited class will be having
+the overriden method.
+
+Advantages
+-Using encapsulation the algorithm separately, new algorithms complying with the same 
+interface can be easily introduced.
+-Strategy enables the clients to choose the required algorithm, without using a 
+"switch" statement or a series of "if-else" statements.
+
+
+2) Observer Pattern
+The Observer Pattern defines a one to many dependency between objects so that one object 
+changes state, all of its dependents are notified and updated automatically..
+
+Problem
+-If we have a cricket class where we have runs wickets and overs update we want to update
+the current run rate class and the projected score class whenver the runs wickets and
+overs are updated.
+Simple implementation would be to create instance of current run rate and projected score
+class inside cricket class and whenver the runs overs and wickets are updated then call
+the update method of both the classes. But here the modules will be tightly coupled
+and current run rate and projected score class will be completely dependent upon the
+cricket class (composition).
+Instead make a Subject interface and cricket class will be implementing it. On the
+other hand we will have Observer interface which will be implemented by current run rate
+and projected score class.
+
+Advantages
+-It allows sending data to other objects effectively without any change in the Subject 
+or Observer classes
+-Observers can be added/removed at any point in time
+-It supports the principle of loose coupling between objects that interact with each 
+other
+
+
+
+3) Decorator Pattern
+Attach additional responsibilities to an object dynamically. Decorators provide a 
+flexible alternative to subclassing for extending functionality.
+Client-specified embellishment of a core object by recursively wrapping it.
+Wrapping a gift, putting it in a box, and wrapping the box
+
+Problem.
+-You want to add behavior or state to individual objects at run-time. Inheritance is not 
+feasible because it is static and applies to an entire class.
+
+Advantages
+-It is flexible than inheritance because inheritance adds responsibility at compile 
+time but decorator pattern adds at run time.
+-We can have any number of decorators and also in any order.
+-It extends functionality of object without affecting any other object.
+
+Disadvantages
+-The main disadvantage of decorator design pattern is code maintainability because this 
+pattern creates lots of similar decorators which are sometimes hard to maintain and 
+distinguish.
+
+
+
+
+4) Abstract Factory
+-Lets you produce families of related objects without specifying their concrete classes.
+
+Problem.
+If we are creating a furniture shop with products like charis, sofas and tables with 
+several of the variants like moders, victorian and art deco. We want our object
+to be consistent with other object like if sofas are of modern then tables should also
+be modern not victorian.
+You need a way to create individual furniture objects so that they match other objects 
+of the same family. Customers get quite mad when they receive non-matching furniture.
+
+Advantages
+-You can be sure that the products you’re getting from a factory are compatible 
+with each other.
+- Open/Closed Principle. You can introduce new variants of products without 
+breaking existing client code.
+
+Disadvantages
+-The code may become more complicated than it should be, since a lot of new interfaces 
+and classes are introduced along with the pattern.
+
+
+
+5) Singleton
+In other words, a class must ensure that only single instance should be created and 
+single object can be used by all other classes.
+
+3 ways to use
+  -Eager
+  -Lazy
+  -Synchronized to make it thread safe.
+
+
+
+6) Command Pattern
+
+An object is used to encapsulate all information needed to perform an action or 
+trigger an event at a later time.
+
+Advantages
+-Makes our code scalable as we can add new commands without changing existing code.
+-Increase loose-coupling between the invoker and the receiver using the command object.
+
+Disadvantages
+-Increase in the number of classes for each individual command, in a different view. 
+It may not be preferred in some specific scenarios.
+
+Facade vs Command
+Facade is used to hide internal structure and provided a simplified interface. 
+The command pattern is used to encapsulate actions which allow you to program undoable 
+actions, task queue's etc..
+
+You'll see command being used a lot when you need to have multiple undo operations, 
+where a stack of the recently executed commands are maintained. To implement the 
+undo, all you need to do is get the last Command in the stack and execute it's undo() 
+method.
+
+
+7) Adapter Pattern
+-Allows objects with incompatible interfaces to collaborate.
+
+An adapter wraps one of the objects to hide the complexity of conversion happening 
+behind the scenes. The wrapped object isn’t even aware of the adapter. For example, 
+you can wrap an object that operates in meters and kilometers with an adapter that 
+converts all of the data to imperial units such as feet and miles.
+
+Problem
+-The socket supplies high voltage but your mobile requires only 3V so we need to
+convert and make our mobile charge from that socket.
+-The 3rd party library gives you data in XML format but your client wants in JSON
+format.
+
+Advantages
+-Single Responsibility Principle. You can separate the interface or data conversion 
+code from the primary business logic of the program.
+-Open/Closed Principle. You can introduce new types of adapters into the program 
+without breaking the existing client code, as long as they work with the adapters 
+through the client interface.
+
+Disadvantages
+The overall complexity of the code increases because you need to introduce a set 
+of new interfaces and classes.

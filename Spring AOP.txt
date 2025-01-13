@@ -1,0 +1,364 @@
+Spring AOP
+-----------------------
+
+Application can have many functional requirements. But beside that there
+are also certain non functional requirements like Security, Logging,
+API management, Transactions etc.
+These non functional requirements are cross cutting concerns which
+basically means that these features are repeatedly being used at a many
+different places in the applicaion. So code scattering is the problem.
+
+Here where AOP comes into picture. We make different aspects of such
+non functional requirements and apply aspects on the classes at runtime
+
+Advantages
+  -Reusable modules
+  -Applying of aspects based on configuration
+  -Resolve code scattering and tangling
+
+Disadvantages
+  -Too many aspects lead to complex flow
+  -Minor performance issue
+
+
+2 major AOP framework
+1) Spring AOP -> Method level Join points and Run-time code weaving (slower
+than AspectJ. Close to negligible but we need to be aware of that)
+2) AspectJ -> All level join points and Compile time code weaving
+---------------------------------------------------
+
+Advice Types
+
+1) Before (@Before)
+-Run before the method
+
+Use cases could be to,
+ *Log the data before the method runs
+ *Start the transaction and commit the transaction after returning the method
+with @AfterReturning. With @Transactional Spring behind the scenes makes use
+of AOP to do this commit and starting of transaction.
+ *API management to track what are the peak hours to hit the API method,
+who is the top user, etc
+
+
+
+-Copy previos Spring project with all jar files in lib
+-Download the aspectJ jar file from luv2code.com/download-aspectjweaver
+and paste in lib and reference it from build path.
+
+
+
+Creating the Java Config class
+@Configuration
+@EnableAspectAutoProxy
+public class ConfigAop{}
+
+@EnableAspectAutoProxy enables the proxy pattern so that the method calling
+is done through a proxy
+
+Creating the aspect for Before Advice Type
+@Component
+@Aspect
+public class LoggingAspect{
+  @Before("execution(public void AddAccount())")
+  public void executeBeforeAddAccount(){
+    sout("Executing The Logging Aspect");
+  }
+}
+
+Creating the DAO class
+@Component
+public class AccountDao{
+  public void AddAccount(){
+    sout("Adding the Account")
+  }
+}
+
+
+Point Cut Expression
+
+"execution(public void AddAccount())" -> is know as the point cut expression
+"execution" is the point cut. There are many different point cuts. This
+point cuts refers to the execution of a method.
+
+By appluying this point cut expression, it will execute the aspect
+method if AddAccount is called from any class.
+
+To make it speciif, we need to assign it with the fully qualified name like,
+"execution(public void uaspring.aop.dao.AccountDao.AddAccount())"
+
+It will now only execute when the AccountDao's AddAccount is being called.
+
+We can also use the wildcard expression to make it more general like
+
+"execution(public void Add*())"
+Will execute whenever any method with name starting with Add is called.
+
+"execution(* * AddAccount())"
+Will execute whenever any method with any modifier, returning type and
+AddAccount name is called.
+
+The modifier is optional so,
+"execution(* AddAccount())"
+This will be executed whenever a AddAccount method with any return type
+is called.
+
+Point cut expressions with parameters
+
+-We have to give fully qualified parameters also like
+"execution(* Add*(uaspring.aop.Account))"
+This will execute when the return type is any, method starting with Add
+and parameter is an Account object.
+
+"execution(public void AddAccount(..))"
+This will execute whenever 0 or more arguements are given
+
+"execution(* * AddAccount(*))"
+This will execute whenever a single arguement with any type is given
+
+"execution(* * AddAccount(uaspring.aop.Account, ..))"
+This will execute when the first param is Account object followed by 0
+or more arguements.
+
+"execution(* * uaspring.aop.*.*(..))"
+This will execute whenever any method with any arguement with any modifier
+and type is executed inside the uapspring.aop package.
+
+
+Point cut Declarations'
+-What if we want to use the same point cut to different advices. We will
+have to repeat ourself. So instead we can decalre the point cut and use 
+it afterwards.
+
+Pointcut("execution(* * uaspring.aop.demo.*.*(..))")
+private void AllPackages() {}
+
+@Before("AllPackages()")
+public void LogTheMessage() {}
+
+@Before("AllPackages()")
+public void ApiCalculation() {}
+
+What if we want to perform the operation on all the methods but not on
+the getters and setters of a class. We need to combine point cut to make
+a condition so that the point cut gets executed when a certain condition
+is true
+
+Pointcut("execution(* * uaspring.aop.demo.*.*(..))")
+private void AllPackages() {}
+
+Pointcut("execution(* * uaspring.aop.demo.*.get*(..))")
+private void Getters() {}
+
+Pointcut("execution(* * uaspring.aop.demo.*.set*(..))")
+private void Setters() {}
+
+Pointcut(" AllPackages() && !(Getters() || Setters()) ")
+private void AllPackagesWithoutGetAndSet() {}
+
+@Before("AllPackagesWithoutGetAndSet()")
+public void ApiCalculation() {}
+
+
+Ordering The Aspects
+-If there are 3 advices running on the same point cut expressions then
+spring will randomly pick one by one and run it.
+-We can assign the order nummber to execute it
+..
+Move all the point cut declarations and condition to a separate class
+
+pacakge uaspring.aop.aspects
+@Aspect
+public class DeclarationsAndConditions{
+  Pointcut("execution(* * uaspring.aop.demo.*.*(..))")
+  public void AllPackages() {}
+
+  Pointcut("execution(* * uaspring.aop.demo.*.get*(..))")
+  public void Getters() {}
+
+  Pointcut("execution(* * uaspring.aop.demo.*.set*(..))")
+  public void Setters() {}
+
+  Pointcut(" AllPackages() && !(Getters() || Setters()) ")
+  public void AllPackagesWithoutGetAndSet() {}
+}
+
+Create separate classes for every advices.
+
+LoggingAdvice.class
+
+@Aspect
+@Component
+@Order(1)
+public class LoggingAdvice{
+  @Before("uaspring.aop.aspects.DeclarationsAndConditions.AllPackagesWithoutGetAndSet")
+  public void LogTheResult() {}
+}
+
+@Aspect
+@Component
+@Order(2)
+public class ApiCalculationAdvice{
+  @Before("uaspring.aop.aspects.DeclarationsAndConditions.AllPackagesWithoutGetAndSet")
+  public void CalculateApi() {}
+}
+
+@Aspect
+@Component
+@Order(3)
+public class ICloudAdvice{
+  @Before("uaspring.aop.aspects.DeclarationsAndConditions.AllPackagesWithoutGetAndSet")
+  public void DataOnCloud() {}
+}
+
+-We need to give the fully qualified class name in the point cut expression
+-Order number will decide the execution step.
+-Lowest Order number has the highest priority
+-Negative numbers are also allowed. More the -ve, highest the priority
+-Numbers may not be in the order. -20,0,1,7,10 will work
+-In case of 2 Aspets with same order number, Spring will decide which to
+execute first on random basis.
+
+
+
+Fetching The Method Information With JoinPoints
+
+-We can access the fully qualified method that is being executed and the
+actual values of the parameters with join points
+..
+@Before("execution(public void uaspring.aop.dao.AccountDao.Add*(..))")
+public void LogTheData(JoinPoint theJoinPoint){
+  MethodSignature ms = (MethodSignature) theJoinPont.getSignature();
+  sout(ms) // will give the fully qualified of method being called
+
+  Object[] args = theJoinPoint.getArgs();
+  for(Object arg: args){
+    sout(arg);
+
+    if(arg instanceof Account){
+      Account a = (Account) arg;
+      sout(a.name + " " + a.level);
+    }
+  }
+}
+
+If the method is called as
+..
+Account a = new Account();
+a.setName("Account 1");
+a.setLevel("Level 1");
+
+AccountDao ad = context.getBean("accountDao", AccountDao.class);
+ad.AddAccount(a, true);
+
+The resultant output will be,
+public void uaspring.aop.dao.AccountDao.AddAccount(Account, boolean)
+Account 1
+Level 1
+true
+
+
+
+2) After Returning (@AfterReturning)
+
+-Advice will get executed after the successfull execution of a method
+defined in the point cut execution with no exception
+-Can also access the returned value from the method in the advice method.
+..
+
+In AccountDao
+public List<Account> getAccountList(){
+  List<Account> accounts = new ArrayList<Account>()
+  accounts.add(..);
+
+  return accounts;
+}
+
+In Aspect class
+@AfterReturning(pointcut="execution(* * getAccountList(..))", returning="result")
+public void executeAfterReturning(List<Account> result){
+  for(Account a : result){
+    a.setName(a.getName.toUpperCase());
+  }
+}
+-Returning arguement in the @AfterReturning holds the returned value from the
+actual method. It will get passed as a parameter to the advice method.
+-If any modification is being made to returning value in the advice method
+like here all the names are converted to upper case, the main app will
+get the modified version of the returned value.
+
+
+3) After Throwing (@AfterThrowing)
+-Advice will get executed after the exception is being thrown in
+the method
+-Can also access the exception inside the advice method
+-We can also prevent the exception thrown back to the main program via the
+usage of @Around annotation (will be discussed later). For now using the
+try catch block
+..
+In Aspect class
+@AfterThrowing(pointcut="execution(* * getAccountList(..))", throwing="Exc")
+public void executeAfterReturning(Throwable Exc){
+  System.out.println("Inside the AfterThrowing Aspect");
+}
+
+
+4) After (@After)
+-This advice is like the finally block in the try catch. No matter if the
+method throws the exception or it runs successfully, the @After advice
+method will be executed.
+-This will run before the @AfterReturning / @AfterThrowing
+
+
+5) Around (@Around)
+- Around is the combination of @After and @Before.
+
+Typical Use cases could be
+  1- Pre and Post processing of the data
+  2- Time calculation of execution of method
+  3- etc ......
+..
+@Component
+public class FortuneDao{
+  public String getFortune(){
+    try{ TimeUnit.SECONDS.Sleep(5) }catch(Exception e){ sout(e.toString() }
+    return "FDao";
+  }
+}
+
+@Around("execution(* getFortune(..))")
+public void executeAroun(ProceedingJoinPoint theProceedingJoinPoint) 
+  				throws Throwable {
+		
+  System.out.println("Inside Around Advice");
+		
+  long start = System.currentTimeMillis();
+  Object data = theProceedingJoinPoint.proceed();
+  long end = System.currentTimeMillis();
+		
+  long timeDuration = (end - start) / 1000;
+		
+  System.out.println("Method Execution Time: " + timeDuration + " seconds.\nData: " + data.toString());
+}
+-ProceedingJoinPoint is the Handle to the target method.
+
+
+Exception Handling with Around
+-We dont throw exception back to the main application, instead we handle
+it in the Around advice method
+..
+@Around("execution(* getFortune(..))")
+public String executeAroun(ProceedingJoinPoint theProceedingJoinPoint) 
+  				throws Throwable {
+
+  String result = null;
+  try{
+    Object data = theProceedingJoinPoint.proceed();
+    result = data.toString();
+    return result
+  } 
+  catch(Exception e){
+    result = "Exception";
+    return result;  
+  }
+}

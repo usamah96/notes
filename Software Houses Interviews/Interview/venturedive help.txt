@@ -1,0 +1,49 @@
+﻿Abstraction: focus on essential qualities, e.g. table. apne apny mind main bana 
+lia k table kaisi hai. didn’t say what kind of table round or square. 
+automatically discard what is not important. have an idea or concept. 
+eg. we don’t create one class for salman bank account and one for edhi’s bank 
+account we will create a bank account class. focusing just always on the essential.
+
+
+
+Encapsulation: idea of surrounding something not only to keep them together but 
+also to protect them. taking our attributes and methods and bundling them together. also want to restrict access among them which is called data hiding. an object should not reveal anything about itself except what is absolutely necessary for other parts of the application to work. eg. bank account class main jo balance hai wo despoit jab ho tab he kam hona chye ye ni kahen directly ap kam kar rae ho. so we can control access to it so it can only be controlled through inside the object. telephone example our concern is the ui not the working inside. working can change won’t affect us. 
+goal is reducing dependencies between different parts of the application that a change in one place won’t require changes in others
+
+Inheritance : great form of code reuse. make person class then customer class. almost same. so we inherit customer from the person.  
+
+polymorphism: many forms. e.g. the ‘+’ sign. if ints add them, if strings concat them. 
+
+Static/Shared: variable or method that is shared across all methods or class. e.g. in savings accounts class static variable interest rate. (class level variable). Access them using class name not any instance/object name. can use it even without any objects.
+
+static method can only access static variables. in uml shown with underline. 
+
+
+Abstract Class
+
+a class which cannot be instantiated. exists purely for the reason of being inherited. contains methods, variables. 
+
+a class that can be instantiated is called a concrete class.
+
+
+Interfaces: very similar to a class but no actual functionality. 
+only define method names. no implementation. classes sign a contract and decide to implement the interfaces. they must implement all the methods of that interfacee. the use is that multiple classes can implement the same interface and if u know nothing about the objects u can check if that particular object implements that interface it has some specific function implemented.
+
+
+SORTS!!!
+insertion sort best for small data. even better then quick sort.
+best case O(n) worst and avg O(n^2)
+
+In general, insertion sort will write to the array O(n2) times, whereas selection sort will write only O(n) times. For this reason selection sort may be preferable in cases where writing to memory is significantly more expensive than reading,
+
+selection main har dafa sabsy minimum uthaya. and usy us index pe daal dia
+
+Insertion sort's advantage is that it only scans as many elements as it needs in order to place the k + 1st element, while selection sort must scan all remaining elements to find the k + 1st element.
+
+Comparisons and Complexity of All sorts:
+Bubble
+Insertion	n(n-1)/2	O(n^2)
+Selection 	n(n-1)/2	O(n^2)
+
+
+   

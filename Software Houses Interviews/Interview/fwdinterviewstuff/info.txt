@@ -1,0 +1,7 @@
+Interview Question: How to make a class such that no instance of it can be 
+created?	
+Make the class abstract, or make its constructor private
+Interview Question: Final in java (Half)	
+Const: cant change value once assigned
+Interview Question: Argument vs Parameter	
+Param=variable in the method def, arg=actual data passed

@@ -1,0 +1,104 @@
+Php Basics
+-----------------------------------------
+
+Static keywork doesnt destroys the variable
+function myTest() {
+    static $x = 0;
+    echo $x;
+    $x++;
+}
+
+myTest(); //0
+myTest(); //1
+myTest(); //2
+
+
+Strings
+
+strlen("Hello"); - Length
+str_word_count("Hello"); - Word Count
+strrev("Hello") - Reverse String
+strpos("Hello", 'e') - Outputs 1
+str_replace("GoodBye", "Hello", "Hello World") - Outputs GoodBye World
+
+Constants
+define("HOLA", "Hello")
+echo HOLA;
+
+define("HOLA", "Hello", true)
+echo hola;
+
+Arrays
+
+Indexed
+$cars = array("1", "2", "3")
+count($cars) - length of array
+
+Associative
+$cars = arrya("1" => "One", "2" => "Two")
+echo $cars["1"];
+
+array_keys($a)
+array_merge($a, $b)
+array_pop($a)
+array_push($a)
+array_shif($a)
+array_unshift($a)
+
+array_reduce($a, "reduce_func")
+public function reduce_func($a1, $a2)
+{ return $a1 . "-" . $a2; }
+
+array_reverse($a)
+array_search($a)
+
+
+Sort
+sort($cars) - ascending alphabatical
+rsort($cars) - descending alphabatical
+asort($cars) - ascending according to value (associative)
+ksort($cars) - ascending according to key (associative)
+arsort($cars) - descending according to value (associative)
+krsort($cars) - descending according to key (associative)
+
+Super Globals
+
+$GLOBALS holds the global variables
+
+$x = 5; $y = 5;
+public function(){  $GLOBALS['z'] = $GLOBALS['x'] + $GLOBALS['y']; }
+echo $z;
+
+$_SERVER holds the info related to path, headers, locations
+$_SERVER['PHP_SELF'] - filename of current dir
+$_SERVER['SERVER_NAME'] - name of server eg: google.com
+$_SERVER['REMOTE_ADDR'] - ip of user
+$_SERVER['REQUEST_METHOD'] - can check the method like POST GET etc
+
+$_GET - visible to everyone. Not to be used for sensetive info
+
+using htmlspecialchars($_SERVER['PHP_SELF']) will replace HTML characters like 
+< and > with &lt; and &gt;. This prevents attackers from exploiting the code by 
+injecting HTML or Javascript code (Cross-site Scripting attacks) in forms.
+
+Cleaning the user input by,
+function test_input($data) {
+  $data = trim($data);
+  $data = stripslashes($data);
+  $data = htmlspecialchars($data);
+  return $data;
+}
+and then,
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $name = test_input($_POST["name"]);
+  $email = test_input($_POST["email"]);
+}
+
+trim() - Strip unnecessary characters (extra space, tab, newline) from the 
+user input data
+stripslashed() - Remove backslashes (\) from the user input data
+
+Php include vs require
+include: if file not found, code will execute
+require: if file not found, error will be shown and code will not execute after
+require statement

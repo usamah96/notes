@@ -1,0 +1,200 @@
+General
+..
+
+Concept
+--
+Purpose of OPTIONS call (PreFlight Request) before actual call
+--
+OPTIONS requests are what we call pre-flight requests in Cross-origin resource sharing (CORS).
+
+They are necessary when you're making requests across different origins in specific situations.
+This pre-flight request is made by some browsers as a safety measure to ensure that the request being done is trusted by the 
+server. Meaning the server understands that the method, origin and headers being sent on the request are safe to act upon.
+
+By Example => https://www.youtube.com/watch?v=Ka8vG5miErk
+
+
+Concept
+--
+Why is Kafka Fast?
+--
+Two main reasons
+  .Sequential I/O
+  .Zero Copy Principal
+  
+https://flashdba.com/2013/04/15/understanding-io-random-vs-sequential/
+https://cloudnweb.dev/2019/05/heres-what-makes-apache-kafka-so-fast-kafka-series-part-3/
+
+
+
+Concept
+--
+What is IPFS?
+--
+Decentralized File Storage Network
+Good Example of Blockchain network
+
+https://www.youtube.com/watch?v=PlvMGpQnqOM
+
+
+
+
+Concept
+--  
+Usecase for Local Class
+--
+They allow you to take logic out of the parent class and objectify it. This removes functionality from where it doesn't belong and puts it into its 
+own class. But what if this new object is only needed for a short time, only for the duration of a single block of code? Well, that's where a local 
+class fits in.
+
+
+
+
+
+Concept
+--
+Why not to use Hibernate auto generate schema on production?
+--
+Letting Hibernate manage the schema evolution has several drawbacks
+
+ 1) Duplicate or non-sense constraints/indexes.
+ 2) Human unreadable names in constraints/indexes.
+ 3) Poor control on how the schema evolves.
+ 
+ 
+ 
+Concept
+--
+Working of ELK
+--
+Using ELK Stack to centralize logging feature in microservices
+
+Elasticsearch (E) => Is a NoSql database based on Lucene search engine helps us to store the inputs/logs. (Storing of Data)
+Logstash (L) => Log pipeling that accepts logs/inputs from various sources and outputs the data to various targets. (Process of Data)
+Kibana (K) => UI Layer for visualization and monitoring purposes. (View the Data)
+
+1) Our application generated log file is given to Logstash as input.
+2) Logstash process the input and provides the output to Elasticsearch
+3) Elasticsearch will store that data in a NoSql Database
+4) Kibana keeps on pulling from Elasticsearh for changes and display on UI
+
+
+
+
+
+  
+Concept
+--  
+Proxy and Reverse Proxy
+--
+Proxy is a middle layer between the source and the destination in which the destination does not know about the source.
+Like a person wants to visit google.com, rather going to googl.com he would go to my-proxy.com which will take him to google.com and for google, the
+client is my-proxy rather than the actual client who requests for it.
+
+Use cases
+  1) Caching (Most Frequently visit pages can be cached)
+  2) Logging (Logging who visits the site and what is the ip address, etc)
+  3) Anonymity (Hiding from the server where the requests is coming from)
+  4) Block Sites (Preventing users to go to bad web sites)
+  
+This is also known as Forward Proxy. These are for clients
+  
+  
+Reverse Proxy is the opposite of proxy. The client does not know what the server's final destination is
+Like if client visits google.com and google uses multiple servers to fetch the data from and returns to client. The response from user's point of
+view is from google but for google it coult be google-server-1, google-server-2 etc.
+
+Use Cases
+  1) Caching
+  2) Load Balancing
+  3) Ingress (Act as a router in which a particular endpoint is routed to specific server like /pics route to server 1, /comments routed to server 2
+  4) Canary Deployment (Defining the rules like 3% of all youtube vides should have a random thumbnail)
+  
+This type of proxy is for servers.
+  
+Mostly there are proxies incorporated by every ISPs wo whenever we visit any page it is first directed to the proxy which in turns make the actual
+requests
+In Offices, there are corporate proxies which does the same thing and monitor, log and block web sites or clients
+
+What if server uses cookies, headers, authenticated data to server the request?
+The proxy makes the exact same request which the client have made with all the authentication information like jwt, cookies etc 
+
+Examples of Reverse Proxies are
+  1) Nginix
+  2) Api Gateway in Microservices
+  3) Envoy (Act as a sidecar proxy)
+  4) Istio (Act as a sidecar proxy)
+  ...
+  ...
+
+A server can also be used as a proxy and a rever proxy both which is called Service Mesh/Sidecar Proxy
+
+Sidecar Proxy is implemented using Sidecar pattern
+Sidecar pattern is about separating cross-cutting operations from a Microservice to reduce its internal complexity.
+For example, suppose there are several modules that we want to execute for each Microservice like logging, messaging, monitoring, etc. But 
+these operations are far more similar, and repeating the code for handling these operations in each Microservice isn’t worth it.
+
+Sidecar pattern is a simple concept in which 2 or more processes living in the same host/container communicate with each other.
+Example is 
+  We develop a logging application and run it on port 9000 (Sidecar container)
+  Then we develop our main application running on port 8000 which communicates with localhost:9000 to log our results. (Main Application container)	
+  
+In this way, any application can communicate with localhost:9000 to log their result. The applications are decoupled and are not dependent on each other
+Also there is interoperability. Our application can be in Nodejs but our Log application can be in Java.
+
+It is also known as “Decomposition pattern” and “Sidekick pattern.”
+
+
+
+
+
+
+
+
+Concept
+--
+Denial Of Service Attach (DoS)
+--
+Attach to bring the server down to consume services. Usually they are web servers and the attack makes the pipe saturated that goes on to the
+server so it stops taking requests all together.
+
+3 types of DoS Attackes
+
+1) Bandwidth based DoS
+
+The bandwidth is something related to the amount of data client or server can receive or send per second like if a server can receive 50mb per 
+second then it has a downloading bandwidth of 50mb/s and similarly if a client can send 10mb data per second then it has uploading bandwidth 
+of 10mb/s
+
+Now suppose a server with bandwidth 50mb/s and client with bandwidth of 100mb/s which means server can receive 50mb per second.
+So if client sends 100mbs in a second, the server will break data into 2 parts each of 50mb and process it in 2 seconds.
+So if client keeps on sending 100 mbs every second (uploading a file lets say), the server will take double the time and the pipe will be throttled.
+Mr.X cannot view his web page if he tries to request the server because server is busy everytime processing
+
+This is not a realistic example but more realistic example is as follows.
+
+Lets say server can take upto 1gb/s and a single client can send 10mb/s
+If a client sends a request, server will immediately process it as 10mb is nothing in front of 1gb per second.
+But if there are 100 users all with 10mb/s in a distributed environment then that is a problem
+It will much likely end up in a Distributed DoS attack (DDoS).
+
+2) Max Connection based DoS.
+
+We know that for every request, it requires a TCP connection and a server can set a limit to a certain connection requests according to the RAM/CPU
+and memory because every TCP connection takes up some memory and space.
+
+So one attach is to establish TCP connection and do nothing with it which will establish all server's connection and Mr.X will not be able to
+establish his connection. Obviously server's have preventive measures and it will timeout the connection if nothing happens for a certain amount of
+time.
+
+Another one to avoid timeout from connection is to very slowly send the data.
+First examine how much time server is taking up to timeout the connection and whenever that time is reached, sent some data (1 bit or byte), so
+that the server will think the client is very very slow and will not timeout the connection.
+Simply we can write 200 scripts like that to take up all 200 tcp connections and Mr.X will again be denied for the service.
+
+Servers have preventive measures for that also.
+
+3) Vulnerability based DoS
+
+Relates to Buffer overflow attack in which malicious data will result in server crashing and no longer the application will be listeneing to
+that domain or port.

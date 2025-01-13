@@ -1,0 +1,263 @@
+Oracle SQL
+-------------------------------------------
+
+Filtering the records
+
+Select ename, hiredate From emp 
+Where deptno In (20, 30)
+
+Select ename, hiredate From emp 
+Where ename In ('FORD', 'ALLEN', 'SMITH')
+
+Select ename, hiredate From emp 
+Where ename Not In ('MARTIN')
+
+We can use OR but it will lead to long query like,
+
+Select ename, hiredate From emp 
+Where ename = 'FORD' 
+Or ename = 'ALLEN' 
+Or ename = 'SMITH'
+
+---------------------------------------------
+
+Specifying the range
+
+Select * from emp
+Where Sal Between 950 And 1600
+
+Select * from emp
+Where Sal Not Between 950 And 1600
+
+Select * from emp
+Where hiredate Between 950 And 1600
+
+select * from emp
+where hiredate between '05/01/1981' and '12/09/1982'
+
+----------------------------------------------
+
+Getting the null value records
+
+Select * from emp
+Where comm Is Null
+
+Select * from emp
+Where comm Is Not Null
+
+---------------------------------------------
+
+Write a query that returns employee that dont make any commission and have a salary
+greater than 1100 but less than 5000 excluding those having salary equals to 3000
+
+Select * from emp
+Where (comm Is Null Or comm = 0)
+And Sal Between 1100 And 5000
+And Sal Not In 3000
+
+------------------------------------------------
+
+Write a query to return those employee who are salesman and who make either 300
+as commission or greater than 1000 as commission
+
+Select * from emp
+Where Job In 'SALESMAN'
+And 
+(Comm = 300 Or Comm > 1000)
+
+-------------------------------------------------
+
+Concatenation of String
+
+Select ename || ' makes $' || sal || ' per month' as "Employee Income"
+From emp
+
+-------------------------------------------------
+
+Order by clause
+
+Select deptno, ename, sal 
+From emp
+Order by deptno, sal
+
+First whole record will be sorted according to deptno, then in each group of
+deptno the sorting will be done according to sal.
+Deptno are 10, 20 and 30. Sal sorting will be done separately on 10, 20 and 30
+
+--------------------------------------------------
+
+Single Row Functions (n rows input, n rows output)
+SRF applied on every row
+
+upper('hello')
+concat('hello', 'world') concat('hello ', ename)
+lower('HELLO')
+initcap('my name is usama')
+length('hello')
+substr('my name is usama', 4, 4) return name (start from 4 and extract 4 chars)
+lpad('hello', 10, $) adds '$' character at left till length becomes 10
+rpad('hello', 10, $) adds '$' character at right till length becomes 10
+ltrim('hellohh', 'h') trims the left 'h' only
+rtrim('hellohh', 'h') trims the right 'h' only
+ltrim('ehllohh', 'h') no trim as no 'h' in the left side.
+
+round(107.888, 3) round to 3 decimal places
+round(107.98) round to whole number
+trunc(123.43434565) truncate all digits after decimal without rounding off
+trunc(123.3443, 2) truncate digits after 2 decimal places without rounding off
+
+sysdate returns the date of system where database is installed
+systimestamp detailed date with timestamp
+ADD_MONTHS('3/15/2019', 5) add 5 months to the date given
+ADD_MONTHS('3/15/2019', -5) reduce 5 months to the date given
+ADD_MONTHS(sysdate, 5) add 5 months to the current date given
+MONTHS_BETWEEN('3/15/2019', '3/15/2020') returns 12
+trunc(sysdate) returns only date with excluding other details
+trunc(sysdate, 'MONTH') return the first of current month like 3/01/2019
+trunc(sysdate, 'YEAR') return the first of current year 01/01/2019
+to_char(sysdate, 'mm-dd-yyyy') displays date in a given format
+to_char(sysdate, 'ddrd "of" month, yyyy') returns 3rd of may, 2019
+to_char(1234.56, '$9999.99') returns $1234.56
+
+nvl(comm,0) replaces the null values with value given
+nvl(to_cha(comm), 'No Data') If you want to display string where value is null
+nullif(length(ename), 5) returns null if both arguements are equal
+
+Select ename, deptno, nvl(comm, 2)
+From emp
+Where empno in 7369
+
+Select ename, deptno, nvl(to_char(comm), 'no data')
+From emp
+Where empno in 7369
+
+select ename, length(ename), nullif(length(ename), 5)
+From emp
+
+---------------------------------------------------
+
+Group Function (n rows input, one row output)
+
+count, min, max, avg
+
+Select count(*), job
+From emp
+Group By job
+
+This query will look into job coulmn and apply count(*) operation to all the rows
+uniquely like count(*) for salesman will be separate from manager.
+
+Select job
+From emp
+Group by job
+
+This query will return unqique values from job coulmn. Same as selecting DISTINCT
+but using this method is more recommended.
+
+Select min(sal), job
+From emp
+Group by Job
+
+This query will find the minimum salary of all the unique professions in job coulmn.
+
+Select deptno
+From emp
+Group By deptno
+Having count(*) = 2
+
+Returns that deptno in which only 2 employees are there only.
+
+Select job, deptno, count(*)
+From emp 
+Groub by job deptno
+
+This query will display how many manager / salesman / analyst are in dept 10/20/30
+etc
+This is grouping by 2 coulmns
+
+Technique: col name in select statement with group function will also be included
+in group by statement. Group by statmenet can have other cols as well, but cols
+from select will surely be there.
+
+----------------------------------------------------------------
+
+Subqueries
+
+= sign can be used if sub query returns ne value like
+
+Select ename
+From emp
+Where deptno = (Select deptno From dept Where loc = 'CHICAGO')
+
+but if we have list of elements then we have to use IN keyword , like
+
+Select ename
+From emp
+Where deptno In (Select deptno From dept)
+
+The sub query return 10,20,30,40, for that we will use IN keyword
+
+The EXISTS keyword is used when you want to run a query if certain query satisfies
+a condition like,
+
+Select * 
+From emp
+Where Exists (Select ename From emp Where deptno = 30)
+
+Query after Exists will return a row that means the condition is satisfied and
+the main query will be run that is (Select * From emp)
+
+Similarly,
+
+Select * 
+From emp
+Where Not Exists (Select ename From emp Where deptno = 30)
+
+This will return 'no data' as query after Exists returns the row. If query after
+Exists returns 'no data' then (Select * From emp) will be run
+
+Exists should be used when you are using corelated sub queries because when using
+exists keyword, the sub query is run for every single record of outer query.
+
+Case when sub query can be used:
+
+Select *
+From dept d
+Where Not Exists (Select * From emp e Where d.deptno = e.deptno)
+
+This query will take dept no from dept table like 10 and compare every record
+from emp table. Similary for 20 30 and 40. For deptno 40, inner query will return
+no data so outer query will be run and dept no 40 record will be shown.
+
+------------------------------------------------------------------
+
+Alter Table products Modify name Varchar(50) Not Null
+Alter Table products Add store_id Number
+
+Create Table employees As Select ename, empno, deptno From emp
+
+Create View managers_v As Select * From emp Where Job = 'MANAGERS'
+Select * From managers_v
+
+For Updating in Views,
+-The SELECT statement which is used to create the view should not include GROUP BY 
+clause or ORDER BY clause.
+-The SELECT statement should not have the DISTINCT keyword.
+-The View should have all NOT NULL values.
+-The view should not be created using nested queries or complex queries.
+-The view should be created from a single table. If the view is created using 
+multiple tables then we will not be allowed to update the view.
+
+-------------------------------------------------------------------
+
+Index is a Data structure used by Database to search things faster
+Table with well defined indexes is much faster to query
+Queries that are often queries should be indexed
+Indexes are made at every coulmn
+
+Create Index names_idx On emp (ename)
+Create Index data_idx On emp (ename, job, hiredate)
+
+Unique index will be created only if data on a column have unqiue values
+
+Create Index job_idx On emp (job) - Will give error because data is duplicated

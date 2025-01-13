@@ -1,0 +1,315 @@
+Spring Security
+---------------------------------
+
+For this simple application we will not use web.xml and spring-mvc-servlet.xml
+file for the configuration, but instead we will use tha Java Source code
+for both the configuration
+
+-To replace web.xml with java source code, we need to add additonal plugin
+in the maven (covered later)
+
+-In the spring-servlet.xml file we have the configuration for
+component scanning, validations, conversions, view reslover (to specify
+the view pages with suffix and prefix) and many more...
+To replace this configuration, we will use @EnableWebMvc annotation and
+also create a @Bean for the view resolver
+
+-In the web.xml, we have the configuration to point to the servlet file
+and the url mapping. We replace this with Java code by extending
+the abstract class named as,
+"AbstractAnnotationConfigDispatcherServletInitializer"
+and overrride the essential methods to link with the servlet configuration
+we did with Java code and specify the url mapping.
+---------------------------------------------
+
+Copy the Spring Security Starter Project and Open
+-As there is no web.xml file so we need to add the maven-war-plugin
+-Towards the bottom of pom.xml file add,
+
+<build>
+	
+  <finalName>spring-security</finalName>
+	
+  <pluginManagement>
+    <plugins>
+      <plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-war-plugin</artifactId>
+	<version>3.2.3</version>
+      </plugin>
+    </plugins>
+  </pluginManagement>
+		
+</build>
+
+
+Create the Config File
+
+@Configuration
+@EnableWebMvc
+@ComponentScan("uaspring.security")
+public class AppConfig{
+
+ @Bean
+ public ViewResolver viewResolver(){
+   
+  InternalResourceViewResolver irvr = new InternalResourceViewResolver();
+  irvc.setPrefix("/WEB-INF/view/");
+  irvr.setSuffix(".jsp");
+
+  return irvr;
+ }
+}
+
+Create the Class and extend with AbstractAnnotati.......Initializer
+
+public class MyInitializer extends Abstr.....Initializer{
+  
+  protected Class<?>[] getServletConfigClasses(){
+    return new Class[] { AppConfig.class };
+  }
+  protected String getServletMapping(){
+    return new String[] { "/" };
+  }
+}
+
+We need to add the security dependecy in the pom.xml
+-Use the compatible version of spring and secuirty that matched
+-Search spring-security-web on maven repo to find the corresponding version
+
+For now: Spring Framework -> 5.1.6 and Spring Security -> 5.1.5
+
+In the pom.xml
+Under <properties>
+<springframework.version>5.1.6.RELEASE</springframework.version>
+<springsecurity.version>5.1.5.RELEASE</springsecurity.version>
+
+Add Dependecies for Spring Security Web and Spring Security Config
+
+<dependency>
+  <groupId>org.springframework.security</groupId>
+  <artifactId>spring-security-web</artifactId>
+  <version>${springsecurity.version}</version>
+</dependency>
+
+<dependency>
+  <groupId>org.springframework.security</groupId>
+  <artifactId>spring-security-config</artifactId>
+  <version>${springsecurity.version}</version>
+</dependency>
+
+Create controllers and views.....
+
+
+We need 2 classes to extend initialize the spring security
+
+"AbstractSecurityWebApplicationInitializer"
+"WebSecurityConfigurerAdapter"
+
+Create a simple class with nothing in it
+public class SecurityInitializer extends 
+	AbstractSecurityWebApplicationInitializer { }
+
+Create another configuration class for the Spring Security Configuration
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+  
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    UserBuilder userBuilder = User.withDefaultPasswordEncoder();
+		
+    auth.inMemoryAuthentication()
+	.withUser(userBuilder.username("Usama").password("Hello123").roles("Employee"))
+	.withUser(userBuilder.username("Random").password("Random123").roles("Manager"))
+	.withUser(userBuilder.username("UserAdmin").password("Ad123").roles("Admin"));
+  }
+}
+
+-This will give us the default login page where we can log in with the
+credentials just set. Navigate to /login
+
+
+Creating the Custom Login Page..
+
+-Setting Up the location for login page and login data processing
+
+protected void configure(HttpSecurity httpSecurity) throws Exception {
+		
+       httpSecurity.authorizeRequests()
+	.anyRequest().authenticated()
+	.and()
+	.formLogin()
+	.loginPage("/customLogin").loginProcessingUrl("/customLoginProcessing")
+	.permitAll();
+}
+-It says All reqest must be authenticated with the login page 
+described above.
+-Create the LoginController and Set the Request Mapping
+-Set up the Log in Page with action="${pageContext.request.contextPath}" and 
+method="POST" with input type text name="username" and name="password"
+Spring will automatically authenticate it. No need to write the authentication
+login inside customLoginProcessing method neither need to create it.
+
+
+For Logout
+Add 3 more calls to method in httpSecurity
+
+.and().logout().permitAll();
+
+Add Logout Button
+<form:form action="${pathContext.request.contextPath}/logout" method="POST">
+   <input type="submit" value="Logout" />
+</form:form>
+
+Add Logout Message on Top of Login credential fields
+
+<c:if test="${param.logout != null}">
+  <p> You have been logged out </p>
+</c:if>
+
+------------------------------------------------
+CSRF Protection
+
+<form:form> automatically adds CSRF protection
+------------------------------------------------
+User Roles and Access Restrictions
+
+Displaying username and their roles.
+-Adding the spring security taglibs dependency and the jsp uri.
+
+In pom.xml
+<dependency>
+  <groupId>org.springframework.security</groupId>
+  <artifactId>spring-security-taglibs</artifactId>
+  <version>${springsecurity.version}</version>
+</dependency>
+
+Inside home.jsp
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+And to display the result use
+
+Username: <security:authentication property="principal.username"/>
+Role: <security:authentication property="principal.authorities"/>
+
+
+Restricting The Access
+-Specifying The Routes for each Role
+In the Config class
+
+httpSecurity
+  .antMatchers("/").hasRole("Employee")
+  .antMatchers("/manager").hasRole("Manager")
+  .antMatchers("/administrator").hasRole("Admin")
+  .............
+  .and()
+    .exceptionHandling()
+    .accessDeniedPage("/acess-denied")
+
+
+Create the custom acess-denied.jsp page inside the view folder.
+Inside Controller
+Add New Methods for Admin and Manager
+..
+@GetMapping("/manager")
+public String ShowManager() {
+		
+  return "manager";
+}
+	
+@GetMapping("/administrator")
+public String ShowAdmin() {
+		
+  return "admin";
+}
+	
+@GetMapping("/access-denied")
+public String ShowDenied() {
+		
+  return "access-denied";
+}
+
+Create views for them
+Inside home.jsp, show the link dynamically according to the logged in user
+
+<security.authorize access="hasRole('Manager')">
+  <h3> 
+    <a href="${pageContext.request.contextPath}/manager"> Manager Panel </a>
+  </h3>
+</security.authorize>
+
+<security.authorize access="hasRole('Admin')">
+  <h3> 
+    <a href="${pageContext.request.contextPath}/administrator"> Admin Panel </a>
+  </h3>
+</security.authorize>
+----------------------------------------------------------
+Using JDBC With Spring Security
+
+-Create the Schema from the starter files.
+-Add 2 dependecies for Mysql Connector and Connection Pool
+
+<dependency>
+  <groupId>mysql</groupId>
+  <artifactId>mysql-connector-java</artifactId>
+  <version>8.0.17</version>
+</dependency>
+		
+<dependency>
+  <groupId>com.mchange</groupId>
+  <artifactId>c3p0</artifactId>
+  <version>0.9.5.4</version>
+</dependency>
+
+
+-Copy the resource folder and paste into src -> main
+-In AppConfig.class load the properties file with,
+@PropertySource("classpath:persistence-mysql.properties")
+
+Autowire the Enviroment
+@Autowired
+private Enviroment env
+-Enviroment is the helper class that will hold the property values from
+the file.
+
+Create the DataSource and set all the connections
+..
+@Bean
+public DataSource securityDataSource() {
+		
+  ComboPooledDataSource securityDataSource = new ComboPooledDataSource();
+		
+  try {
+    securityDataSource.setDriverClass(env.getProperty("jdbc.driver"));
+  }
+  catch (Exception e) {
+    throw new RuntimeException("Error Occured " + e.toString());
+  }
+		
+  securityDataSource.setJdbcUrl(env.getProperty("jdbc.url"));
+  securityDataSource.setUser(env.getProperty("jdbc.user"));
+  securityDataSource.setPassword(env.getProperty("jdbc.password"));
+		
+  securityDataSource.setInitialPoolSize(getStringToIntProperty("connection.pool.initialPoolSize"));
+  securityDataSource.setMaxPoolSize(getStringToIntProperty("connection.pool.maxPoolSize"));
+  securityDataSource.setMinPoolSize(getStringToIntProperty("connection.pool.minPoolSize"));
+  securityDataSource.setMaxIdleTime(getStringToIntProperty("connection.pool.maxIdleTime"));
+		
+  return securityDataSource;
+}
+	
+private int getStringToIntProperty(String propName) {
+		
+  String name = env.getProperty(propName);
+  int value = Integer.parseInt(name);
+		
+  return value;
+}
+
+Use the datasource to point to the jdbc connection in the SecurityConfig.class
+..
+protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		
+  auth.jdbcAuthentication().dataSource(securityDataSource);
+}
+

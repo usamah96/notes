@@ -1,0 +1,18 @@
+- link list reverse karai this sirf aik pointer use Kara k
+us ka answer ye tha pointer aik use kren lekin ap ne ye to nai kaha k variables use nai krskte,
+ values swap kr den bus
+
+-string ko Palindrom bnana tha
+k string ko reverse kro aur sidhi string k sath append krdo
+
+-   ++i ka Linux windows Mac mai kia behaviour hoga
+
+- abstraction / encapsultation
+
+- SQL mai group by inner join ka use
+
+- Code likhwaya reverse linklist with one pointer
+
+- Private aur static func override hosaktey ?
+
+- Try block mai return 0 hai to finally block run hoga ya nhi

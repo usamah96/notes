@@ -1,0 +1,60 @@
+fyp in detail
+
+oop:
+4 pillars
+diff abstract class and interface? when interface?
+which of these are valid?
+A a=new A();
+B a=new B();
+B a=new A();
+A a=new B();  what is this called in oop?
+code to find missing number is a series?
+code to find a missing number and a replaced number
+code to map 2x^3+3x^2+5x+1 in a class and to map 2x^3+3x^2+5x+1+y
+example of 4 pillars relating to real world.
+
+
+db:
+indexes clustered non clustered
+views 
+stored procedures
+triggers
+case -> erd -> normailzation -> denormalization
+3nf 
+erd again with relations
+queries with join and aggregate
+idea about the engine that stores views?
+
+design patterns:
+proxy
+facroty
+chain of responsibility
+mediator
+
+javascript:
+regex? ^ $ * . what are these? wildcards?
+# . difference?
+$("#a").select 
+<div id='a'>
+<span id='a'>
+how pages are set? column 12.
+$("#a").first?
+$("#a").firstchild?
+
+web:
+sessions, tokens, cookies 
+web services rest and soap? 
+which protocol does http uses?
+json array and variables and xml, how does ajax works.
+content headers
+MVC how does it works? routes? controller functions?
+laravel? idea i said yes per i didn't work
+angular? yes MVVM based on MVC per i didn't work on it too 
+git? yes push pull clear
+
+cloud:
+aws ec2--> shell scripting?
+bluemix watson?
+
+iq:
+fill a airplane with tennis balls? how would you do this? area nikal kar dono ka then divide to get a number

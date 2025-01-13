@@ -1,0 +1,353 @@
+Javascript
+------------------------------------------------------
+
+Objects
+
+var person = {
+
+firstname: "Usama",
+lastname: "Abubakar",
+age: 23,
+fullname: function(){
+
+	return this.firstname + this.lastname;
+}
+
+}
+
+-------------------------------------------------------
+
+String Methods
+
+str.indexOf("Hello") - returns index at which the word first occured
+str.lastIndexOf("Hello") - returns index at which the word last occured
+str.indexOf("Hello", 2) - can take starting point of search
+str.search("Hello") - returns index at which the word first occured
+
+search cannot take 2nd arg
+indexOf cannot take regular expr
+
+str.slice(7,13) - returns string from index 7 - 12
+str.slice(-12,-6) - position counted from right
+str.substring(7,13) - returns string from index 7 - 12
+
+slice == substring
+substring cannot take -ve args
+
+str.substr(7,6) - returns string starting from index 7 and length 6
+
+slice == substr
+substr's second arg specifies the length to be extracted
+
+str.replace("Hello", "World") - replaces the first match
+replace is case sensetive
+str.replace("/HELLO/i", "World") - does the same but case insensetive
+
+str.charAt(0) - returns char at index 0
+str.charCodeAt(0) - returns ASCII value of char at index 0
+
+Cannot assign char value like this -> str[1] = 'U';
+
+str.endswith("hello") - returns true if string ends with hello
+str.includes("hello") - returns true if string contains hello
+str.repeat(2) - adds the string into string like,
+
+var str = "hello";
+str.repeat(2);
+Now str contains "hellohello";
+
+-----------------------------------------------------------------
+
+Numbers
+
+var x = "100";
+var y = "10";
+var z = x-y;
+z Now contains 90 and type will be number
+
+x is Nan if x = 10 / "Apple"
+x is 10 if x = 100 / "10"
+isNan(x) - returns true if NaN
+typeof NaN is number
+
+Infinity is a keyword
+while(x != Infinity)
+{} // Execution infinite
+
+x = 2/0 // x will contain Infinity
+typeof Infinity is also a number
+
+x.toExponential(2) - returns a string, with a number rounded and written using 
+exponential notation like if x = 9.656 then after function it will be 9.66e+0
+
+x.toFixed(2) - returns a string with specified number of decimals
+x.toPrecision(2) - returns a string total length of 2
+
+if x = 9.565
+x.toFixed(2) - returns 9.57
+x.toPrecision(2) - returns 9.6
+
+x.valuef() - returns the value of x
+
+Converting string to number with,
+Number("10");
+parseInt("10");
+parseFloat("10");
+Can use spaces like ("  10  ") or ("10 20 30") -> returns 10
+
+-----------------------------------------------------------------
+
+Arrays
+
+var arrays = ["a", "b"];
+var arrays = new Array("a", "b"); - avoid using this method
+
+Looping array with foreach
+
+fruits = ["banana", "apple", "mango"];
+fruits.forEach(arrayFunc);
+
+function arrayFunc(val){
+
+console.log(val);
+}
+
+fruits.push("lemon") - addition of element ar last
+
+Array.isArray(fruits) - returns true if variable is array
+
+fruits.join(" * ") - convrts array to string with * separater
+
+fruits.pop() - removes last element
+fruits.shif() - removes first element
+fruits.unshift("Lemon") - adds element at beginning and returns array length
+fruits.push("Lemon") - adds element at end
+delete fruits[0] - deletes the frst element
+fruits.splice(2,0,"Lemon", "Kiwi") - 2 specifies where to add elements, 0 specifies
+how many elements to remove and other args specifies elements to add.
+fruits.splice(0,1) - removes first element
+array1.concat(array2) - joins 2 array elements
+arr1.concat(arr2,arr3) - joins 3 arrays
+fruits.slice(1) - takes part of array from index 1 till last.
+fruits.slice(1,6) - takes part of array from index 1 till 5
+Math.max.apply(null, arr) - returns max number in array
+Math.min.apply(null, arr) - returns min number in array
+
+filter of array like,
+var ages = [32, 33, 14, 40, 16]
+
+function arrayFunc(){
+
+return age >= 18;
+}
+
+ages.filter(arrayFunc) - returns a new array with age >= 18 i.e: [32,33,,40];
+
+fruits.sort() - default sort is alphabateical in ascending order
+To sort in descending or in numerical order we need to give a compare function
+like,
+
+var array = [1,45,34,65,3];
+array.sort(myFunc);
+
+function myFunc(a,b)
+{
+return a-b // Sort asc
+return b-a // Sort dsc
+}
+
+Looping array with ForEach
+
+var numbers = [45, 4, 9, 16, 25];
+numbers.forEach(myFunction);
+
+function myFunction(value, index, array) {
+  console.log(value) 
+}
+
+Mapping the array into another with some operation
+
+var numbers1 = [45, 4, 9, 16, 25];
+var numbers2 = numbers1.map(myFunction);
+
+function myFunction(value, index, array) {
+  return value * 2;
+}
+
+Sum of array values using reduce method
+
+var numbers1 = [45, 4, 9, 16, 25];
+var sum = numbers1.reduce(myFunction);
+
+function myFunction(total, value) {
+  return total + value; // total will contain 45 and value will be 4 initially
+}
+
+Can also give initial value
+
+var numbers1 = [45, 4, 9, 16, 25];
+var sum = numbers1.reduce(myFunction, 100);
+
+function myFunction(total, value) {
+  return total + value; // total will be 100 and value will be 45 initially.
+}
+
+array every function returns true/false if all elements pass certain condition /
+fails condition
+
+var numbers = [45, 4, 9, 16, 25];
+var allOver18 = numbers.every(myFunction);
+
+function myFunction(value, index, array) {
+  return value > 18;
+}
+
+---------------------------------------------------------------------------
+
+Math functions
+
+Math.pi - returns 3.14159 ................
+Math.round(4.7) - returns rounded to nearst whole number
+Math.pow(2,3) - returns 8
+Math.sqrt(64) - returns 8
+Math.abs(-4.7) - returns 4.7
+Math.ceil(4.4) / Math.floor(4.7)
+Math.sin(x) / Math.cos(x) - given angle x in radians
+Math.min(0, 150, 30, 20, -8, -200) / Math.max(0, 150, 30, 20, -8, -200)
+Math.random() - returns random num from 0 inclusive to 1 exclusive
+
+-------------------------------------------------------------------------
+
+Bitwise
+
+^ XOR
+& AND
+| OR
+~ NOT
+
+------------------------------------------------------------
+
+var vs let
+
+var is a function scoped and let is block scoped (if else, while, for)
+
+variable declared with var in function scope is not available outside that function,
+but decalred in block scope will be available beyond that scope
+Use let instead of var in block scope
+
+----------------------------------------------------------
+
+call - attaching a function temporarily with an object
+var obj = {num:2};
+
+var addToThis = function(a){
+return this.num + a;
+}
+
+addToThis.call(obj, 2);
+
+apply - combining the arguements in an array
+
+var obj = {num:3};
+var addToThis = function(a, b, c){
+return this.num + a + b + c;
+}
+
+var array = [1,2,3];
+addToThis.apply(obj, array);
+
+bind - first passing the object. Will return the function and then passing the arguements
+var obj = {num:2};
+
+var addToThis = function(a){
+return this.num + a;
+}
+
+var bound = addToThis.bind(obj);
+bound(1,2,3);
+
+IIFE
+
+var counter = ( function(){
+
+var i= 0; //private variable
+
+return { get: function(){ return i; }, set(x): function(){ i=x; }, inc: function(){i++;} }
+})();
+
+console.log(counter.get());
+counter.set(2);
+counter.inc();
+console.log(counter.get());
+
+------------------------------------------------
+OOP
+
+creating object with
+1- factory function
+
+function createCircle(radius){
+
+return { radius, draw: function(){ console.log("draw"); } }
+}
+
+const circle = createCircle(2);
+circle.draw();
+
+2- constructor
+
+function Circle(radius){
+
+this.radius = radius;
+this.draw = function(){ console.log("draw"); }
+}
+
+const circle = new Circle(1);
+
+Prototypes
+
+function Book(title, value){
+
+this.title = title;
+this.value = value;
+}
+
+Book.prototype.getSummary = function(){ console.log(this.title + "  " + this.value); }
+Book.prototype.setTitle = function(value){ this.title = value; }
+
+Prototypal Inheritance
+
+// Vehicle - superclass
+function Vehicle(name) {
+  this.name = name;
+}
+// superclass method
+Vehicle.prototype.start = function() {
+  return "engine of "+this.name + " starting...";
+};
+// Car - subclass
+function Car(name) {
+  Vehicle.call(this,name); // call super constructor.
+}
+// subclass extends superclass
+Car.prototype = Object.create(Vehicle.prototype);
+// subclass method
+Car.prototype.run = function() {
+  console.log("Hello "+ this.start());
+};
+// instances of subclass
+var c1 = new Car("Fiesta");
+var c2 = new Car("Baleno");
+// accessing the subclass method which internally access superclass method
+c1.run();   // "Hello engine of Fiesta starting..."
+c2.run();   // "Hello engine of Baleno starting..."
+
+
+
+We can specify static attributes and methods
+
+function Circle(){
+
+Circle.Pi = 3.142;
+Circle.Area = function(){}
+}

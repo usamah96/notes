@@ -1,0 +1,39 @@
+Oop 4 pillars and their examples 
+-
+FAST ek organization hai iske andar oop kay pillars batao kahan kahan map hote hai
+-
+Int aut integer main kya farq hai
+-
+ asynchronous class kya hoti hai
+
+- protected class hoti hai ya nahi? Agar hoti hai tow kya karti hai?
+
+- private function, sub class call krwa sakti hai?
+
+- in a class 2 functions hai with same name but parameters ek jaga int a , float b hai, jabke dusre main float a, int b hai. Will it work?
+
+- return type change hai, but parameters and everything of 2 functions are same. Will it work?
+
+- static class kya hoti
+- seal class hoti
+- difference between static and sealed
+
+- difference between sealed and final class
+- types of exceptions
+
+- what is checked and unchecked exceptions
+
+- finally block main return statement asakti hai ya nahi?
+
+- transient variable kya hote hai
+
+- Fyp se related thay baqi questions, usme he asked me to literally write the code of machine learning algorithms.
+Like mene explain krdiye thay usse, and working samjhai with examples.
+He said no, python main sklearn library k andar jo implementation hai SVM, KNN ki unka code likho.
+
+- baqi programs likhwae thay 2
+
+- db ki 1 query
+
+- and IQ ka sawal.
+Aur bhi thay abhi yehi yaad arhay hain.

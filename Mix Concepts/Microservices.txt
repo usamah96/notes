@@ -1,0 +1,69 @@
+Microservices
+--
+
+
+
+Concept
+--
+Circuit Breaker Pattern - Microservices
+--
+Issues when communication with internal services
+
+Lets say we have an Order Service which communicates with Payment Service for payments.
+When a request comes to order service, the service will assign a separate thread from thread pool to servce this request and when the response is send out to the user,
+the thread is freed and is now available to serve another request.
+
+So when the order service makes an internal call to payment service and if payment service is down, we have 2 scenarios here
+  a) The payment service gives immediate response of Communication Failed Exception and order service returns back the error and in this way the thread is freed. But
+     the problem here is that the request can come again and again and if the request is failed for the 10th time, there is a high probablity that it will fail for the
+	 11th time as well, so it is unnecessary to check payment service for the 11th time.
+  b) The payment service gives TimeOut Exception after waiting for a while and in this way the thread is not freed as the response is not yet send out. In the meantime
+     if new requests comes, those new threads will also be waiting and in sometime our thread pool becomes exhausted and order service will no longer be available to
+	 serve new requests. In this way, all connecting services will go down as order service is no longer available.
+	 
+The solution is to use Circuit Breaker pattern in which there will be a request interceptor before going out to hit Payment Service. This interceptor will montitor
+the response from payment service. It will monitor all the successfull and failed responses. If a particular threshold is reached for a failed response, the circuit
+breaker will stop sending requests to Payment Service and returns default response to the Order Service.
+
+For a Circuit breaker there can be 3 options
+  1) Allow: The interceptor will allow sending hit to the microservice
+  2) Stop: The interceptor will send default response and will not hit the microservice.
+  3) Partial Allow: The interceptor will send a small percentage of requests to hit the microservice if the response is a successfull response. If it is successful
+     then the status will be changed to Allow as microservice is now up and running.
+	 
+The status will be changed in this manner
+  -It will be Allow in start.
+  -If a particular failed threshold is reached, change status to Stop.
+  -After a certain time delay, change status to Partial Allow.
+  -Try out the response, if successful change to Allow otherwise change back to Stop.
+  
+In spring boot, Hystrix is a project created by netflix for this circuit breaker pattern implementation.
+Other alternate is reselliance4.
+
+
+
+
+Concept
+--
+Bulkhead Pattern - Microservices
+--
+Issues when communicating with internal services
+
+Lets say we have an Order Service which interacts with 3 other microservices (Payment, Cart and Inventory)
+It depends on the url which service to hit and lets say we get the request in this order
+  -/payment
+  -/payment
+  -/cart
+  -/inventory
+  -/payment
+
+All services are fast that withing few milliseconds the request is served and thread is freed up.  
+Payment Service is a little bit slow so whenever a hit comes, a separate thread is assigned to it which serves the request.
+So threads related to payment service will be in waiting state and at some point in time the all the threads in servlet thread pool will get exhausted and no more
+incoming request will be handled by Order Service which will also impact Cart Service and Inventory Service.
+
+Here Bulkhead Pattern comes into picture in which we will assign a limited number of threads from thread pool to serve each service
+Lets say we have 9 threads in our Tomcat Servlet Thread pool so we will assign 3 threads each for Payment, Cart and Inventory Microservices, so that there are always
+available threads to serve each request.
+
+In Spring boot, Hystrix and Reselliance4 is a project created by Netflix to do this job.

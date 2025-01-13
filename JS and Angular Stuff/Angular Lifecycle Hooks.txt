@@ -1,0 +1,32 @@
+Lifecycle Hooks
+----------------------
+
+ngOnChanges
+This event executes every time when a value of an input control within the component has been 
+changed.
+
+ngOnInit
+This event initializes after Angular first displays the data-bound properties or when the 
+component has been initialized.
+
+ngDoCheck
+This event is triggered every time the change detection mechanism is triggered.
+
+ngAfterContentInit
+This lifecycle method is executed when Angular performs any content projection within the 
+component views. This method executes when all the bindings of the component need to be checked 
+for the first time.
+
+ngAfterContentChecked
+This lifecycle hook method executes every time the content of the component has been checked by 
+the change detection mechanism of Angular.
+
+ngAfterViewInit
+This lifecycle hook method executes when the component’s view has been fully initialized.
+
+ngAfterViewChecked
+This method is called after the ngAterViewInit() method. It is executed every time the view of 
+the given component has been checked by the change detection algorithm of Angular.
+
+ngOnDestroy
+This method will be executed just before Angular destroys the components. 

@@ -1,0 +1,850 @@
+Spring MVC
+---------------------------
+
+Setting Up Development Enviroment
+
+-Run Tomcat
+-Open Eclipse, Go to Window -> Preferences -> Open Preferences and 
+Select Java EE
+-Create new Dynamic Web Project
+-Go to www.luv2code.com/downloadspring and click on latest spring
+release at the bottom. Download the RELEASE.dist.zip file of it
+-Extract the zip file after downloading and copy all the JAR files from 
+libs folder and paste that into lib folder inside WEB-INF folder.
+-Copy the 2 jstl files from 'solution-code-spring-mvc-config-files' 
+starter folder inside libs folder and paste into lib folder inside
+WEB-INF folder.
+-Copy the config files (2 xml files) from 'solution-code-spring-mvc-config-files'
+starter folder and paste into WEB-INF directly
+-Create a new folder name 'view' inside WEB-INF folder directly as it
+will hold JSP view pages. View defined in spring-mvc-demo-servlet.xml
+file as a prefix.
+---------------------------
+
+Controllers and Views
+
+-Create a package inside Java Resources -> src
+-Create Java class as HomeController
+-Annotate it with @Controller. It inherits from @Component so the spring
+container will automatically look for it..
+..
+@Controller
+public class HomeController{
+  @ResourceMapping("/") // URL path to fire this method
+  public String showPage(){
+    return "main-menu";  // View JSP file name
+  }
+}
+
+Create JSP file inside view folder as -> main-menu.jsp and write
+corresponding html.
+
+
+
+
+
+Passing Data From Form and Showing in View with Built in Model
+
+@RequestMapping("/showForm")
+public String showForm(){ return "form"; }
+
+@RequestMapping("/processForm")
+public String processForm(Model  model, HttpServletRequest req){ 
+  String name = model.getParameter("personName");
+  String toUpper = name.toUpperCase();
+  model.addAttribute("UppercaseName", toUpper);
+  return "form-result"; 
+}
+
+Inside form.jsp
+<form action="processForm" method="GET">
+  <input type="text" name="personName" placeholder="Name" />
+  <input type="submit" value="Submit Name" />
+</form>
+
+Inside form-result.jsp
+<h3> Uppercase Result: ${UppercaseName} </h3>
+
+
+
+
+
+Request Mapping and Request Params
+
+-The value of form can be direclt fed into the variable without the use
+of HttpServletRequest by using Request Params
+
+<form action="processForm" method="GET">
+  <input type="text" name="personName" />
+</form>
+
+@RequestMapping("/processForm")
+public String processForm(@RequestParam("personName") studentName)
+{...}
+
+-Giving Parent Request Mapping if the mapping conflicts
+..
+@Controller
+@RequestMapping("/parent")
+public class ParentController{
+  @RequestMapping("/showForm")
+  public String showForm(){ return "form" }
+}
+
+Accessing it as <a href="parent/showForm"> Show Form Of Home1 </a>
+------------------------------------------------
+
+Form Tags and Data Binding
+
+-Creating a StudentController and 2 methods in it
+
+@Controller
+@RequestMapping("/student")
+public class StudentController{
+  @RequestMapping("/showForm")
+  public String showForm(Model model){ 
+    model.addAttribute("student", new Student())
+    return "student-form";
+  }
+}
+-Passing the Student Object into the model to be used into the view
+for setting and getting the first and last name
+
+Inside student-form.jsp
+
+-Use this line on top of jsp file so that spring form tags are activated
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
+<form:form action="processForm" modelAttribute="student">
+  First Name: <form:input path="firstName" />
+  Last Name:  <form:input path="lastName" />
+
+  <input type="submit" value="Submit Name" />
+</form:form>
+-modelAttribute will use the Student object that is passed through the
+model via StudentController.
+-The path attribute will call the getFirstName and getLastName method of 
+Student class. Notice the naming convention
+-On submitting the form, spring will call the getFirstName and getLastName
+method of Student class. Notice the naming convention. 
+
+@RequestMapping("/processForm")
+public String processForm(@ModelAttribute("student") Student theStudent){
+  sout(theStudent.getFirstName + " " + theStudent.getLastName + " is confirmed");
+  return "student-confirm";
+}
+-@ModelAttribute annotation will get the student object and assign it to
+the parameter above it.
+
+Inside student-confirm.jsp
+<h3> ${student.getFirstName()} ${student.getLastName()} is Confirmed </h3>
+-student is the same object passed into the model via StudentController.
+
+
+
+
+Creating Dropdowns
+
+-Creating a list of city as a Map in Student class including its getters
+and setters along with a city variable to hold the result.
+
+private String city;
+private Map<String, String> cityLists;
+
+public Student(){
+  cityLists = new HashMap<String, String>();
+  cityLists.add("KHI", "Karachi");
+  ....
+  ....
+  ....
+  ....
+}
+
+Inside student-form.jsp
+-After First and Last Name fields
+..
+<form:select path="city">
+  <form:options item="${student.getCountryLists()}" />
+</form:select>
+
+Inside student-confirm.jsp
+..
+-After <h3>
+<h4> ${student.city} </h4>
+
+
+
+
+
+Creating Radio Buttons
+
+-Allowing the student to select his/her favorite language
+-Creating favLanguage varaible with its getters and setters
+..
+private String favLangauge;
+
+Inside student-form.jsp
+-After rest of html
+
+Favorite Language: <br>
+Java <form:radiobutton path="favLangauge" value="Java" />
+C# <form:radiobutton path="favLangauge" value="C#" />
+PHP <form:radiobutton path="favLangauge" value="PHP" />
+
+Inside student-confirm.jsp
+-After rest of html
+
+<h4> Favorite Language: </h4> <p> ${student.getFavLanguage()} </p>
+
+
+
+
+
+Creating Checkboxes
+-Allowing student to choos multiple operating systems
+-Creating array of string and its getters and setters
+..
+private Stinrg[] os;
+
+Inside student-form.jsp
+-After rest of html
+
+Favorite Operatins System: <br>
+Linux <form:checkbox path="os" value="Linux" />
+Windows <form:checkbox path="os" value="Windows" />
+Mac OS <form:checkbox path="os" value="Mac OS" />
+
+Inside student-confirm.jsp
+-Put this line on top of jsp page to activate multiple jsp methods like 
+forEach
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+-After rest of html
+
+<ul>
+  <c:forEach var="osValue" items="${student.getOs()}"
+    <li> ${osValue} </li>
+  </c:forEach>
+</ul>
+----------------------------------------------------
+
+Form Validations
+
+1) Applying Built In Validations
+
+Download the hibernet validator from
+https://hibernate.org/validator/releases/6.0/#get-it
+
+Copy the JAR files from dist folder and from dist->lib->required folder
+and paste into the lib folder of project under WEB-INF
+
+-Creating the Customer class with 2 fields firstName and lastName
+along with its getter and setters
+
+public class Customer{
+  private firstName;
+  @NotNull(message="is required")
+  @Size(min=1, message="is required")
+  private lastName;
+}
+
+-NotNull will specify the field is not empty
+-Size will specify the minimum entered characters are 1
+
+-Creating the CustomerController
+
+@Controller
+@RequestMapping("/customer")
+public class CustomerController{
+  @RequestMapping("/showForm")
+  public class showForm(Model m){
+    m.addAttribute("customer", new Customer())
+    return "customer-form";
+  }
+  @RequestMapping("/processForm")
+  public class processForm(@Valid @ModelAttribute("customer") Customer c,
+    BindingResult br){
+    if(br.hasErrors()){ return "customer-form"; }
+    else{ return "customer-confirm"; }
+  }
+}
+
+-Valid will validate the fields in Customer object
+-BindingResult will hold the errors if any
+-There is still one problem. If user enters whitespaces in the field it will
+become valid since space is also a character.
+-To solve this we need to implement InitBinder
+
+@InitBinder
+public void initBinder(DataBinder db){
+  StringTrimmerEditor ste = new StringTrimmerEditor(true);
+  db.registerCustomEditor(String.class, ste);
+}
+
+-InitBinder will be fired every time when the web requests comes.
+-StringTrimmerEditor responsibility is to trim all whitespaces that
+are leading or trailing the string. Also to make the field nullable
+if there are only whitespaces.
+
+Inside customer-form.jsp
+
+<form:form action="processForm" modelAttribute="customer">
+  <form:input path="firstName" />
+  <form:input path="lastName" />
+  <form:errors path="lastName" cssClass="error" />
+  <input type="submit" />
+</form:form>
+
+<style> .error{ color: red; } </style>
+
+-Validations for Integers
+-Creating a field freePasses with its getters and setters
+..
+@Min(value=0, message="Should be greater than 0")
+@Max(value=10, message="Should be less than 10")
+private int freePasses
+
+Inside customer-form.jsp
+<form:input path="freePasses" />
+<form:errors path="freePasses" cssClass="error" />
+
+-To make it a required field we need to do 2 things
+ 1) Apply @NotNull annotation
+ 2) NotNull annotation is valid for strings so 'int' will probably throw
+String conversion errors. So we need to change 'int' to 'Integer' as it
+is a wrapper class for Integer.
+
+Change To,
+@NotNull
+@Min(value=0, message="Should be greater than 0")
+@Max(value=10, message="Should be less than 10")
+private Ineger freePasses
+along with its getter and setters.
+
+-There is still one problem
+-Giving input characters to the field will also break the validation
+and form will show String conversion error instead of user friendly error
+like "Invalid Input"
+-To solve this issue we need to apply custom error message for this error.
+..
+-Create a folder under src directory name "resources"
+-Create a file inside it name "messages.properties"
+-Inside this file write "typeMismatch.customer.freePasses=Invalid Number"
+The format is -> error.objectName.fieldName=ErrorMessage
+-To identify the error type, just console the BindingResult variable
+inside the controller. It will show the error format
+-Now inside spring-mvc-demo-servlet.xml file inside WEB-INF folder,
+create a bean as follows to load the messages.properties file,
+<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+  <property name="basenames" value="resources/messages" />
+</bean>
+
+
+
+
+
+2) Creating cutsom validation
+
+-Create new package
+-Inside it Create New->Annotation
+-Name it CourseCode
+..
+@Constraint(validatedBy=CourseCodeValidator.class)
+@Target({Element.Type, Element.Method})
+@Retain(RetaintionPolicy.Runtime)
+public @interface CourseCode{
+  public String value() default "UA";
+  public String message() default "Should start with UA";
+  public Class<?>[] groups() default {};
+  public Class<? extends Payload>[] payload() default{};
+}
+-Constraint contain the class where the business logic of that validator
+is held
+-Target speicifies where this annotation can be used
+-Retain specifies that this should process at runtime
+-value() and message() are the parameter we pass in annotation
+-groups() and payload() are irrelevant to this scenario
+
+-Create CourseCodeValidator class
+..
+public class CourseCodeValidator implements ConstraintValidator<CourseCode,String>{
+  private String code;
+
+  public void initialize(CourseCode theCourseCode){
+    this.code = theCourseCode.value();
+  }
+  public boolean isValid(String val, ConstraintValidatorContext c){
+    if(val != null){ return val.startsWith(code) }
+    else{ return true; }
+  }
+}
+-Spring will call the isValid method
+-returning true in the else because it is not the required field
+
+-Using it same as using other annotations
+-Making courseCode field, annotating it with @CourseCode. Not providing
+arguements value and message will allow it to use the default value set.
+-Creating getters and setters and using in the form:input and form:error
+-----------------------------------------------------------
+
+Hibernate
+
+-A framework for saving the Java objects into the database
+-Performs all low level sql to query the database
+-Perfroms Object Relational Mapping (ORM)
+-Prevents us writing all JDBC code
+
+Hibernate and JDBC
+-Hibernate is just another layer of abstraction on top of JDBC
+-Behind the scene Hiberante makes use of JDBC, make database connection
+and query according to the requirements.
+
+
+
+
+Setting Up Enviroment
+-Installing Mysql WorkBench
+-Go to https://dev.mysql.com/downloads/file/?id=486088 and download
+mysql installer
+-Install it and open the workbench
+
+-Create new Project with Java perspective
+-Downlaod the Hibernate ORM Jar files from, 
+https://hibernate.org/orm/releases/5.4/
+-Download the JDBC drivers from,
+https://dev.mysql.com/downloads/file/?id=485766
+-Create new lib folder in Java project
+-Copy JAR files from required folder inside Hibernate ORM JAR files and
+JAR file from mysql-connector for java and paste into lib
+-Go to project properties->build_path->libraries->add_jar_files
+
+-Database, user and password is to be created
+-From the "hibernate-sql-scripts-and-starter-files" folder inside sql_scripts
+folder there are 2 files. Run those 2 files. It will create new user and
+the database. Create new User from the File tab inside the workbench.
+
+-Copy the hibernate.cfg file from 'hibernate-sql-scripts-and-starter-files'
+folder from inside starter_files into the src directory of project
+Hibernate.cfg file description
+-Database connection settings
+-Pool Size (discuss later)
+-Sql Dialect: Hibernate need transalter for its sql dialect to run queries
+-Show sql: True means it will show sql queries that are run BTS of hiberante
+-It also make use of threads.
+
+Testing the JDBC connection
+-Create a simple class inside any package in src directory
+..
+public class TestJDBC{
+  static void main(){
+    String jdbc_url="jdbc:mysql://localhost:3306/hb_student_tracker?useSSL=false";
+    String user="hbstudent";
+    String pass="hbstudent";
+    try{ 
+       Connection conn = DriverManager.getConnection(jdbc_url, user, pass);
+       sout("Connection Successfull");
+    }
+    catch(Exception e){ sout("Connection Failed"); }
+  }
+}
+
+
+Annotating the class with JPA annotations
+-Create new package as uahibernate.entity
+-Create new Java Class
+..
+@Entity
+@Table(name="student")
+public class Student{
+
+  @Id
+  @Column(name="id")
+  private int id;
+  
+  @Column(name="f_name")
+  private String firstName;
+  
+  @Column(name="l_name")
+  private String lastName;
+  
+  @Column(name="email")
+  private String email;
+}
+-Create no arguement and field constructors
+-Create getter and setters.
+
+-An Entity is which is mapped to the table of database
+-@Id specifies the primary key
+
+Two key players to know about before going into JDBC
+-Session Factory: 
+  .Returns the session object.
+  .Reads the hibernate.config file
+  .Connects through jdbc credentials and url
+  .Created once in the application
+-Session
+  .Returned by session factory
+  .Wraps the JDBC connection
+  .Used to save/retrieve the objects
+
+
+Creating and Saving the object
+-Create new package
+-Create new class
+..
+public class HibernateDemo{
+  static void main(){
+    SessionFactory sf = new Configuration().configure("hibernate.cfg.xml")
+                       .addAnnotatedClass(Student.class).buildSessionFactory();
+    Factory f = f.getCurrentSession();
+
+    try{
+      session.beginTransaction();
+      Student s = new Student("Usama", "Abubakar", "usama@gmail.com");
+      session.save(s);
+      session.getTransaction().commit();
+      sout("Student Added");
+    }
+    catch(){ sout("Error"); }
+  }
+}
+-It is not neccessary to give arguement to configure() method because
+it will look for hibernate.cfg.xml file in the src directory by default;
+We can give the name as arguement if the file name is changed.
+
+
+Retrieving the Student Object
+-To access the object primary key id, we need to add another JPA annotation
+to the field
+
+@Id
+@GeneratedValue(strategy=GenerationType.IDENTITY)
+@Column(name="id")
+private int id;
+
+In the previous main class after sout("Student Added")
+..
+int student_id = student.getId();
+sout("Added Student Id: " + student_id);
+session = factory.getCurrentSession();
+session.beginTransaction();
+Student theStudent = session.get(Student.class, student_id);
+sout("Retrieved Student: " + student);
+
+Retrieving Student
+session.beginTransaction();
+List<Student> s = session.createQuery("From Student").getResultQuery();
+s.forEach(n -> sout(s.getFullName()));
+session.getTransaction().commit();
+
+Updating Student
+session.beginTransaction();
+session.createQuery("Update Student Set email='updated@gmail.com'").executeUpdate();\
+session.getTransaction().commit()
+OR
+int student_id = 1;
+Student s = session.get(Student.class, student_id);
+s.setFirstName(s.getFirstName() + " Updated");
+session.getTransaction().commit();
+
+Deleting Student
+int student_id = 1;
+Student s = session.get(Student.class, student_id);
+session.delete(s);
+OR
+session.createQuery("Delete From Student Where id=2").executeUpdate();
+-----------------------------------------
+
+Mappings
+
+1) One To One
+a) (Uni Directional)
+
+Instructor -> Instructor Details
+-Copy the sql file from 'hibernate-mapping-database-scripts' one-to-one
+folder and create the schema
+
+@Entity
+@Table(name="instructor_detail")
+public class InstructorDetails{
+  @Id
+  @Column(name="id")
+  @GeneratedValue(strategy=GenerationType.IDENTITY)
+  private int id;
+
+  @Column(name="youtube_channel")
+  private String youtube_channel;
+  
+  @Column(name="hobby")
+  private String hobby;
+}
+-Also create getters and setters
+-Create no-arg and arguement constructor
+
+@Entity
+@Table(name="Instructor")
+public class Instructor{
+  @Id
+  @Column(name="id")
+  @GeneratedValue(strategy=GenerationType.IDENTITY)
+  private int id;
+
+  @Column(name="first_name")
+  private String first_name;
+
+  @column(name="last_name")
+  private String last_name;
+
+  @Coulmn(name="email")
+  private String email;
+
+  @OneToOne(cascade=CascadeType.ALL)
+  @JoinColumn(name="instructor_detail")
+  private InstructorDetail iDetails
+}
+-@Join will link this table to the instructor table
+-@CascadeType.All will enable this functionality
+  1)Record will be added to both the tables
+  2)If record is deleted from instructor table, the corresponding record
+will also be deleted from instructor_details table.
+
+In the main class
+..
+SessionFactory sf = new Configuration().configure("hibernate.cfg.xml")
+                       .addAnnotatedClass(Instructor.class)
+                       .addAnnotatedClass(InstructorDetails.class)
+                       .buildSessionFactory();
+    Factory f = f.getCurrentSession();
+
+    try{
+      Instructor i = new Instructor("Usama", "Abubakar", "email");
+      InstructorDetail insD = new InstructorDetail("usa", "football");
+      
+      session.beginTransaction();
+      i.setIDetails(insD);
+      session.save(i);
+      session.getTransaction().commit();
+    }
+    catch(){ sout("Error"); }
+    finally(){ session.close(); }
+
+Similarly for delete
+int student_id = 1;
+session.beginTransaction();
+Instructor i = session.get(Instructor.class, student_id);
+session.delete(i);
+session.getTransaction().commit();
+
+b)Bi-Directional
+-Fetching the Instructor with InstructorDetail id.
+..
+Modifying InstructorDetail class
+-Add new field in the class 
+
+@OneToOne(mappedBy = "iDetails", cascade = CascadeType.ALL)
+private Instructor instructor
+-Add getters and setters
+
+-mappedBy takes the property name of InstructorDetail defined in the
+Instructor Class to make relation of id.
+
+In the main application
+..
+int id = 5;
+session.beginTransaction();
+InstructorDetail insDet = session.get(InstructorDetail.class, id);
+sout(insDet.getId());
+Instructor instructor = insDet.getInstructor();
+sout(instructor.getFirstName());
+session.getTransaction().commit(); 
+
+Delete operation remains the same as previous one
+-However upon removing the InstructorDetail record and keeping the
+Instructor record, few changes are to be made
+-Modify the Instructor property and instead of CascadeType.All we have
+to not include CascadeType.Remove (this includes in CascadeType.All);
+
+@OneToOne(mappedBy="iDetails", cascade={CascadeType.Fetch, 
+CascadeType.Delete, ......})
+private Instructor instructor;
+
+In the main class,
+session.beginTransaction();
+InstructorDetail insDet = session.get(InstructorDetail.class, id);
+insDet.getInstructor().setInstructorDetail(null);
+session.delete(insDet);
+session.getTransaction().commit();
+
+-Setting the InstructorDetail to null in the Instructor Class 
+because it has now been deleted.
+
+
+
+2)One To Many
+a)Bi Directional
+
+-Copy the sql file from "hibernate-mapping-database-scripts" one to many
+folder and run script
+Instructor teach many courses -> Many courses taught by one instructor
+
+Same Instructor and Instructor Detail class
+-Create new class course
+..
+@Entity
+@Table(name="course")
+public class Course{
+  @Id
+  @GeneratedValue(strategy=GenerationType.All)
+  @Column(name="id")
+  private int id;
+
+  @Column(name="title")
+  private String title;
+
+  @ManyToOne(cascade={...})
+  @JoinColumn(name="instructor_id")
+  private Instructor instructor;
+}
+-Create getters, setters, no-arg and arguement ctors
+
+Update Instructor Class as
+..
+Add new property
+@OneToMany(cascade={...}, mappedBy="instructor")
+private List<Course> courses;
+
+Add new methods
+public void add(Course c){
+  if (courses == null){ courses = new ArrayList<Course>(); }
+  courses.add(c);
+}
+-Create getters and setters for courses
+
+In the main app
+..
+Course course1 = new Course("ITC");
+Course course2 = new Course("CP");
+Course course3 = new Course("DS");
+			
+instructor.add(course1);
+instructor.add(course2);
+instructor.add(course3);
+			
+session.save(course1);
+session.save(course2);
+session.save(course3);
+
+
+b)Uni Directional (Not best practice to do oneTomany uni directional)
+
+-A course has many reviews
+..
+Update Course class as
+
+@OneToMany(cascade = CascadeType.All)
+@JoinColumn(name = "course_id")
+private List<Review> reviews;
+-Create getters and setters and add(Review review) method
+-Assigning cascade type to All as we want to delete the reviews also when
+the particular course is deleted.
+
+@Entity
+@Table(name = "review")
+public class Review{
+  @Id
+  @Gen...
+  @Col...
+  private int id;
+
+  Col...
+  private String title;
+}
+
+In main class
+..
+Course course = session.get(Course.class, 14);
+			
+Review rev1 = new Review("Good");
+Review rev2 = new Review("Bad");
+Review rev3 = new Review("Excellent");
+			
+course.add(rev1);
+course.add(rev2);
+course.add(rev3);
+			
+session.save(course);
+
+
+
+3) Many To Many
+Students has many courses -> courses owned by many student
+-A bridge table "course_student" will be made
+
+public class Student{
+        @Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private int id;
+	
+	@Column(name = "first_name")
+	private String first_name;
+	
+        @Column(name = "last_name")
+	private String last_name;
+    
+        @Column(name = "email")
+	private String email;
+    
+        @ManyToMany(cascade = {....})
+	@JoinTable(
+		   name = "course_student", 
+	           joinColumns = @JoinColumn(name = "student_id"), 
+	           inverseJoinColumns = @JoinColumn(name = "course_id"))
+	private List<Course> courses;
+}
+
+-Create getters, setters, no-arg ctor, arg ctor and addCourse method
+Similarly inside Course class
+Update
+
+@ManyToMany(cascade = {...})
+@JoinTable(
+	   name = "course_student", 
+	   joinColumns = @JoinColumn(name = "course_id"), 
+	   inverseJoinColumns = @JoinColumn(name = "student_id")
+           )
+private List<Student> students;
+
+-Perform addStudent method
+
+2 ways of performing in the main class
+
+1)
+Student student = new Student("Random", "Student", "r_st@gmail.com");
+			
+Course c1 = new Course("ITC");
+Course c2 = new Course("CP");
+			
+session.save(student);
+			
+student.addCourse(c1);
+student.addCourse(c2);
+			
+session.save(c1);
+session.save(c2);
+
+2)
+Course c1 = session.get(Course.class, 10);
+			
+Student s1 = new Student("Student", "One", "s1@gmail.com");
+Student s2 = new Student("Student", "Two", "s2@gmail.com");
+Student s3 = new Student("Student", "Three", "s3@gmail.com");
+			
+c1.addStudent(s1);
+c1.addStudent(s2);
+c1.addStudent(s3);
+			
+session.save(s1);
+session.save(s2);
+session.save(s3);
+---------------------------------------------------------

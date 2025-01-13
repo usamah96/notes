@@ -1,0 +1,85 @@
+
+
+Given a circular doubly linked list write the following functions:
+AddHead(int val)
+RemoveHead()
+RemoveTail()
+Node* Find(int val)
+AddBefore(Node *N, int val)
+AddAfter(Node *N, int val)
+
+What is a Hash Function? What are the properties of a good Hash Function
+
+Is MD5 irreversible?
+
+binary trees (traverse, ascending logic)
+
+sorting algos (most efficiennt)
+
+searching algos 
+
+traverse a linked list with odd number of node only once and tell the value of middle element
+
+array mai se odd integers nikal ke doosray array mai copy krnay ka code its complexity in the case of sorted or unsorted
+
+trees kitnay types ke parhay hai?
+
+data structures kitnay types ke parhay hai
+
+linked list kia hti hy?
+
+stack ko linked list s implement karo.
+
+hash map kia hty hy?
+
+complexity btao hash map ki?
+
+search in a link list ki complexity kia hti hy?
+
+queue, real life example + kahi use ki ho to
+
+hashing dictionary uses
+
+"Quick Sort" Likhdain 
+
+Big O kiya hota hai ? 
+
+Array vs linked list difference
+
+How to find 15 value element in array and linked list ? (Dono ki big O)  (In linked list O(n) worst case, In array O(1) ) 
+
+What is O(1) ( if constant than what is constant)
+
+Ek array hai unsorted  humain us mein 10 value find karne hai big o kiya hoga 
+uska ?
+
+
+Agar array sorted hai to kaise find karo ge efficinetly wo given value ? 
+(Mein nai Binary Search ka batya) (Uska big O phucha)
+
+What is data Structure?
+
+0-N ka loop hai
+Usko 4 threads me break kra
+Ab kia complexity hogi
+
+How do you find equilibrium index in an array i.e. the index where sum of its previous and remaining elements is same
+
+What is Heap vs stack memory allocation, disadvantage and advantages of both
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

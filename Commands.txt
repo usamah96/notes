@@ -1,0 +1,26 @@
+php artisan make:migration create_articles --create=articles
+
+Use Illuminate\Support\Facades\Schema and write Schema::defaultStringLength(150)
+to prevent error of string length
+
+php artisan migrate
+
+php artisan make:model Article (should be singular respective to table name)
+
+php artisan make:controller ArticleController --resource
+
+php artisan make:resource Article (to define the format of data to be returned
+in a collection)
+
+define routes in routes/api
+
+---------------
+do this in appserviceproviders
+
+use Illuminate\Http\Resources\Json\Resource
+
+in run function
+Resource::withoutWrapping()
+
+to avoid wrap the json with 'data' object
+---------------

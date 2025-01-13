@@ -1,0 +1,240 @@
+DP Final
+-----------------------------------
+
+Purpose Of Refactoring
+-Improves the design software
+-Easy to understand
+-To find bugs
+-To program faster
+
+When?
+-When add function
+-When code reviewing
+-When fixing a bug
+
+Properties
+-Prserve correctness
+-One step at a time
+-Frequent testing
+
+Refactoring Examples
+-Add Parameter
+
+-Change association (bi-directional to uni-directional and vice versa. Person Dog in 
+uni to bi)
+
+-Reference to value (You have object thats too small and infrequently changes)
+  .Remove setters and other methods. Only place where value can be changed is ctor
+
+-Value to Refernce (A class that have many equal instances that should be replaced
+with single object)
+
+-Collapse Hierarchy (Super class and sub class not very different)
+  .Form a single class for both
+
+-Consolidated Conditional Expression (Sequence of tests with same result)
+  .Combine to a single check
+
+-Consolidated Duplicate Conditional Fragments (Same code in all branches)
+  .Make it outside of expression
+
+-Decompose Conditional (complicated if-else check)
+  .Extract method from the condition
+
+-Encapsulate Collection (method returning a collection)
+  .Make it readonly to not accidently overwriting the value when calling getter function
+
+-Encapsulate Downcast (method returninf object that is downcasted by the caller)
+  .Make downcast within the callee method.
+
+-Encapsulate Field (public fields)
+  .Make it private and provide getters and setters
+
+-Extract Class (One class doing 2 work)
+  .Make new class. Follow SRP
+
+-Extract Interface (Multiple clients using same part of class)
+  .Make that part as interface and prevent the secret method of that class.
+
+-Extract Method (Code that is grouped together)
+  .Move code to a separate new method
+
+-Extract Subclass (Class has features that is used in certain cases)
+
+-Extract Superclass (Class that share properties and methods)
+  .Create a new superclass for this.
+
+-Extract variable (expression that is hard to understand)
+  .Extract part of expression in different variables.
+
+-Form template Method (2 methods in sub classes perform similar steps but execution is
+different)
+  .Get the steps into methods
+
+-Hide Delegate (Client gets object B from method of object A and client uses object B)
+  .Create method in A that delegates call to object B. Client should not know about B
+  .inverse of removing a middle man
+
+-Hide Method (Method not used by any other class)
+  .Make it private
+
+-Inline Class (Class is not doing much)
+  .Move all its features to other class and delete it.
+  .inverse of extract class and interface
+
+-Inline Method (method body is clear. Not doing much)
+  .Move the body into the caller and delete the method
+  .inverse of extract method
+
+
+
+Bad Smells in Code
+
+-Duplicate Code
+  .Perform Extract Method
+
+-Long Method
+  .Perform Extract Method
+
+-Large Class
+  .Perform Extract Class or Subclass
+
+-Long Parameter List
+
+-Shotgun Surgery (single change will affect all other classes)
+  .Perform Inline Class or Move method
+
+-Feature Envy (method interested in other class rather than the class it is in)
+  .Perform Move method
+
+-Switch Statements (scattered throughout a program. Adding or removing will have to 
+repair others too)
+  .Perform Extract or Move method
+
+-Inline Temp (having a temp variable thats assigned a value of computation)
+  .remove a variable with the expression itself
+
+-Remplace Temp with query (storing expression in local variable and using later for
+comparing and other stuff)
+  .move the expression in a separate method and query the method instead of using variable
+
+-Split temp variable (variable assigned the value more than once and it is not in the
+loop)
+  .making new variable for every assignment.
+
+-Remove assignments to parameters (new value assigned to a parameter inside a method)
+  .use a new local variable
+
+-Data Classes (class containing only public fields and getters and setters. Everyone 
+but the data class itself uses its data. Results in high coupling)
+  .Move the methods inside the data class that uses its properties
+
+-Lazy Class (Class not doing enough work)
+  .Perform Inline class or Collapse Hierarchy
+
+-Parallel Inheritance Hierarchies (whenever you creae a sub class of a class, you
+will find in need of creating  a sub class of another class)
+  .move method and move field
+
+-Speculative Generality (There are unused class, methods, parameters etc. Code that
+is created just in case for future use and never gets implemented.)
+  .Unused abstract classes -> collapse hierarchy
+  .Unnecessary delegation of another class -> inline class
+  .Unused methods -> inline methds
+  .Unused parameters / fields -> delete them
+
+-Message chains (a->b()->c()->d())
+  .To delete chains use hide delegate
+  .It would be better to think to extract that method and place it at the beginning of
+of the chain using Move method
+
+-Temporary Fields (fields used in certain circumstances. Else they are empty. They are
+created to be used in an algorithm. Instead of passing large amount of parameters,
+programmer create temp fileds that are used only in that algorithm)
+  .Temp fields and all code operating on them are to be put in Extract Class
+
+-Remove Middle Man (If a class perform only one action that is to delegte the method
+class, why it even exits)
+  .Remove the Middle Man if most of the methods only delegates the call
+  .Dont remove if it was created for purpose like to remove inter class dependencies
+
+-Inappropriate Intimacy (Class uses internal fields and methods of another class. 
+Good class should know little about each other)
+  .Simplest solution is to move method and move field.
+
+-Incomplete Library Class (library stops meeting the user need. Cannot also change as
+libraries are readonly)
+  .Introduce a few methods to a library class, use introduce foriegn method
+  .for big changes, use introduce local extension
+
+-Introduce Foriegn Method (Utility class dont contain a method you want and you can not
+add a method to that class)
+  .Add method to client class and pass object of utiliy class as an assignment
+
+-Introduce Local Extension (Utility class dont contain some methds you want and you can not
+add a method to that class)
+  .Create a new class with some methods and make that class sub class or wrapper class
+of that utility class
+
+-Refused Bequest (When a sublcass refused to use the behaviour of parent class. Someone
+just want to extend the behavior so he inherited the parent class although bth classes
+are completely different.)
+  .Replace inheritance with Delegation (composition)
+
+-Divergent Change (When many changes are made to a single class when adding any new
+functionality to a system)
+  .Split up the behavior via Extract Class
+
+-Data clump (group of variables that are passed around different parts of a program for 
+example parameters for connecting to a database)
+  .clumps should be turn into their own classes
+  .use Introduce Parameter Object if clumps are passed as parameters.
+  .pass the entire object rather than individual fields with Preserve Whole Object
+
+-Introduce Parameter Object (methods containing same repeated parameters)
+  .Replace with objects
+
+-Preserve Whole Object (passing individual value from fields of object)
+  .Pass the whole object instead.
+
+-Primitive Obsession (Use of primitives instead of value type. For currency we put in
+float or double instead of encapsulating it in value type. Use of constants)
+  .group the primitive type into a class object by Replace Data Value With Object
+
+---------------------------------------------------------
+
+Memento Pattern
+-Want to save the state of an object without violating the encapsulation
+-Used to restore state of an object to previous state
+-If you want to save checkpoints as your app grows
+
+Originator: Calls the memento
+Caretaker: Holds list of Memento 
+Memento: maintain state of originator
+
+Benefits of Refactoring
+-Useful when it has any of the shortcomings
+.Program hard to read and understand
+.Program having duplicate logics
+.Program hard to modify
+.Program with complex logics
+
+
+Refactoring Risks
+-Can introduce a failure with lots of consequences
+-Catching a bug is very severe when it is done with a system already in production
+
+
+Cost Of Refactoring
+-Enviroment
+  .How well the operations on the source code are supported
+-Testing
+  .Relies heavily on each small step done when refactoring
+-Documentation
+  .Addition of more classes, interfaces, methods, features etc 
+  .Document to be updated every now and then to the current state
+
+
+When to put off refacttoring
+-Neither the code is able to compile nor run in a stable manner
+-When the deadline is near.

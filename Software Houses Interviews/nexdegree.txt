@@ -1,0 +1,14 @@
+NExdegree 2nd interview with CEO
+1) What is MVC?
+2) What is big O notation?
+3) some questions related to probability and Stats.
+4) How will you optimize a web if you see the web become slow or at certain level, it freezes due to increase of users?
+5) Some discussion about OCR, 
+6) What is the main thing that differs human brains to computer to recognize text?
+7) Do you have some ideas related to google glass?
+8) Suppose we have asked you to make a face recognition software, what values or parameters will you choose to recognize face.?
+9) Do you know any mobile ERP platforms?
+10) what is Agile?
+11) it is a myth that people working on Microsoft technologies and development tools becomes lazy, is it true?
+12) Google new captcha system.
+13) chess game, search in chess game to find goal state. on what basis you will give hint to user ?

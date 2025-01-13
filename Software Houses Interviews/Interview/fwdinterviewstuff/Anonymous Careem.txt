@@ -1,0 +1,16 @@
+4 Hours interview at Careem,
+In total 4 interviews,
+Asked basic oop concept, pilars wagera,
+Some algorithms like palindrome,
+Javascript concepts ( bht core me chala gaya tha banda :p, shyd yehi interview bekar gaya)
+Angular js concepts
+Nosql concepts
+Design patterns khud hi bataraha tha sath sath so explicitly kuch nahi puche,
+Design Pattern include:
+Singleton
+Module
+Observer
+Facade.etc
+OS k questions puche ghuma phira k,
+And approx 2 hours discussion on my startup which is Careem for deliveries and FYP,
+Interview started at 3 15 PM, finished at 7 10PM.

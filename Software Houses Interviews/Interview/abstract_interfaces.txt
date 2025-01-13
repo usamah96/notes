@@ -1,0 +1,15 @@
+Abstract Class
+
+a class which cannot be instantiated. exists purely for the reason of
+ being inherited. contains methods, variables. 
+
+a class that can be instantiated 
+is called a concrete class.
+
+
+Interfaces:
+only define method names. no implementation. 
+classes sign a contract and decide to implement the interfaces. they must implement 
+all the methods of that interfacee. the use is that multiple classes can implement the 
+same interface and if u know nothing about the objects u can check if that 
+particular object implements that interface it has some specific function implemented.

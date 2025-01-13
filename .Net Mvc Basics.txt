@@ -1,0 +1,320 @@
+-------------------------------------
+mvcaction4 tab
+ctrl + mm (collapse)
+ctrl + tab
+prop tab
+-------------------------------------
+
+ActionResult: Output for action
+public ActionResult index() { return View(); }
+Using ActionResult so that we can return any of its sub-types like,
+View, PartialView, Content, Redirect, RedirectToAction, Json, HttpNotFound, File
+
+Action Parameter: Input for action
+
+Attribute Routing
+In Route.config activate it by Map.MapmvcAttributeRouting()
+In Controller class
+[Route("movies/release/{year}/{month}")]
+public ActionResult ByReleaseDate(int year, int month) {}
+
+We can also add regular expression and constraint to a parameter by
+[Route("movies/release/{year}/{month:regex(\\d{2}):range(1,12)}")]
+* \\d{2} means 2 digit and range(1,12) means from 01 to 12.
+Other constraints are minLength, maxLength etc ....
+
+Passing Data with
+ViewData["Movie"]
+ViewBag.Movie
+Bad Approach because of magic string.
+Use return View(movie)
+
+View Model: Passing 2 different Model to View
+
+Partial View
+To Create it use '_' as prefix like _NavBar
+Extract nav bar code and place it in partial view file
+use @Html.Parial('_NavBar') where to place it
+
+-----------------------------------------------
+
+Entity Framework: Tool to acess a database
+Object Relational Mapper (ORM): Helps to open connection, executing connection,
+reading data and closing connection automatically
+EF provides DbContext which is a gateway to the database. It contains one or more
+DbSet which represents tables in database
+
+Using migrations
+
+enable-migration (when using for first time. It will create Migration folder)
+
+add-migration InitialModel (Asp.Net will look into ApplicationDbContext in IdentityModel
+class and create tables which are being referenced. It will initially create tables 
+like AspRoles, AspUsers etc as they are referenced in IdentityDbContext)
+
+Create a Model Like Customer with int id and String name and to create its table go to
+IdentityModel.cs in Models folder and in ApplicationDbContext function create a
+property like,
+DbSet<Customer> Customer { get; set; };
+run the migration as 'add-migration AddingCustomerTable'
+
+update-database (To add tables into database from migrtaions)
+
+Referencing Database with foriegn keys like
+public class MembershipType { public int id, public String name }
+public class Customer 
+{ public int id, public MembershipType MembershipType, public int MembershipTypeId }
+Naming convention matters.
+
+Inserting data into database
+Create migration and inside Up() method write query as
+Sql("Insert Into MembershipType (id, name) Values (1, 'Usama')");
+
+Adding constraints
+public class Customer {
+
+public int id
+[StringLength(255)]
+[Required]
+[Display(Name = "Your Name")] // To Display Label in Form
+public String name
+
+}
+
+Querying Objects
+In Controller use,
+ApplicationDbContext _context;
+Initialize it in ctor and dispose it by _context.Dispose() in Dispose override method
+Use this to access tables using linq,
+var customer = _context.Customers.ToList()
+return View(customer);
+
+Using the reference objects
+_context.Customers.Include(c => c.MembershipType).ToList()
+using System.Data.Entity
+
+-----------------------------------------------------------
+Forms
+
+Create a Action 'New' in Customer Controller and simple return View();
+then in View,
+
+@Html.BeginForm("Create", "Customer") // 1st param: Action, 2nd param: Controller
+It begins form as <form> and returns disposable object
+To close this form as </form> we need to dispose this object and we can do this by
+wrapping in using statement as,
+@using( @Html.BeginForm("Action", "Controller") )
+{
+}
+
+<div class="form-group">
+@Html.LabelFor(m => m.Name)
+@Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+</div>
+
+Dropdown Lists
+@Html.DropDownListFor(m => m.customer.MembershipTypeId, new SelectList(Model.membershipType, "Id", "Name"), "Select Type", new { @class = "nothing" })
+
+Using View Model with customer and membershipType as objects
+var mt = _context.MembershipType.ToList();
+var viewModel = new CustomerModel { membershipType = mt, customer = new Custmer() };
+
+1st Param: where to add data
+2nd Param: Select List (1st param: where to fetch data, 2nd param: what to select, 
+3rd param: what to display)
+3rd param: "initial value"
+4th param: other attributes like class etc.
+
+Checking if all field successfully match the validation
+public ActionResult New(Customer c)
+if(!ModelState.Valid)
+{
+// Return with entered Data
+var viewModel = new CustomerModel{ customer = c, mt = _context.MembershipType.ToList() }
+return View(viewModel);
+}
+
+Form Validation 3 steps
+1- Add Data annotation in Model Class like, 
+[Required] [StringLength] [Compare("Other Property")] [Range(1,100)] [Phone] [Email] etc
+2- Add if(!ModelState.Valid){  } check
+3- Add Error msg placeholder in view like,
+@Html.ValidationMessageFor(m => m.customer.name);
+
+Custom Validation Steps (Like Customer should be 18 years of age)
+1- Add New Class. Say 'Min18YearsOfAge'
+2- Derive this class from ValidationAttribute
+3- override the 'isValid' method
+4- Cast the Customer object like var customer = (Customer) validationContext.ObjectInstance
+5- Apply Validations by acessing values from Customer Class like,
+customer.MembershipTypeId or customer.Birthdate etc
+6- Apply data annotation to Birthdate property in Customer class like [Min18YearsOfAge]
+
+Type of validation messages that can be returned from isValid method
+1- return ValidationResult.Success
+2- return new ValidationResult("Some Error Message")
+
+For Client Side Validation
+Enable jquery validation plugin provided by .net mvc
+To enable go to the View page and type ' @section scripts{ @Section.Render("~/bundles/jqueryval") } '
+-jquery valiadtion plugin also works and understand data annotaion applied to model class
+-data annotation additionally adds attributes to form fields for validation purpose
+-jquery validation looks into those attributes to perform validation
+-jquery val plugin only works with standard .net mvc data annotation
+-for custom validation, leave this for server side validation
+-custom validation can also be checked at client side by writing some jquery code explicitly
+
+Anti Forgery Token
+-Protects from CSRF
+Use @Html.AntiForgeryToken() helper method to generate hidden field with encrypted
+token
+-This token is stored in user browser's cookie also
+-If hacker steals the cookie he dont have access to hidden fields so no need to worry
+0n server side decorate the method with [ValidateAntiForgeryToken] to verify the valid
+request from user.
+
+Bootstrap dialog box plugin Bootbox
+install-package bootbox -version:4.0.3
+Add into bootstrap bundle (bootbox.js)
+Use like,
+bootbox.confirm("Are You Sure?", function(result){ if(result) { // Perform operation } });
+
+Jquery Optimization
+
+<table id="customers"> 
+@foreach(var customer in Model) {
+<button data-val="@customer.id" class="js-delete"> Del 
+</button>
+}
+
+With this implementation if we have 100 of customers in our database, for every customer
+there will be a click event handler and that will consume memory.
+<script> 
+$(document).ready(function(){ 
+
+$("#customer .js-delete").on("click", function(){ var id = $(this).attr("data-val"); }) 
+
+})  
+</script>
+
+Convert it to,
+<script> 
+$(document).ready(function(){ 
+
+$("#customer").on("click", ".js-delete", function(){ var id = $(this).attr("data-val"); }) 
+
+})  
+</script>
+This will only have one handler with the filter method applied as ".js-delete". As we have
+only one table with id="customer" that is why only one handler will be created with 
+$("#customer")!
+----------------------------------------------------------------------
+
+Authentication and Authorization
+
+All Register and Login functionality work under Asp.Net Identity
+
+[Authorize] attribute first checks if a user is logged in like,
+
+This will first check if user is logged in and then grant access to index method's view
+[Authorize]
+public ActionResult Index() { return View(); }
+
+To apply authorise to all the actions, simple put [Authorize] before the class like
+[Authorize]
+public class Customer {}
+
+To apply authorize globally so that no page or action is acessed until and unless a user
+is logged in, go to Filter.config and put
+filter.Add(new AuthorizeAttribute());
+This will also restrict from acessing the home page. So if you want to display the home
+page only then go to HomeController and before class apply,
+[AllowAnonymus]
+
+Addition Of Role
+Add this code under the check
+
+if(result.Succeeded) {
+var roleStore = new RoleStore<IdentityRole>(new ApplicationDbContext());
+var roleManager = new RoleManager<IdentityRole>(roleStore);
+await roleManager.CreateAsync(new IdentityRole("CanManageMovies"));
+await UserManager.AddToRoleAsync(user.Id, "CanManageMovies");      
+}
+To Show different functionalities according to the role let suppose for Movies Admin can
+delete and add new movies while users can only see the list of movies
+Duplicate the admin movie view and remove the functionalities you dont want to show
+In MoviesController in index method provide the logic as,
+if(User.isInRole("CanManageMovies")) { return View("AdminView") }
+else { return View("ReadOnlyView") }
+
+The User still can go to add movies page through explicitly typing in the url and delete
+a movie by postman plugin. To restrcit from this we need to decorate the New() method with
+[Authorize(Role = "CanManageMovies")] and similarly to other confidential methods.
+
+To Add more fields to register form
+add the field in IdentityModel.cs with data annotations and to get the value, add this
+field into ViewModel the Accounts controller is using. Finally add the field into view
+and implement in migration to create the field.
+---------------------------------------------------------------
+
+Performance Optimization
+
+Most web app runs on 3-tier architecture
+a tier is where the code runs
+
+Client tier - Browser
+Application tier - IIS
+Data tier - Sql server
+
+Optimization gain is more from top to bottom which means optimizing data tier will
+gain the most
+
+Use glimpse tool to keep an eye on how much time page takes to load, how many queries
+run on database t fetch data, how much tome queries took to execute and much more
+install-package glimpse.mvc5
+install-package glimpse.ef6
+
+N+1 issue of lazy loading
+EF will only load the data when required such as,
+Select * from customer and for each customer Select Name from MembershipType
+If we have N customers then for each customer a separate query will be run on MembershipType
+table which decreases performance.
+This is done by using virtual keyword in MembershipType property in Customer class and not
+using Include(c=>c.MembershipType) in the controller.
+
+Include method helps Eager loading!
+
+Data tier optimization requires query optimizations
+
+Application tier optimization can be done either Data cache or Output Cache
+Output Cache is to render html page from the cache
+Use this strategy only if the page takes time to load querying the database and dont change
+data very often on that page
+Suppose the home page that is rendered from Index() method and we want to cache it
+We can decorate it using [OutputCache(Duration = 50)]. This will update the cache every
+50seconds and returns the page to the user from the cache
+Data cache refers to caching the peice of data frequently used and not changed very often.
+Like list of genres of movie list. We can do this by
+if(MemoryCache.Default["Genres"] == null)
+{ MemoryCache.Default["Genres"] = context.Genres.ToList(); }
+var genres = MemoryCache.Default["Genres"];
+
+Async and await improves scalability and not performance
+We still have to wait for the response!
+
+Session kills scalability. For each user, the state is maintained. Application should
+be stateless. To disable session, go to web.config and under system.web type
+<sessionState mode="Off"></sessionState>
+
+----------------------------------------------------------------
+Other stuff
+
+Popular jquery plugin to show toast message
+install-package toastr
+add this into css and js bindle like ~/content/toastr.css and ~/scripts/toastr.js
+Use like
+toastr.success("Success");
+toastr.error("Error");
+
+DataTable plugin for sorting pagination searching of data
+install-package jquery.datatable -version:1.10.11

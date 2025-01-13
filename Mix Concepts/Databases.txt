@@ -1,0 +1,101 @@
+Databases
+--
+
+
+
+Concept
+--
+Count Query In database
+--
+Select count(*) from Table A.
+
+In this query, the database table scan is done sequentially which can become quiet expensive when the table is very very large lets say 3 million records.
+The query can take upto seconds and even minutes to give back result for just a number.
+
+Alternate and fast way to perform the action is to just an estimate of the count and not the actual count.
+If we are developing an application which shows post reach count, number of likes/dislikes, number of comments etc, it will take up seconds to show the result
+if we do a sequential database scan.
+
+The estimate count can be taken from the 'explain' keyword
+The EXPLAIN keyword is used to obtain information about how our SQL databases execute the queries in MySQL. It is synonyms to the DESCRIBE statement. In practice, 
+the DESCRIBE keyword provides table structure information, whereas the EXPLAIN keyword gives the query execution plan.
+MySQL would show its statement execution plan by explaining which processes take place in which order when executing the statement.
+
+Example
+explain select * from table A.
+
+
+
+
+Concept
+--
+Types of Idexes
+
+1) Clustered Index
+
+Clustered index creates a physical sorted data structure of the table rows according to the defined index key. This sorted data 
+structure is called a B-tree (balanced tree). B-tree structure enables us to find the queried rows faster to using the sorted key 
+value(s).
+
+There are 3 levels for this Tree
+Root Level -> Starting point of search
+Intermediate Level -> Connection between Root and Leaf
+Leaf Level -> Where all the data is actually stored
+
+There can only be 1 clustered index per table and usually it is created on Primary Key (id field)
+The field must be unique and no duplicates must be there to be clustered index.
+
+2) Non Clustered Index
+
+Simple indexes that can be created on any coulmns. Can also use B-Trees for searching.
+In this type, the index is stored as a seaprate data structure in the distk which holds a key value pair. The key is the index value
+and the value is the pointer to the actual database record.
+When the query is run, the index data structure is loaded into the memory and then the search is done on that index table to find the
+candidade rows. Once the rows are fetched then the actual call to database on disk is made to only fetch those record.
+Searchin on RAM/CPU Memory is way faster than searching on the disk so that is why indexes are faster.
+
+Example and Visualization => https://chartio.com/learn/databases/how-does-indexing-work/
+
+
+Composite indexes can be used both as clustered and non-clustered indexes. They simply work in the same way but the only difference
+is that there are multiple keys as coulmns
+If I create index on column last_name, first_name and age then the sorting will be first done on last_name then on first_name and then
+on age when creating index table.
+
+Indexes in Postgres vs Mysql
+There is a small change in structure of how indexes store data in Porstgres vs Mysql (specifically for innodb)
+  .In Postgres, when index are created, the particular index row holds the direct pointer to the actual database record. In this way,
+   if I want to read something, its really fast as index gives the direct address to the record. However when updating or deleting the row,
+   all indexes created on that table needs to be updated as that row no longer exists.
+  .In Mysql, when index are created, the particular index row holds the primary key as a value which points to the actual database record
+   instead of directly pointing it. In this case, If I want to read, I will need 2 hops to get to the actual database record. First I will
+   get the PK which will tell me the actual address. However, If I update the row, only those indexes will be updated which are created on
+   the rows I have touched to update. On delete, I will need to update all indexes nevertheless.   
+
+
+
+
+
+
+Concept
+--
+When indexes are useless?
+--
+1) When you apply an index to a coulmn where the data is 95% of the time same
+     .Like status of order in order_complete table where the status will be COMPLETED all the time.
+	 .Like when fetching gender, the most views of a video in terms of gender and most of the users are MALE.
+	 
+2) When you apply functions
+     .Lets say we have an index on coulmn first_name and we do a query 'Select id from employee where upper(first_name) = :first_name;'. Here we have just skipped
+	  the index because case sensitivity matters. The moment we create an index, the database will take the exact same value and create its index. If we do upper()
+	  or lower() thats a totally different string because at the end of the day all are 0s and 1s and capital leeter and samll letter has differenct ASCII values.
+	 .If we know that our queries use functions we can create index with upper() or lower()
+	 
+	 
+Drawbacks of Indexes
+  .Uses a lot of space
+  
+Indexes should be avoided when,
+  Tables that have frequent, large batch updates or insert operations.
+  Columns that contain a high number of NULL values.
+  Columns that are frequently manipulated.

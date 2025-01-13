@@ -1,0 +1,87 @@
+Custom Validator
+---------------------
+
+Template Driven Form
+
+-Creating a validator that restricts particular value to be entered
+-Create a directive ng g d not-allowed
+..
+import { Directive, Input } from '@angular/core';
+import { NG_VALIDATORS, Validator, AbstractControl } from '@angular/forms';
+
+@Directive({
+  selector: '[NotAllowed]',
+  providers: [{
+    provide: NG_VALIDATORS,
+    useExisting: NotAllowedDirective,
+    multi: true
+  }]
+})
+export class NotAllowedDirective implements Validator {
+
+  @Input('NotAllowed') restrictedName: string;
+
+  constructor() { }
+
+  validate(control: AbstractControl) : {[key:string]: any} | null {
+
+    let not_allowed = new RegExp(this.restrictedName).test(control.value);
+
+    return not_allowed ? {'NotAllowedName' : true} : null;
+  }
+
+}
+
+-Passing the value to regex and comparing it with value received from input box
+-@Input is used to receive the value entered by the user.
+-If input is matched with the regex then returning the error otherwise null (no error)
+
+Usage in form
+..
+<form #f="ngForm" (ngSubmit)="onSubmit(f.valid)">
+
+    <input type="text" NotAllowed="Hello" autocomplete="off" #name="ngModel" 
+       name="username" [(ngModel)]="username" required minlength="3" />
+
+    <ng-container *ngIf="name.touched && name.invalid">
+        <div *ngIf="name?.errors?.required"> Name is required </div>
+        <div *ngIf="name?.errors?.minlength"> Must be at-least 3 characters </div>
+        <div *ngIf="name?.errors?.NotAllowedName"> Name Not Allowed </div>
+    </ng-container>
+
+</form>
+
+
+
+
+
+Custom Directive Validator
+-Allow upto 2 decimal places.
+..
+import { Directive, ElementRef, HostListener } from '@angular/core';
+@Directive({
+  selector: '[appTwoDigitDecimaNumber]'
+})
+export class TwoDigitDecimaNumberDirective {
+  private regex: RegExp = new RegExp(/^\d*\.?\d{0,2}$/g);
+  private specialKeys: Array<string> = ['Backspace', 'Tab', 'End', 'Home', '-', 'ArrowLeft', 'ArrowRight', 'Del', 'Delete'];
+  constructor(private el: ElementRef) {
+  }
+  @HostListener('keydown', ['$event'])
+  onKeyDown(event: KeyboardEvent) {
+    console.log(this.el.nativeElement.value);
+    // Allow Backspace, tab, end, and home keys
+    if (this.specialKeys.indexOf(event.key) !== -1) {
+      return;
+    }
+    let current: string = this.el.nativeElement.value;
+    const position = this.el.nativeElement.selectionStart;
+    const next: string = [current.slice(0, position), event.key == 'Decimal' ? '.' : event.key, current.slice(position)].join('');
+    if (next && !String(next).match(this.regex)) {
+      event.preventDefault();
+    }
+  }
+}
+
+<input type="textbox" [(ngModel)]="InputValue" appTwoDigitDecimaNumber>
+

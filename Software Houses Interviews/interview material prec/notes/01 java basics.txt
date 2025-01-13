@@ -1,0 +1,160 @@
+///////////////////////////////////////////////// BASICS ////////////////////////////////////////////////////////
+
+Platform: Any hardware or software environment in which a program runs, is known as a platform. Since Java has its own runtime environment (JRE) and API, it is called platform.
+Java code can be run on multiple platforms e.g. Windows, Linux, Sun Solaris, Mac/OS etc. Java code is compiled by the compiler and converted into bytecode. 
+This bytecode is a platform-independent code because it can be run on multiple platforms i.e. Write Once and Run Anywhere(WORA).
+
+Robust: Robust simply means strong. Java uses strong memory management.There is automatic garbage collection in java.
+
+Distributed: We can create distributed applications in java. RMI and EJB are used for creating distributed applications. 
+We may access files by calling the methods from any machine on the internet.
+
+///////////////////////////////////////////////// COMPILATION ///////////////////////////////////////////////////
+
+compile time:
+	java code (.java) ----> compiler ----> byte code (.class)(seprarate for each class)
+run time:
+	class file --> classloader --> byte code verifier --> interpreter --> runtime --> hardware
+
+Classloader: is the subsystem of JVM that is used to load class files.
+Bytecode Verifier: checks the code fragments for illegal code that can violate access right to objects.
+Interpreter: read bytecode stream then execute the instructions.
+
+JVM: JVM (Java Virtual Machine) is an abstract machine. It is a specification that provides runtime environment in which java bytecode can be executed.
+Loads code
+Verifies code
+Executes code
+Provides runtime environment
+
+JRE: It is the implementation of JVM. It physically exists. It contains set of libraries + other files that JVM uses at runtime.
+Sun Micro Systems provides jvm implementation
+
+JDK: JDK is an acronym for Java Development Kit.It physically exists.It contains JRE + development tools.
+	example(javac (pronounced "java-see") is the primary Java compiler included in the Java Development Kit (JDK) from Oracle Corporation.)
+	
+Just-In-Time(JIT) compiler: It is used to improve the performance.JIT compiles parts of the byte code that have 
+similar functionality at the same time, and hence reduces the 
+amount of time needed for compilation.Here the term ?compiler? refers to a translator 
+from the instruction set of a Java virtual machine (JVM) to the instruction set of a specific CPU.	
+
+///////////////////////////////////////////////// JAVA OOP //////////////////////////////////////////////////////
+->	Four Principle concepts of OOP:
+	•	Abstraction
+	•	Polymorphism
+	•	Inheritance
+	•	Encapsulation
+
+	Abstraction:
+		Abstraction is process of hiding the implementation details and showing only the functionality. (focussing on necessary details)
+		Abstraction in java is achieved by using interface and abstract class. Interface give 100% abstraction and abstract class give 0-100% abstraction.
+
+		
+		When do you use abstraction?
+		When you know something needs to be there but not sure how exactly it should look like.
+
+	Encapsulation:
+		What is Encapsulation in Java?
+		Binding the data with the code that manipulates it.
+		Encapsulation is process of wrapping code and data together into a single unit (class).
+		
+		Examples:
+			For example, if someone: want to know my name then he cannot directly access my brain cells 
+			to get to know what is my name. Instead that person will either ask my name.
+			
+			Encapsulation As Information Hiding Mechanism
+			class Person 
+			{
+				private float ageInYears;
+				public booleans setAge(float age)
+				{
+					if(age>0 && age<=150)
+					{
+						ageInYears=age;
+						return true;
+					}
+					else
+						return false;
+				}
+			}
+		
+
+	Polymorphism:
+		overloading, overriding, typecasting, templates
+			typecasting: upcasting is always allowed
+			downcasting: conditions
+
+	Inheritance:
+		aquiring and extending properties.
+		
+	Object based programming language follows all the features of OOPs except Inheritance. JavaScript and VBScript are examples of object based programming languages.
+
+->	INTERFACE
+	all methods declarations (abstract keyword not necessary)
+	constant variables (int x=0)(implicitly final and static)
+	
+	one interface can extend(not implement) many interfaces(multiple inheritance is allowed) (cannot extend classes)
+	->	if both super classes have methods with same name and same return types and same parameters. one of them is included(no ambiguity)
+	->	if both super classes have methods with same name and different return types and same parameters. one of them is included. 
+		compile time error because both of them cannot be implemented. if we try to implemnt both of them then again 
+		compile time error of method with same name and parameters already exists (ambiguity)
+	-> 	if both super classes have methods with same name and (same/diff) return types and different parameters. both of them is included(no ambiguity)
+	->	if both super classes have variables with same name. compile time error (ambiguity)
+			A.x correct
+			B.x correct
+			x ambigous.
+
+->	ABSTRACT CLASS
+	
+	abstract keyword with class
+	0-m abstract methods (abstract keyword required)
+	any type of member variable allowed
+	can include implemented methods (mothod with bodies)
+	
+	abstract class cannot extends interface
+	abstract class can implement interfaces(many) with/without implementing the methods of interface. all the abstract methods of the interface are included in abstract class.
+	can extend concrete/abstract class. (only one)
+	
+	TYPES:
+		A) function abstraction. Every time you declare a function (in Java, a method), you are creating an abstraction by giving a 
+		name to a piece of code. Other programmers can use your abstraction by invoking the function. 
+		If you have done a good job of documenting the function, they don't have to read your code to use it.
+	
+->	CONCRETE CLASS
+	
+	no abstract methods
+	abstract class cannot extends interface
+	abstract class can implement interfaces(many) with implemnting all the abstract methods.
+	can extend concrete/abstract class. (only one)
+
+-> 	ABSTRACTION INHERITANCE LINK?
+	functionalities of parent class are abstrated;
+
+->	FINAL FINALLY FINALIZE:
+	Final
+		When applied to a variable (primitive): The value of the variable cannot change.
+		When applied to a variable (reference): The reference variable cannot point to any other object
+		on the heap.
+		When applied to a method: The method cannot be overridden.
+		When applied to a class: The class cannot be subclassed.
+	Finally
+		There is an optional finally block after the try block or after the catch block. Statements in the
+		finally block will always be executed (except if JVM exits from the try block/ thread is killed). 
+	Finalize
+		Is the method that the JVM runs before running the garbage collector
+		
+->	STATIC BLOCK USAGE:
+	to initialize static final variables.
+
+
+->	OVERLOADING AND OVERRIDING:
+->	COMPOSITION VS AGGREGATION VS ASSOCIATION: ?????????????????? Sir
+
+->	STATIC
+		method (directly called by class names)(cannot use non static data members/ non static methods)(super keyword not used)
+		variables (directly accessedby class names)
+		inner classes 
+			(only inner classes can be made static in java)
+			(can have statuc methods as well as non static methods.)
+			(can have statuc members as well as non static members.)
+			
+->	

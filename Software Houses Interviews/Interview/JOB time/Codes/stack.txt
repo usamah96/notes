@@ -1,0 +1,78 @@
+Stack
+#include <iostream>
+using namespace std;
+const int LIMIT = 10;
+class stack
+{
+      private:
+              int topposition;
+              int contents [LIMIT];
+              public:
+                     stack ()
+                     {
+                           topposition = 0;
+                     }
+                     bool Isfull ()
+                     {
+                         if (topposition >= LIMIT)
+                         {
+                                         return true;
+                         }
+                         else
+                         {
+                             return false;
+                         }
+                     }
+                     bool Isempty ()
+                     {
+                          if (topposition==0)
+                          {
+                                             return true;
+                          }
+                          else
+                          {
+                              return false;
+                          }
+                     }
+                     int stacktop ()
+                     {
+                         if (!Isempty())
+                         {
+                                      return contents[topposition -1];
+                         }
+                     }
+                     void push (int x)
+                     {
+                          if (!Isfull())
+                          {
+                                     contents [topposition]=x;
+                                     topposition ++;
+                          }
+                     }
+                     int pop ()
+                     {
+                         int k = 0;
+                          if (!Isempty())
+                          {
+                                         topposition--;
+                                         k=contents [topposition];
+                                         return k;
+                          }
+                     }
+};
+int main ()
+{
+    stack s;
+    s.push (2);
+    s.push (3);
+    s.push (4);
+    cout << "Top Position: " << endl;
+    cout << s.stacktop() << endl;
+    cout << "Pop" << endl;
+    cout << s.pop() << endl;
+    cout << s.pop() << endl;
+    cout << s.pop() << endl;
+    
+    system ("pause");
+    return 0;
+}

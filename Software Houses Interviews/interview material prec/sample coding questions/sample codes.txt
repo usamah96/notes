@@ -1,0 +1,33 @@
+
+
+Implement the following function iteratively and also recursively:
+bool isPalindrome(string s)
+
+Stack class
+
+output of code using x++ , and ++x 
+
+num reverse (123->321)
+
+fibonacci
+
+factorial 
+
+power
+
+Reverse String
+
+Palindrome
+
+Reverse Sentence
+
+find if a number is power of 2
+
+square root
+
+You have a 3 Litres and a 5 Litres bucket of water. How will you fill 4 Litres in one of the bucket
+
+write a code to reverse individual words
+
+
+

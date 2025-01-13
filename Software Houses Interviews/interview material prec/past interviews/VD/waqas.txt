@@ -1,0 +1,157 @@
+yaar lamba interview tha
+but sub kuch he poocha
+OOP pillars, why oop why not oop, examples of eveyr pillar, how we achieve overriding overloading inki different types
+phir program specific cheezain
+
+dp nai poochi
+even though i droppped some names when explaining oop
+oop wala i cleared easily
+phir program outputs pay aaya
+
+casting walay, static aur dynamic binding walay, parent child constructors walay
+woh bhi i cleared, answer sahee deraha tha aik aakhri walay ka but when he asked reason i couldn't xplain correctly tou he said kay yaar confuse kyun horahay ho abhi tou tum nay sahee jawab dia hai static/dynamic binding ki he wajah hsay hai yeh behaviour bhi
+covariant return ka aik sawal kiya
+mainey even though us main reason fauran catch nai kiya mujhey covariant return kay mechanics pata tha aur cloneable interface wali cheez bhi pata thee tou woh bhi hui
+abstract class interface difference pay lambi hui
+inheritence kab aur composition kab pay lambi hui
+aur han
+yeh bhi kaha kay getter setter public hosaktay hain tou private variable ki cheezain change hosakti hain tou phir inka point kya hai why not just directly make the variable private
+*variable public
+woh bhi thori lambi hui pata nai he was satisfied aur not but mainey 2 3 alag reasons explain kardiye why this is better
+phir aik program likhwaya
+kaha method likh dou kay string hai us main fiename hai file ka extension extract hojaye, bola recursive likho
+mainey likh diya woh
+phir DB pay aaya
+us main bus main marata chala gaya
+but mention kardiya tha kay nai aati practice nai hai he said fast walon ki kyun weak hoti hai itni i said mainey aik he course parha tha us main bhi mainey sql nai ki thee aur baqi practice bhi nahin hosaki iskay ilawah kaheen
+kaha theory maloom hai thori buhat
+normalization pay lambi hui theory pay, indexes kaisay implement hotay hain us pay lambi hui
+primary aur unique ki ka difference poocha
+bata diya
+phir kaha woh konsi cheez hai kay primary main nai hoti but unique main hosakti hai
+woh nai aata tha
+answer was unique walay column can have null values
+but primary key can't be null
+oh han java main yeh bhi question tha kay
+crap i forgot again
+it was good
+han
+yeh tha kay kitnay different access modifier hotay hain java main
+yeh prh kay gaya tha main
+4 hotay hain
+private protected public aur default which is no specifier
+default means package private
+aur aik yeh bhi tha kay list aur arraylist main kya difference hai
+i said list isn't indexed arraylist is indexed he said nai yeh difference hai kay list interface hai arraylist uski implementation hai concrete i said mujhey laga data structure kay hisaab say pooch rahay ho yeh tou mujhey bhi pata hai
+collections main say aur sawal huay
+hashmap treemap waghera kay
+easy tha woh sub
+khair back to DB
+DB main yeh sub hua phir kaha schema bana saktay ho
+i said banana parhta hai tou bana laita hoon he said kyun waisya kya masla haia i said nahin hai masla bus thora weak hai db waghera sub phir usnay kaha many to many tables hain yeh how to resolve this
+student aur course kay he tha
+aur mainey kaha tha 3rd table bana lain enrollment ka waghera
+tou he said chalo good ab bus yeh query likh dou kay woh saaray student ajayen jo maths nama kay course main enrolled hain
+woh pehlay mainey likhi, aur kaha yeh chalaygi but buhat buri hai
+phir usnay sahee query likhi kay nahin yeh dekho yeh aisay hoga with joins and all ;_;
+he was left handed and had nice handwriting
+
+Asad
+Default access modifier ka Kya maqsad hota hai
+
+private means only this class, public means all classes in this package, and all classes in all other packages too, protected means only this class and child classes, no specifier means all classes in this package only.
+aur bhi kuch theory baichi mainey DB ki
+clsutered indexing waghera
+
+Asad
+FYP ka nai poocha?
+indexes ka bataya mainey implementation poochi?
+he said algorithms ka andaza hai konsay lagtay hain
+i said algo ka tou nai pata exactly yeh pata hai kay different types hoti hain aur implementation trees waghera say hoti hai
+he said han trees konsay trees
+i said B trees
+he said inki working waghera pata hai
+i said kay han thori buhat
+baqi aik question yeh bhi tha kay aik range main numbers hain, i want to know what number occured how many times, iska code likh dou
+mainey kaha yeh tou woh dictionary type scene hai easy hai yeh tou
+he said han but do it in the optimize dmanner map ka overhaead hai
+i said map ki baat nai kar raha
+mainey array bana di int [range] = {0}
+aur phir simply
+for(number: your_array)
+   myarray[number]++;
+he said okay ab iski complexity batao
+space aur time batayi
+and added kay range agar bari hai aur array ka size kum, yaani most numbers arent occuring at all, us case main yeh wasted hai and we'd be better of using a dictionary
+poocha tha FYP ka start main, he was mainly concerned with what technology/api/framework was used
+i said pure java
+and discuss kiya
+he said R pay kartay tou zyada assaan aur jaldi nai hojata
+i said java ki because teacher ki insistance thee warna main python karta
+and said R stats kay liye better hai ML waghera kay liye Python
+and he said teacher kaun
+i said sir rafi
+he said oh rafi bhai sahee
+aur i said kay apni cheezain implement karni the from scratch naya algorithm bhi banana tha aur hamara focus sirf text ki he clustering ka tha, tou API ka fuzool ka overhead hota aur packaged implementations ki bhi zaroorat nai parti itni R/Python waghera ki
+end main he asked 1 2 analytical questions
+aik tha kay 10 coins hain, you close your eyes, i place 5 tails and 5 heads on your left and right, now you have to flip them in such a manner kay jab aankhain kholo both sides have equal number of heads
+mainey pehlay socha phir he said coins remove bhi karsaktay ho bhalay
+mainey kaha remove....kyun....mujhey sawal samajh nahin araha main tou aik side poori flip kardoonga aankhain kholoonga ya tou dono jagah 5 heads hongay ya dono jagah 0
+he said han yehi answer hai itna time kyun lagaya
+......
+phir he tried to think of other iq/analytical quetions but i kept cutting him off halfway kay yeh aisay hota hai yeh aisay
+they were all famous ones
+tou he said han phir chalo interview over mere liye koi sawal
+i asked him about VD what he does where he studied from how much he likes his job and how he thought the interview went
+
+he answered everthing except the last part
+almost forgot
+he also asked inner aur outer join ka farq
+nai aata tha mujhey
+probably aik dou aur cheezain hongi jo main bhool raha hoon jis main mainey marayi hongi
+
+but banda buhat nice tha
+
+jab bhi main ghalat bolta ya kehta kay yeh nahin aata ya iska sure nahin hoon
+he would say dekhna yeh ghar jaakay zaroor
+
+
+
+there were a couple more things
+as well
+jaisay java main diamond problem hoti hai ya nahin, kyun nahin hoti, interface aur abstract class main differences (you think you know this one but you don't really because java 8 changed some things and does affect the diamond problem question too)
+and yeh program tha jiska output batana tha, which i got right miraculously
+
+
+
+{
+  
+  public static void main(String[] args)
+  {
+    Parent p = new Child();
+    p.getA();                                       // DYNAMIC BINDING -- CHECKS PROPER DATA TYPE
+    System.out.println("Object a value: " + p.a);	// STATIC BINDING  -- DOESNT CHECK FOR DATA TYPE
+  }
+}
+
+
+
+public class Parent
+{
+  public static int a = 10;
+  public int getA() {
+  	System.out.println("Parent a value: " + a);
+    return a;
+  }
+  
+}
+
+
+public class Child extends Parent
+{
+  public static int a = 5;
+  public int getA() {
+  	System.out.println("Child a value: " + a);
+    return a;
+  }
+}

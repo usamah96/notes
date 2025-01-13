@@ -1,0 +1,35 @@
+Factory: pattern provides one of the best ways for object creation. we create 
+object without exposing logic to the client and access the newly created object 
+using a common interface.
+
+Abstract Factory: a super factory which creates other 
+factories. super factory acts as an interface for other factories. e.g. shape 
+colour.
+
+Singleton:
+public class SingleObject {
+
+
+   //create an object of SingleObject
+   private static SingleObject instance = new SingleObject();
+
+   //make the constructor private so that this class cannot be
+   //instantiated
+   private SingleObject(){}
+
+   //Get the only object available
+   public static SingleObject getInstance(){
+      return instance;
+   }
+
+   public void showMessage(){
+      System.out.println("Hello World!");
+   }
+}
+
+
+Builder pattern builds a complex object using simple objects and using a step by step approach.
+
+
+Prototype pattern refers to creating duplicate object while keeping performance in mind.This pattern involves implementing a prototype interface which tells to create a clone of the current object. This pattern is used when creation of object directly is costly.
+

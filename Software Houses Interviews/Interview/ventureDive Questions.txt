@@ -1,0 +1,30 @@
+4pillars of OOP
+
+3litre can 5 litre can question.
+
+pack of cards, shuffle kia hai 
+bagair dekhy. sort. 
+
+AI basic
+
+interface vs abstract
+
+singleton.
+
+complexities of sorts , 
+comparisons
+
+array list , list, array
+
+joins inner join outer join
+
+mutable , in mutable 
+(oop)
+
+find light weight ball among 8 balls.
+
+primary key, unique key, 
+foreign key.
+
+relation b/w inheritance composition
+

@@ -1,0 +1,19 @@
+#include <iostream>
+#define size 10
+using namespace std;
+
+int main()
+{
+int arr[size] = {5,1,0,0,50,24,24,54,50,1};
+
+for(int i=0 ; i<size ; i++)
+    {
+    for(int j=i+1; j<size; j++)
+        {
+        if(arr[i]==arr[j]) cout<<arr[j]<<" ";
+        }
+    }
+    cout<<endl;
+    system("pause");
+    return 0;
+}

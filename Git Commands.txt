@@ -1,0 +1,33 @@
+git stash
+git stash apply
+git status
+git merge mainline
+git add uapi-services
+git commit -m "Hello World"
+git push origin easytest
+git merge mainline
+git pull
+git remote -v
+git remove -r
+git log
+git revert {commit}
+git remote set-url origin ssh://git@192.168.0.12:7410/Aamir<>.git
+git remote set-url origin ssh://git@192.168.0.12:7410/Taufiq<project_name>.git
+git clone {url for cloning}
+:q!
+git stash
+git stash drop
+
+
+UPDATE Procedure
+
+git checkout mainline
+git pull
+git checkout branchname
+git merge mainline
+
+Commit Procedure
+
+git status
+git commit -m "Message"
+git push

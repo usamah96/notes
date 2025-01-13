@@ -1,0 +1,25 @@
+Structure :
+
+1 - Its a value type.
+
+2 - Each structure variable has its independent copy.
+
+3 - One structure cannot inherit other.
+
+4 - They donot have destructors.
+
+5 - We cannot use sealed / abstract modifiers before structures.
+
+
+
+CLASS : 
+
+1 - Its a reference type.
+
+2 - Its variable has references to the data.
+
+3 - Once class can inherit other.
+
+4 - Class have destructors.
+
+5 - Sealed/ abstract can be used before class.

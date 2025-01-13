@@ -1,0 +1,24 @@
+Spring Crud App
+-------------------------------------
+
+Using DAOs (Data Access Object)
+
+Controller -> Service -> DAO -> Database
+
+-Create the DAO interface with its implementation and use @Autowired
+for Dependeny Injection in the Controller.
+
+-The implementation of DAO interface should be annotated with 
+@Repository. @Repository is also the inherited version from @Component
+like @Controller and Spring will manage and recognize the class during
+the Component Scanning.
+
+-We use Services to delegate the call to DAO(s) to get the data from the
+Database. The purpose of this is that our Service use Dependency Injection
+to inject DAO. The DAO can be multiple to get the data from database.
+Our Controller just access the service and gets the data. The Service
+acts as a Facade Design Pattern.
+
+-Using hibvernate requires session.beginTransaction and commits everytime.
+We can use @Transactional to avoid using it. Apply this on the method
+of Services.

@@ -1,0 +1,68 @@
+Queue
+#include <iostream>
+using namespace std;
+const int LIMIT = 10;
+class queue 
+{
+      private:
+              int Qlast;
+              int Qfirst;
+              int contents [LIMIT];
+              public :
+                     queue ()
+                     {
+                           Qlast = 0;
+
+                     }
+                     bool Isfull ()
+                     {
+                          if (Qlast>=LIMIT)
+                          return true;
+                          else
+                          return false;
+                     }
+                     bool Isempty()
+                     {
+                          if (Qfirst==Qlast)
+                          {
+                                            return true;
+                          }
+                          else
+                          {
+                              return false;
+                          }
+                     }
+                     void Insert (int x)
+                     {
+                          if (!Isfull())
+                          {
+                                      contents [Qlast] = x;
+                                      Qlast++;
+                          }
+                     }
+                     int Remove ()
+                     {
+                         if (!Isempty())
+                         {
+                                        Qfirst++;
+                                        int k=contents [Qfirst];
+                                        return k;
+                         }
+                     }
+                     
+};
+int main ()
+{
+    queue q;
+    q.Insert (2);
+    q.Insert (3);
+    q.Insert (4);
+    
+    cout << "Remove: " << endl;
+    cout << q.Remove() << endl;
+    cout << q.Remove() << endl;
+    cout << q.Remove() << endl;
+    
+    system ("pause");
+    return 0;
+}

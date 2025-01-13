@@ -1,0 +1,25 @@
+Encapsulate hides variables or some implementation that may be changed so often in 
+a class to prevent
+ outsiders access it directly. They must access it via getter and setter methods.
+
+
+
+Data encapsulation(Data hiding) is wrapping and controlling access of logically 
+related data in a class. 
+One of the aspect of this is by using suitable access modifiers.
+By providing only setter or getter method, you can make the class read-only or 
+write-only.
+It provides you the control over the data.
+
+
+
+
+Abstraction is used to hiding something too but in a higher degree
+(class, interface). Clients use
+ an abstract class(or interface) do not care about who or which it was, they just 
+need to know what
+ it can do.
+
+Where as Abstraction is hiding internal implementation details and expose 
+only relevant details to the user. In a way you can Abstraction is achieved by 
+Encapsulation.

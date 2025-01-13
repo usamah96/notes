@@ -1,0 +1,293 @@
+System Design
+--
+
+
+Concept
+--
+Consistent Hashing
+
+Hashing and Problems with hashing
+
+Consider the example for basic hashing where we store the elements in an array based on the hash calculated
+Array size = 4
+
+Element 1 => hashed => Value 4 => Mod 4 => Index 0
+Element 2 => hashed => Value 5 => Mod 4 => Index 1
+Element 3 => hashed => Value 6 => Mod 4 => Index 3
+
+Now what if we resize the array and make it at a size 5?
+Array size = 5
+
+Element 1 => hashed => Value 4 => Mod 5 => Index 4
+Element 2 => hashed => Value 5 => Mod 5 => Index 0
+Element 3 => hashed => Value 6 => Mod 5 => Index 1
+
+So the indexed changed. If we resize the array and later we want to fetch the value, we won't find it in the place we stored earlier because the 
+indexes are changed. This is the problem for disctributed systems.
+If we have 4 servers, before storing any value we hash that value and decide on which server we store that value
+Later on if we add new server and our server count is now 5. If we want to fetch the value then all things gets changed and we have to recalculate
+all the hashes and move around all the data to map it correctly
+
+Here consistent hashing comes into picture which saves this headache a lot more and reduces the complexity.
+We store the servers in a ring like structure.
+Distributed systems can use Consistent Hashing to distribute data across nodes. Consistent Hashing maps data to physical nodes and ensures that 
+only a small set of keys move when servers are added or removed.
+
+
+Example we have 4 servers and we use the value 360 (to represent like a ring) and assign each server a unique value
+Lets say,
+
+       s0
+s270        s90
+      s180
+	  
+
+Element 1 => hashed => Value 1500 => Mod 360 => Index 60
+Element 2 => hashed => Value 3000 => Mod 360 => Index 120
+Element 3 => hashed => Value 2000 => Mod 360 => Index 200
+Element 4 => hashed => Value 4000 => Mod 360 => Index 40
+
+Here the concept is, we check the index value and store the value on the next immediate server
+Element 1 will be stored in s90
+Element 2 will be stored in s180
+Element 3 will be stored in s270
+Element 4 will be stored in s90
+
+Now if we add a new server lets say s50 which will be between s0 and s90, here what happens is that we have to only move the data from s90 to s50
+where the index values are less than 50. Here Element 4 will be moved to s50 as because index 40 immediate server is s50 and not s90 anymore
+So less complexity and less cost will be required to move the data. 
+
+Similarly if we want to remove a server. Let say s90 is removed, we will have to move all data from s90 to s180.
+
+But still there are limitations as we have to move the data and one server can become hotspot (70% 80% data stored on one server and 20% on others)
+Here, Virtual Nodes comes to rescue as we define smaller range and distribute the nodes all over the ring
+
+Example
+Lets say if we have 2 servers. Node 1 serves data 0-50 and Node 2 serves 51 till 100, there is a high chance Node 1 or Node 2 becomes hot sport
+So we define smaller range like
+   0-20 for Node 1
+   21 - 40 for Node 2
+   41 - 60 for Node 1
+   61 - 80 for Node 2
+   81 - 100 for Node 1
+These Virtual Node prevents from making one Node as hotspot
+
+Explanation => 
+   https://www.youtube.com/watch?v=p6wwj0ozifw&t=4s
+   https://www.youtube.com/watch?v=xhclDLmhdrc
+   
+   
+   
+
+Concept
+--
+Bloom Filters
+
+Bloom filters is a way to maximize the performance and minimize the round trip to a database.
+
+Example
+Lets say we have a server which queries the database and we have a GET endpoint that queries the database to check of the username exists.
+In a basic approach we would query the database everytime when a request comes to our server, but this is not the best approach and this might get 
+sometime slow because we are going to the database everytime
+
+One solution is to use Redis for in memory cache. For this we have to manage the data in to 2 separate places and keeping this inn sync also which will
+cause ineffeciency and more memory consumtpion
+
+Another solution is to use Bloom Filters
+It is just like an array with a fixed size and it is a binary array with values as (0 or 1)
+The element with value 1 means the value is present and 0 means its null
+
+If we reeive a query to find the  username = Usama then we would first run a hash function that would return a value and then we would operate a 
+modulo operation with the size of the array which will return the index of the array
+We then checks if that index value is '1' or '0'. If the element is '0' then we won't go to the database because we know the element is not present
+If it is '1' then we will go to the database to verify the result because bloom filter can be False Positives.
+
+Bloom Filters can be False Positives as there might be collision. Another username = Ahmed can also give the same index from hash function 
+and that menas that username = Ahmed MAY BE there and MAY NOT be. Beause the element value was '1' due to the username = Usama and not Ahmed.
+
+Bloom Filters can not be False Negative as there is no possibility that bloom filter element is 0 and database contains the value,
+
+We create the bloom filter as users are created in POST request
+
+In real world. more than 1 2 hash functions are used and a combination of indexes are used to identify the element
+
+Cassandra (NoSql Database Management System) uses bloom filters internally
+
+Explanation => 
+  https://www.youtube.com/watch?v=gBygn3cVP80
+  https://www.youtube.com/watch?v=V3pzxngeLqw 
+  
+  
+  
+  
+Concept
+--
+Scaling Application
+
+https://zerodha.tech/blog/scaling-with-common-sense/
+
+
+
+
+Concept
+--
+Is there a Limit to Number of Connections a Backend can handle?
+
+It depends upon the architecture and it depends upon the client and the server.
+
+If we talk with respect to the server, there is no limit. As long as there is memory available there can be unlimited connections to servr.
+
+However, if we talk with respect to client we know that in a TCP 3 way handshake, the SYN request is sent and in this request the source ip address,
+source port, destination ip address and destination port is there.
+
+In a TCP request, we have 16 bits allocated for source port number which means = 2^16 = around 64k values of port can be there
+Every TCP request generates a random port from the client so from client perspective we can see that a maximum of 64k connections can be made per
+client. Obviously 64k is not a fixed number as some ports are reserved ports so there is less than 64k values to be available for source port.
+
+If we talk about Reverse Proxy (Api Gateway) to handle our request from the client, it is now the Reverse Proxy serving as a front end to our 
+backend. Reverse Proxy is a single server which makes request on behalf of the client so the limit will also be 64k at the api gateway level too.
+If there are 200k clients requesting our gateway at the same time, obviously only 64k will get the change to be served immediately and rest would
+wait for their turn.
+For this, we can either deploy our backend on different ip address, or run another instance of our reverse proxy on different port to server
+another 64k requests.
+
+This is applicable when using Http < 2.0 because with Http 3.0 it used QUIC (UDP) and Http 2.0 uses Multiplexing so one TCP connection is enough for
+all the requests.
+
+
+
+Concept
+--
+Fail-Over for High Availability.
+
+It is a technique to move to a redundance machine when the main machine goes down
+It makes use of different Load Balancing technique like Layer 4 and Layer 7 Load balancing
+
+When the machine shut down happens, the client is automatically redirected to a different machine that serves the same requests. The client has no
+idea that a fail-over has happended.
+The client does not check for availability, did not changed the ip address of the machine, it just happened to switch to completely different address.
+
+Lets understand ARP (Address Resouluton Protocol)
+
+What we do when we want to communicate with the machine? The lowest we go is to fetch the machine ip and port number and sends a request and get
+back the JSON response. But what machine internally does is something different. It deals with the physical address which is the 
+Mac Address. (Media Access Control)
+So how does the machine knows the Mac Address of a certain ip address? ARP hepls in finding that
+
+The client connected to a network will ask everyone in the network that who has the Mac Address for 10.0.0.1 Ip? All the connected devices will
+receive the request and the actual machine will respond to it and sends back its Mac Address and that is how ARP works in short.
+
+Lets now understand VIP and VRRP
+
+Suppose there are 2 machines one is the main machine and other one is the backup machine. The 2 machines has some software installed in it which 
+allows them to communicate with each other. The software can be KeepAlived, HAProxy etx
+
+The 2 machines agree on some terms.
+  a) Who is the main machine and who is the backup machine
+  b) Agreement on some Virtual IP (VIP) address that does not exist in the real world like 10.0.0.100
+  
+Now when the client sends a ARP request to 10.0.0.100 it will receive request to Machine A (main) and Machine B (backup) also because they agree
+on same VIP. But Machine B will not respond to that because it knows it is the backup and not main. Machine A will respond back to its Mac Address
+and the request will then go through Machine A.
+
+Now if Machine A goes down, the automatic switch needs to happen to Machine B and how is that happen?
+We know that main and backup machine are always in sync with each other by communicating everytime. So if Machine A is dead, it will not respond to
+any msg sent by Machine B and that is how Machine B knows that Machine A is dead. Machine B will now tell everybody in the network that I am the
+master now and now when client sends reuqest to 10.0.0.100, Machine B will send back its Mac Address and request will now route thorugh Backup
+Machine.
+
+The client did'nt even realize that Fail-Over has happened.
+This whole system and protocol is known as Virtual Router Redundancy Protocol (VRRP) because these 2 machines act like a virtual router
+
+
+
+Concept
+--
+Active-Active vs Active-Passive
+--
+Active-Active & Active-Passive are 2 network configuration to achieve high availability and proper Load Balancing between servers.
+
+We know the architecture that there are Load Balancer, Rever Proxy server in the middle between client and our actual Application Server.
+The Rever Proxy just Load balances and delivers the request to the actual server to serve the request. Our servers can be deployed on different 
+hosts, or same host running different instances on different ports. (See Picture)
+
+The Active-Passive approach is similar to the scnario discussed in point 25 about Fail-Over that there is one master machine and one backup
+machine and if master machine goes down, the backup machine becomes the master machine to server the request. They both agree on same VIP and 
+in the DNS record, we have VIP mapped to some example.com.
+In this approach only one server is entertaining the requests and the backup server just keep waiting idle as a backup
+
+On the other hand in Active-Active approach, both the machines agree on 2 VIPs instead of one and in the DNS record there are 2 Ips mapped to single
+example.com domain
+So if client A types example.com he might get ip 10.0.0.100 and goes to Machine A and,
+   if client B types example.com he might get ip 10.0.0.200 and goes to Machine B.
+So both the machines are busy and traffic is split up between the 2. 
+Machine A is the master for 10.0.0.100 and backup for 10.0.0.200 and,
+Machine B is the master for 10.0.0.200 and backup for 10.0.0.100.
+
+If any machine goes down, the other machine becomes the master and ARP table is updated and all the requests is re-directed to that Machine
+
+
+Pros & Cons for Active-Passive
+  1) Easy to setup
+  2) 1 server becomes the bottleneck. All requests come to 1 server and can die very quickly due to load
+  3) Resource running without being used (backup server)
+  4) Gets a little bit delay (few milliseconds) if some machine goes down as the ARP and DNS needs to be updated. 
+  
+Pros & Cons for Active-Active
+  1) Well balanced as requests comes in to all the servers
+  2) Costly as DNS using multiple IPs and using Round Robin to fetch the Ip for specific domain
+  3) Low chances for server will die as load is distributed
+  
+  
+Demo = > https://www.youtube.com/watch?v=NizRDkTvxZo&list=PLQnljOFTspQVPOt2GrGpq2_NRZjcdxzfu&index=3
+
+
+
+Concept
+--
+Load Balancer (Layer 4 vs Layer 7)
+--
+Layer 4 => Transport Layer where we can see only ip addresses and port for source and destination. The data is there but we cannot see the data
+           because it does not make any sense there. Sometimes it is encrypted at the Presentation Layer (L2) if using TLS, sometimes it is compressed,
+		   sometimes scrambled etc
+Layer 7 => Application layer where we can see the request, headers, cookies etc.
+
+Load Balancer (aka Fault Tolerant) is a software we can install and use it inside a machine to decide where to direct the request depends upon the
+machine's load. It is an example of a Reverse Proxy
+
+So at Layer 4 Load Balancer, we only have access to ip addresses and ports and it makes decision based on that
+So when the request comes in, the load balancer decide based on the algorithm (could be round robin)
+
+Lets say we have a Load Balancer server at 10.0.0.100 and 2 machines to serve requests (10.0.0.1 and 10.0.0.2)
+
+When the request comes at Load Balancer L4, the data packet is something like this,
+   (Source)(Data)(Destination)
+   The source is the client ip and destination is the Load Balancer Server ip.
+   At L4, what L4 LB will do is that change that Destination Ip to the Machine Ip, let say it changes to 10.0.0.1 with the help of Network Address
+   Translation (NAT) and also change the Source Ip to ip of itself (10.0.0.100) because the Machine receives request from LB and not client directly.
+   
+Pros of L4 LB
+  1) Simpler LB with no extra efforts
+  2) Efficient as no data lookup is there. Only the source and destination ip changes
+  3) More secure as data is just the garbage. If someone hacked it, its useless for them because data is just some garbage
+  4) One TCP connection is required to go through LB and the actual server.
+  
+Cons of L4 LB
+  1) No smart Load Balancing. Just checks which server to hit.
+  2) Not applicable for microservices because in microservices, every path is referred to a different service. Lets say /pictures referes to 
+     Media Service and /comments refer to Comment Service. But in L4 we cannot extract the path because data headers url cookies are just garbage.
+  3) No Caching.
+  
+  
+At Layer 7 LB, as it is operated at L7 it is authorized to see the data, decrypt the data and access all the stuff
+Same process as L4 but here the Load Balancer will create a new TCP connection with the server and add their own headers, data, url and everything
+because it has access to all the data coming from the client instead of just changing the source and destination ip address
+
+Pros of L7 LB 
+  1) Smart Load Balancing as we can see the data and decide on the basis of it.
+  2) Caching because we know client requested for index.html and we can cach it
+  3) Great for microservices
+  
+Cons of L4 LB
+  1) Expensive as it has to look at the data.
+  2) Creates 2 TCP connection for single reuqest. One from Client to LB and other from LB to Server.

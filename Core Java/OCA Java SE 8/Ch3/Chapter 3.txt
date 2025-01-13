@@ -1,0 +1,227 @@
+Core Java API
+---
+
+Strings
+---
+
+String name = "Fluffy";
+String name = new String("Fluffy");
+
+-Both gives reference variable with type name but they are different
+-The String class is a special class that dont need a new keyword to be instantiated
+-The former says to use the string pool normally. The second says No, JVM. I really
+don’t want you to use the string pool. Please create a new object for me even though it is
+less effi cient..
+
+Common Methods for String
+1- length(): number of characters
+2- charAt(): characte at a specific index
+3- indexOf(): index at a specific character or character sequence
+4- substring(): part of a string with start and end index
+5- toLowerCase() and toUpperCase()
+6- equals() and equalsIgnoreCase()
+7- startsWith() and endsWith()
+8- contains()
+9- replace()
+10- trim()
+
+-The equals() method checks whether two String objects contain exactly the same characters 
+in the same order. 
+-The equalsIgnoreCase() method checks whether two String objects contain the same characters 
+with the exception that it will convert the characters’ case if needed.
+
+Size vs Capacity
+-Size is the number of characters currently in the sequence, and capacity is the number
+of characters the sequence can currently hold. Since a String is immutable, the size and
+capacity are the same. For Stringbuilder we can also specify the capacity at the start but
+as string grows, the capacity is increased.
+
+
+Common Methods For StringBuilder
+1- charAt(), indexOf(), length(), and substring()
+2- append(): returns the reference of self after appending the character at the last
+3- insert(): adds the character at a specified index
+4- delete(): delete characters from start index to end index
+5- deleteCharAt(): delete at a specific location
+6- reverse()
+
+StringBuilder vs StringBuffer
+-When writing new code that concatenates a lot of String objects together, you should
+use StringBuilder. StringBuilder was added to Java in Java 5. If you come across older
+code, you will see StringBuffer used for this purpose. StringBuffer does the same thing
+but more slowly because it is thread safe.
+
+
+Understanding Equality
+
+-The == checks for the reference if they are pointing to the same location or not
+
+String a = "Hello";
+String b = "Hello";
+
+a == b // true becuase of the string pool concept
+
+String a = "Hello";
+String b = "Hello".trim();
+
+a == b // false
+
+The .trim() returns the new string reference
+
+-The .equals() method is for comparison of inside of the string rather than the string object
+reference
+-The .equals() was implemented by the String class author so that is why it compares the inside
+of the string which is the content. But unfortunately, StringBuilder class author did not
+implement the .equals() method so if you call .equals() on 2 StringBuilder objects, it will
+compare the reference.
+
+
+Arrays
+---
+String[] a = new String[] {"cricket", "football", "TT"}
+String[] b = a;
+a.equals(b) // true;
+We can call equals() because an array is an object. It returns true because of reference 
+equality. The equals() method on arrays does not look at the elements of the array.
+Remember, this would work even on an int[] too. int is a primitive; int[] is an object.
+
+We can also create array as
+String a = {"cricket", "football", "TT"}
+This approach is called anonymous array. It is anonymous because you don’t specify
+the type and size
+
+-We can search in the array using the binary search method
+
+int[] numbers = {1,2,5,6,7}
+Arrays.binarysearch(numbers, 2)
+-If the element is found, the index is returned
+-If the element is not found then the return value is calculated as
+   .(prefered index of that value * -1 ) - 1
+eg
+Arrays.binarysearch(numbers, 4) - Output: (2*-1) -1 = -3
+
+-If the elements are not sorted then the output is not predictable
+
+
+Wrapper Classes
+---
+-The wrapper classes also have a method that converts back to a primitive.
+-The parse methods, such as parseInt(), return a primitive, and the valueOf() method returns 
+a wrapper class
+
+
+Autoboxing
+---
+After Java5, you can just type the primitive value and Java will convert it to the
+relevant wrapper class for you. This is called autoboxing.
+
+Eg1
+List<Double> numbers = new ArrayList<>();
+numbers.add(50.5) // Autoboxing
+numbers.add(new Double(60.5))
+double value = numbers.get(0) // Unboxing (opposite of autoboxing. retrieves the Double and unbox it into primitive)
+
+numbers.add(null) // Valid because null can be passed to any reference type
+double value = numbers.get(2) // NullPointerException because null can't be unboxed to double
+
+Eg2
+List<Integer> numbers = new ArrayList<>();
+numbers.add(1); numbers.add(2);
+numbers.remove(1);
+-This will remove the value at index 1 because rather than autobox and remove the value 1 because there is already a method defined called remove() with int
+parameter.
+-To explicitly remove with respect to wrapper class we need to do numbers.remove(new Integer(2));
+
+
+Conversion From ArrayList To Array Or Vice Versa
+---
+List<String> values = new ArrayList<>();
+values.add("Usama"); values.add("Abubakar");
+-ArrayList knows how to convert itself to an array. The only problem is that it defaults to an array of class Object.
+
+Object[] arrayValues = values.toArray();
+-But we dont want that. We need this in a String[]. For that we need to do
+
+String[] arrayValues = values.toArray(new String[0])
+-The advantage of specifying a size of 0 for the parameter is that Java will create a new array of the proper size for the return value.
+
+-Conversion From Array to ArrayList is more interesting.
+-Once we convert array into array list, we cannot modify the list size either by adding or removing items but we can modify the items at any index.
+-Also both the array and array list will point to the same data store and any change in any of the values will be reflected in the other as well.
+
+Eg
+String[] values = {"Usama", "Abubakar"};
+List<String> listValues = Arrays.asList(values);
+values[0] = "Usamah";
+Sout(listValues.get(0)) // Usamah
+
+listValues.remove(0);
+listValues.add("Hello")
+-Both will throw UnsupportedOperationException as size cannot be modified.
+
+
+Dates and Time
+---
+LocalDate: Contains just a date—no time and no time zone
+LocalTime: Contains just a time—no date and no time zone
+LocalDateTime: Contains both a date and time but no time zone
+
+-Each of the three classes has a static method called now() that gives the current date and time. Your output is going to depend on what date/time 
+you run it and where you live
+
+-Creating the Date and Time using the of() method
+LocalDate.of(2015, Month.JANUARY, 20);
+LocalTime.of(6,15,30,200) // hour,minute,second,nanosecond
+LocalDateTime.of(2015, Month.JANUARY, 20, 6, 15, 30) OR LocalDateTime.of(date, time);
+
+-The date and time classes have private constructors to force you to use the static methods.
+LocalDate d = new LocalDate() // Does Not Compile
+
+
+Manipulating Date and Times
+---
+Date and Time classes are immutable just like Strings so we need to assign the results to get the changes.
+
+LocalDate date = LocalDate.of(2015, Month.JANUARY, 20);
+date.plusDays(1);
+date.plusWeeks(1);
+date.plusMonths(1);
+date.plusYears(1);
+
+LocalDate date = LocalDate.of(2020, Month.JANUARY, 20);
+LocalTime time = LocalTime.of(5, 15);
+LocalDateTime dateTime = LocalDateTime.of(date, time);
+dateTime.minusDays(1);
+dateTime.minusHours(10);
+dateTime.minusSeconds(30);
+
+
+
+Extras
+--
+-The == will not work when trying to compare String with Stringbuilder. Will give compilation error
+
+-substring() takes start index as first param, and second param will tell to stop before that index
+
+-Comparison of string values
+  .String a = ""; a += "2"; a+= 'c'; a += false; if(a == "2cfalse")
+  .Will give false because one comes directly from string pool and other is created via string operations.
+
+-StringBuilder b = "rumble";
+  .Cannot cast string into stringbuilder. Will give Compilation Error
+
+-Arrays have the property called length
+
+-ArrayList overrides the .equals() method hence it will match the content if they are equal
+and are in the same order
+-Arrays dont override .equals() hence it will match the reference like StringBuilder.
+
+-Period does not allow chaining. Only the last Period method called
+Eg
+LocalDateTime d = LocalDateTime.of(2015, 5, 10, 11, 22, 33);
+Period p = Period.ofDays(1).ofYears(2);
+d = d.minus(p);
+DateTimeFormatter f = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
+System.out.println(f.format(d));
+
+Answr: 5/10/13 11:22 AM

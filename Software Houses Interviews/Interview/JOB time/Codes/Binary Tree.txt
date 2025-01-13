@@ -1,0 +1,142 @@
+Binary Tree
+class BSTNode
+{
+      private:
+              int value;
+              BSTNode *left;
+              BSTNode *right;
+              public:
+                     BSTNode (int x)
+                     {
+                             value = x;
+                             left = right = NULL;
+                     }
+                     int GetValue ()
+                     {
+                         return value;
+                     }
+                     BSTNode *leftchild ()
+                     {
+                             return left;
+                     }
+                     BSTNode *rightchild ()
+                     {
+                             return right;
+                     }
+                     void Addleftchild (BSTNode *node)
+                     {
+                          left = node;
+                     }
+                     void Addrightchild (BSTNode *node)
+                     {
+                          right = node;
+                     }
+                     bool isleaf ()
+                     {
+                          return ((left==NULL) && (right==NULL));
+                     }
+                     bool isleftchild(BSTNode *node)
+                     {
+                          bool found = false;
+                          if (node != NULL)
+                          {
+                                   if (this->leftchild() == node)
+                                   {
+                                                         return true;
+                                                         found = true;
+                                   }
+                                   else
+                                   {
+                                       return found;
+                                   }
+                          }
+                     }
+                     bool isrightchild(BSTNode *node)
+                     {
+                          bool found = false;
+                          if (node != NULL)
+                          {
+                                   if (this -> rightchild() == node)
+                                   {
+                                                         return true;
+                                                         found = true;
+                                   }
+                                   else
+                                   {
+                                       return found;
+                                   }
+                          }
+                     }
+};
+class BSTree
+{
+      private:
+              BSTNode *root;
+              void PreorderVisit (BSTNode *node)
+              {
+                   if (node != NULL)
+                   {
+                            Visit (node);
+                            PreorderVisit (node -> leftchild ());
+                            PreorderVisit (node -> rightchild ());
+                   }
+              }
+              void Visit (BSTNode *node)
+              {
+                   cout << node -> GetValue () << " " ;
+              }
+              
+              public:
+                     BSTree ()
+                     {
+                           root = NULL; 
+                     }
+                     void Add (int x)
+                     {
+                          bool inserted;
+                          BSTNode *node, *curr;
+                          node = new BSTNode (x);
+                          if (root == NULL)
+                          {
+                                   root = node;
+                          }
+                          else
+                          {
+                              inserted = false;
+                              curr = root ;
+                              while (!inserted)
+                              {
+                                    if (node -> GetValue() < curr -> GetValue())
+                                    {
+                                             if (curr -> leftchild() == NULL)
+                                             {
+                                                      curr -> Addleftchild (node);
+                                                      inserted = true;
+                                             }
+                                             else
+                                             {
+                                                 curr = curr->leftchild ();
+                                             }
+                                    }
+                                    else
+                                    {
+                                        if (curr->rightchild() == NULL)
+                                        {
+                                                                 curr->Addrightchild (node);
+                                                                 inserted = true ;
+                                        }
+                                        else
+                                        {
+                                            curr = curr -> rightchild ();
+                                        }
+                                    }
+                              }
+                          }
+                     }
+                     void PreorderTraversal ()
+                     {
+                          BSTNode *node ;
+                          node = root;
+                          PreorderVisit (node);
+                     }
+};

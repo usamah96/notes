@@ -1,0 +1,243 @@
+class LinkNode
+{
+      private:
+              int info;
+              LinkNode *link;
+              public:
+                     LinkNode(int x)
+                     {
+                              info=x;
+                              link=NULL;
+                     }
+                     int GetValue ()
+                     {
+                         return info;
+                     }
+                     LinkNode* next1()
+                     {
+                           return link;
+                     }
+                     void Link (LinkNode *node)
+                     {
+                          link=node;
+                     }
+};
+class SingleLinkList
+{
+      private:
+              LinkNode *head;
+      public:
+             SingleLinkList()
+             {
+                             head = NULL;
+             }
+             void AddToHead (int x)
+             {
+                  LinkNode *curr, *node;
+                  if (head == NULL)
+                  {
+                                 head = new LinkNode (x);
+                  }
+                  else
+                  {
+                      curr = head;
+                      node = new LinkNode (x);
+                      head = node;
+                      node->Link(curr);
+                  }
+             }
+             void DeleteFromHead ()
+             {
+                  LinkNode *temp;
+                  temp = head;
+                  head = temp->next1();
+                  delete temp;
+             }
+             void AddToTail (int x)
+             {
+                  LinkNode *curr,*node;
+                  curr = head;
+                  node = new LinkNode(x);
+                  if(head == NULL)
+                  {
+                                head = node;
+                  }
+                  else
+                  {
+                      while (curr->next1()!= NULL)
+                      {
+                            curr = curr->next1();
+                      }
+                      curr->Link(node);
+                      node->Link(NULL);
+                  }
+             }
+             void DeleteFromTail ()
+             {
+                  LinkNode *curr, *temp;
+                  curr = head;
+                  while (curr->next1()->next1() != NULL)
+                  {
+                        curr = curr->next1();
+                  }
+                  temp = curr;
+                  temp = temp->next1();
+                  curr->Link(NULL);
+                  delete temp;
+             }
+             void SearchList (int x)
+             {
+                  LinkNode *curr;
+                  int index = 0;
+                  int n = 1;
+                  bool found = false;
+                  curr = head;
+                  while ((curr != NULL) && (!found))
+                  {
+                        index++;
+                        if (curr->GetValue() == x)
+                        {
+                                          found = true;
+                        }
+                        else
+                        {
+                            curr = curr->next1();
+                        }
+                        
+                  }
+                  if (found == true)
+                  {
+                           cout << "Number " << x << " Is Present At Index " << index << " !!" << endl; 
+                  }
+                  else
+                  {
+                           cout << "Number Not Found!!" << endl;
+                  }
+             }
+             void CountElements ()
+             {
+                  LinkNode *curr;
+                  int count = 0;
+                  curr = head;
+                  while (curr != NULL)
+                  {
+                        curr = curr->next1();
+                        count++;
+                  }
+                  cout << "Total Elements In a List Is: "  << count << endl;
+             }
+             void GetElementAt (int x)
+             {
+                  LinkNode *curr;
+                  int count = 0;
+                  curr = head;
+                  while (curr != NULL)
+                  {
+                        count++;
+                        curr = curr->next1();
+                  }
+                  if (count > x)
+                  {
+                            LinkNode *temp;
+                            temp = head;
+                            for (int i = 0; i < x ; i++)
+                            {
+                                temp = temp->next1();
+                            }
+                            cout << "At Index " << x << " Element " << temp->GetValue() << " Is Present!!" << endl;  
+                  }
+                  else
+                  {
+                      cout << x << " Index Is Not Present!!" << endl;
+                  }
+             }
+             void DeleteElement (int x)
+             {
+                  LinkNode *temp,*curr,*temp2;
+                  int counter = 0;
+                  bool found = false;
+                  temp = head;
+                  while ((temp != NULL) && (!found))
+                  {
+                        counter++;
+                        if (temp->GetValue() == x)
+                        {
+                                          found = true;
+                        }
+                        else
+                        {
+                            temp = temp->next1();
+                        }
+                  }
+                  if ((found) && (counter == 1))
+                  {
+                              LinkNode *temp;
+                              temp = head;
+                              head = head->next1();
+                              delete temp;
+                              cout << "The Element With Info " << x << " is Deleted!!" << endl;
+                  }
+                  if ((found)&& (counter > 1))
+                  {
+                                curr = head;
+                                while((curr->next1() != temp) && (curr != temp))
+                                {
+                                                         curr = curr->next1();
+                                }
+                                temp2 = temp;
+                                temp2 = temp2->next1();
+                                curr->Link(temp2);
+                                delete temp;
+                                cout << "The Element With Info " << x << " Is Deleted!!" << endl;
+                  }
+                  else if (!found)
+                  {
+                      cout << "No Element With Info " << x << " Is Found!!" << endl;
+                  }
+             }
+             void InsertSorted (int x)
+             {
+                  LinkNode *curr, *prev, *node;
+                  bool found = false;
+                  node = new LinkNode (x);
+                  if (head == NULL)
+                  {
+                           head = node;      
+                  }
+                  else
+                  {
+                      curr = head;
+                      while ((curr != NULL) && (!found))
+                      {
+                            if (node->GetValue() >= curr->GetValue())
+                            {
+                                           prev = curr;
+                                           curr = curr->next1();
+                            }
+                            else
+                            {
+                                found = true;
+                            }
+                      }
+                  }
+                  if (curr == head)
+                  {
+                           AddToHead(x);
+                  }
+                  else
+                  {
+                      prev->Link(node);
+                      node->Link(curr);
+                  }
+             }
+             void Print ()
+             {
+                 LinkNode *temp;
+                 temp = head;
+                 while (temp != NULL)
+                 {
+                       cout << temp->GetValue() << " ";
+                       temp = temp->next1();
+                 } 
+             }
+};

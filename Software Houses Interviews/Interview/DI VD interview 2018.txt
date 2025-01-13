@@ -1,0 +1,57 @@
+Interview@VD
+
+- Technical#1 
+
+-> Normal Greeting
+-> Why apply@vd?
+-> What kind of a person are you (desktop, web, iot, db, cloud, etc)
+
+-> What is OOP
+-> What is Abstraction
+-> What is Encapsulation 
+-> Aren't Abstraction and Encapsulation the same
+-> What is Polymorphism with Example
+-> Types of Polymorphism
+-> Upcasting vs Downcasting
+-> Method overloading vs Method overriding
+-> What are Interfaces
+-> What is an Abstract Class
+-> Interfaces vs Abstract Classes
+-> What is Garbage Collection
+-> Constructor sequence call
+-> Exposing Getter/Setter whilst declaring Private Data Members
+-> Method varargs
+-> Final keyword with value-type variable vs reference-type object
+-> Exception handling, try, catch, finally keywords
+-> What are Threads? What are states in threads? How is synchronization achieved? Deadlock in threads? 
+-> Boxing vs Unboxing
+
+-> What are Design Patterns?
+-> Explain Singleton, Factory, Adapter, Observer, Facade pattern
+
+-> What is Database
+-> Anomalies in Database
+-> Keys in Database
+-> Joins in Database
+-> Normalization in Database
+-> Indexing in Database, Types of indexes, Index datastructure
+-> ACID properties
+-> Stored Procedures
+-> Write Query of 2-3 scenarios
+
+-> What is DataStructure
+-> Linear vs Non-linear DataStructure
+-> What is a map, implement a map w/o using STL
+-> What are collections, Comparable Interface vs Comparator Interface
+-> What is B+ tree, applications of B+ tree
+
+-> What cloud technologies have you worked with?
+-> What is Azure Active Directory
+-> What is Azure Blob Storage
+-> What is Amazon EC2 
+-> What is Amazon EBS
+-> What is Amazon VPC
+-> What is REST API
+-> REST vs SOAP
+
+-> Given 1000 - 1$ coins, and 10 bag, can you arrange them in bags in such a way that after given a number from 1-1000, you can give me the bags that equal the number dictated?

@@ -1,0 +1,313 @@
+Spring Demo with Configuration
+---------------------------
+
+Setting Up Development Enviroment
+
+-Run Tomcat
+-Open Eclipse, Go to Window -> Preferences -> Open Preferences and 
+Select Java
+-Create new Java Project
+-Go to www.luv2code.com/downloadspring and click on latest spring
+release at the bottom. Download the RELEASE.dist.zip file of it
+-Inside Java Project create another folder lib.
+-Extract the zip file after downloading and copy all the JAR files from 
+libs folder and paste that into lib folder in Java Project.
+-Go to Project properties and select Java Build Path from left panel.
+-Select Libraries tab and click on Add JAR files button. Select all JAR
+files from lib folder and click Apply and Close
+-A new folder will be created with name Referenced Libraries that will hold
+all the JAR files. These will be referenced when the project is build.
+-----------------------------------------------------
+
+Inversion Of Control
+-We donot tightly couple our code like creating an object of a class
+and using it. Instead we use interfaces so that the object is created
+what the user wants. Hence, Inverting the control from application code
+to outside source. 
+-The responsibility of creating objects is shifted from our application 
+code to the Spring container. Using IoC makes best use of spring
+framework because once spring framework identifies the Ioc, it will
+create the beans for us, identifies all the dependencies and inject the
+dependencies.
+
+Simple Example:
+..
+Coach interface that has getRouting() method
+Football and Cricket Java classes that implements Coach interface
+So it is now loosely coupled and not stick to one Game of Coach.
+
+Advantages
+-Loosely couped code
+-Easy writing of unit tests.
+
+Dependecy Injection is a subset of IoC as it is the way of implementing
+IoC.
+
+As the object creation responsibility is shifted to spring container,
+its responsibility is to,
+-Create and Manage objects (IoC)
+-Inject all the Dependecies (DI)
+
+Spring Container can be configured using
+-XML Configuration (legacy)
+-Java annotation Or Java source code (modern)
+
+Development Process
+
+1) Configure Spring beans (Beans are the objects that are managed by the
+IoC. They form the backbone of application.)
+ -Copy the applicationContext.xml file that holds some header information
+by default and configure beans below it.
+ -Configure the bean based on interface and classes created
+ -If we have Cricket.java and Football.java that implements Coach interface,
+we will configure as,
+<bean id="myCricCoach" class="uaspring.Cricket"></bean> and,
+<bean id="myFbCoach" class="uaspring.Football"></bean>
+
+
+2) Create Spring container
+ -In the main java class creating the container as,
+ClassPathXmlApplicationContext context = new 
+  ClassPathXmlApplicationContext("applicationContext.xml");
+
+
+3) Retrieve beans from the container
+ -Retrieving the individual bean as,
+Coach cric = context.getBean("myCricCoach", Coach.class);
+Coach fb = context.getBean("myFbCoach", Coach.class);
+ -Calling the method as,
+sout(cric.getRouting());
+sout(fb.getRouting());
+ -Closing the context as,
+context.close();
+------------------------------------------------------
+
+Dependency Injection
+-Transferring the task of creating the object to someone else and directly 
+using the dependency is called dependency injection.
+-Technique whereby one object (or static method) supplies the dependencies 
+of another object
+Example:
+..
+Let’s say we have a car class which contains various objects such as wheels, 
+engine, etc.
+Here the car class is responsible for creating all the dependency objects. 
+Now, what if we decide to ditch MRFWheels in the future and want to use 
+Yokohama Wheels?
+We will need to recreate the car object with a new Yokohama dependency. 
+But when using dependency injection (DI), we can change the Wheels at 
+runtime
+
+2 most common way of implementing DI
+ -Constructor Based
+ -Setter Based
+
+1) Constructor Based Dependency Injection
+ -Creating an interface and class that is to be dependent on another class
+like FortuneService interface and implementing class HappyFortune. Creating
+a reference in Cricket class as private FortuneService fs and in the
+constructor assigning the value as this.fs = fs. The Bean configuration will
+be as,
+<bean id="myFortune" class="uaspring.HappyFortune"></bean>
+<bean id="myCricCoach" class="uaspring.Cricket">
+  <constructor-arg ref="myFortune" />
+</bean>
+Now creating a method in Cricket class as getFortune and defining the
+method as return fs.getFortune();
+
+2) Setter Injection
+ -Similar scenario as before, but the difference is that instead of a 
+constructor we assign value in the method as, (Referring to Football class
+this time)
+public void setFortuneService(FortuneService fs){ this.fs = fs; }
+and also creating the same method as getFortune(){ return fs.getFortune(); }
+Bean configuration will be as,
+<bean id="myFortune" class="uaspring.HappyFortune"></bean>
+<bean id="myCricCoach" class="uaspring.Football">
+  <property name="fortuneService" ref="myFortune" />
+</bean>
+Here the name attribute will target the setFortuneService method. So the
+naming convention is important.
+
+Injecting the values as passing it as a parameter.
+-Creating private fields as private String emailAddress, team;
+-Creating the getter and setter in Cricket class like,
+setEmailAddress and getEmailAddress
+setTeam and getTeam
+In Bean configuration,
+<bean name="myCricCoach" ref="uaspring.Cricket">
+  <property name="emailAddress" value="usama@gmail.com" />
+  <property name="team" value="Pakistan" />
+</bean>
+*name attribute will automatically call setEmailAddress and setTeam method.
+
+Loading the literals from the file
+-Create a new file in src folder as sports.properties
+-Inside it write
+foo.email="usama@gmail.com"
+foo.team="Pakistan"
+-Inside applicationContext.xml, load the file as,
+<context:property-placeholder location="classpath:sports.properties" />
+-To use the values
+<bean id="myFbCoach" ref="uaspring.Football">
+  <property name="emailAddress" value="{foo.email}" />
+  <property name="team" value="{foo.team}" />
+</bean>
+-------------------------------------------------------
+
+Bean Scope
+-The scope refers to the lifecycle of the scope
+  *How long the bean would live
+  *How many instances would be created
+  *How is the bean shared
+
+-By default the scope of the bean is singleton, which means that only one
+instance of the bean will be created. The components requests the particular
+bean will get the reference of that instance.
+-We can change the scope of the bean as,
+<bean id="defaultBean" scope="singleton"></bean>
+
+-Another scope is the 'prototype' scope in which the components requests
+the particular bean will get the new instance of that bean.
+
+Bean Lifecycle
+ Bean Instantiated -> Dependencies Injected -> Internal Spring Processing
+ -> Custom Init Method -> Bean Ready for use -> Custom Destroy Method
+ -> Stop
+
+-We can create our initial and destroy method when the bean is loaded and
+destroyed respectively like in Cricket class we can define startUp and
+cleanUp method and in the bean configuration using it as,
+<bean id="myCricCoach" ref="uaspring.Cricket" init-method="startUp"
+destroy-method="cleanUp"></bean>
+-------------------------------------------------------
+
+Spring Configuration using Java Annotations IoC.
+
+Java Annotations
+-Labels for classes
+-Meta data for classes (like meta data for shoe will be its color, size
+model etc..)
+-Processed at compile time or run time for special processing.
+
+By using annotations, we can get rid of verbose xml configurations.
+Instead of configuring the bean every time we will use @Component
+annotation with id as parameter and this will automatically create the
+bean for us in the springg container. Not giving any id as parameter, spring
+will use the class name as the id.
+
+@Component("myCricCoach")
+public class Cricket implements Coach{
+}
+In the main app
+Coach coach = context.getBean("myCricCoach", Coach.class);
+------------------------------------------------------------
+
+Spring Configuration using Java Annotations DI.
+
+-We use @Autowired annotation for DI
+-DI in this approach can be used in 3 ways
+  *Constructor Injection
+  *Setter Injection
+  *Field Injection
+-When we place @Autowired above constructor, spring will check all 
+@Component is there any implementation of FortuneService interface. It
+will find HappyFortune and inject it into the contructor of Cricket class.
+Similar scenario happens for Setter Injection
+
+*What if we have multiple implementation of FortuneService interface?
+(will be covered later)
+
+-For field injection, Spring will automatically assign the object to the
+field decorated with Autowired. It is done behind the scenes using the
+Java technology called Reflection.
+
+@Autowired
+private FortuneService fs;
+No setters or constructor required for assigning object.
+
+*What if we have multiple implementation of FortuneService interface?
+-For that we have the @Qualifier annotation where we give the bean id
+of that particular component.
+Example:
+..
+If we have 3 implementation of FortuneService like RandomFortune, HappyFortune
+and DatabaseFortune, we will have to give the @Qualifier and the respective
+bean id.
+**Qualifier for constructor and methods should be given as arguement.
+Example:
+..
+1- @Autowired
+   @Qualifier("happyFortune")
+   private FortuneService fs;
+
+2- @Autowired
+   public void setMyFortune(@Qualifier("randomFortune") FortuneService fs)
+   { // ... }
+
+3- @Autowired
+   public Cricket(@Qualifier("randomFortune") FortuneService fs)
+   { // ... }
+---------------------------------------------------
+
+Spring Configuration with Java Source Code
+
+-No xml file required
+-Spring knows to scan the component with @ComponentScan annotation.
+
+Creating a class JavaConfig and inside it,
+@Configuration
+@ComponentScan("uaspring.java.code")
+public class JavaConfig{
+}
+-We define the package name and it will scan all the classes in this
+package that has the annotation @Component
+-No change in the Cricket, Football class
+-Inside main instead of ClassPathXmlApplicationContext, we use
+AnnotationConfigApplicationContext class to define the bean, retrive
+and use the bean.
+AnnotationConfigApplicationContext context = 
+  new AnnotationConfigApplicationContext(JavaConfig.class);
+
+-@Configuration defines the XML of that configuration
+-Just as previously we defined beans in the xml file, same thing we do
+in JavaConfig class using java source code like,
+
+<bean id="fortuneService" class="uaspring.java.code.HappyFortune"></bean>
+will be same as
+@Bean
+public FortuneService fortuneService(){ return new HappyFortune(); }
+
+For Constructor injection we do in Xml as,
+<bean id="myCricCoach" class="uaspring.java.code.Cricket">
+  <constructor-arg ref="fortuneService" />
+</bean>
+will be same as
+@Bean
+public Coach myCricCoach(){ return new Cricket(fortuneService()); }
+
+-No additional annotations like @Autowired @Qualifiers @Component required
+in classes like Cricket, Football etc...
+-Also no need of @ComponentScan in the JavaConfig.class
+
+Accessing the literals
+@PropertySource allows to include any file in the configuration
+-Just like we added in xml like
+<context:property-placeholder location="classpath:sports.properties "/>
+will be same as,
+
+@PropertySource("classpath:sports.properties")
+public class JavaConfig{
+ // .......
+}
+
+Accessing it like in Cricket class
+@Value("${foo.email}")
+private String emailAddress;
+
+@Value("${foo.team}")
+private String team;
+
+public String getEmailAddress(){ return this.emailAddress; }
+public String getTeam(){ return this.team; }
+----------------------------------------------------------

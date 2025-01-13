@@ -1,0 +1,26 @@
+Abstract Class :
+
+1 - Have constructors.
+
+2 - Not necessarily for the class inheriting it to implement all the methods.
+
+3 - Doesn't support multiple inheritance .
+
+4- Can have abstract as well as non abstract methods.
+
+5- Not necessary for classes inheriting abstract class to provide definition of all the functions that exist in the abstract class.
+
+
+
+Interface :
+
+
+1 - Doesn't have constructors.
+
+2 -Necessarily for the class inheriting it to implement all the methods.
+
+3 - Supports multiple inheritance .
+
+4- Can have only abstract methods.
+
+5- Necessary for classes implementing interface to provide definition of all the functions that exist in interface.

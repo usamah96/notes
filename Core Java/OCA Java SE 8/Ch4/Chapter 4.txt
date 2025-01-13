@@ -1,0 +1,339 @@
+Methods and Encapsulation
+---
+
+A simple method is as follows
+public final void nap(int a)
+
+-The access modifier (public) and optional specifier (final) are not required to create a method
+-When you dont put any access modifier, the default (package private) access.
+
+public: method can be called from any class
+private: method can be called from within the class
+protected: method can only be called from classes in the same package or subclass
+default (package private): The method can only be called from classes in the same package.
+
+default void test() // Does not compile as default is not a valid access
+
+Optional Specifier Egs.
+static, final, abstract, synchronized, native etc...
+
+-Some of the combinations are legal like static final or final static. Both are similar order does not matter
+-Not all the combinations are allowed.
+
+Egs.
+public void walk1() {}
+public final void walk2() {}
+public static final void walk3() {} 
+public final static void walk4() {}
+public modifier void walk5() {} // Does not compile. modifier is not a valid Optional Specifier
+public void final walk6() {} // Does not compile. Optional Specifier cannot be after the return type
+final public void walk7() {} // Java allows the optional specifi ers to appear before the access modifier. 
+
+
+Method Name
+-Method name follows the same rule as with the variables
+-It cannot start with a number or any reserved keyword. It can contain any alphabat, numbers, $ or _
+
+
+Variable Arguements or Varargs
+-Looks like an array but is different from array
+-Can be the last parameter of a method which means we can only have 1 varargs per method
+-Ommitting the vararg parameter when calling the function will create an array of length 0
+Egs.
+public static void test(int... nums){
+  for(int val : nums){
+    System.out.print(val);
+  }
+}
+
+Possible calls
+test(1); test(1,2); test(new int[] {1,2,3})
+test(null) // This will throw Null Pointer Exception. Java will consider array reference as null but the for loop will fail
+
+
+
+Private Access
+Eg
+Inside same pacakge
+class A{ 
+  private void test(){return} 
+}
+class B{ 
+  psvm(){ A a = new A(); a.test() } // Does not compile as private cannot be accessed with different classes
+}
+
+Default Access
+Eg
+Inside same package
+class A{ 
+  void test(){return} 
+}
+class B{ 
+  psvm(){ A a = new A(); a.test() } // Compiles
+}
+class C extends A{ 
+  psvm(){ this.test() } // Compiles
+}
+
+-If the classes are in different package than it won't compile as default restrict different package
+
+
+Protected Access
+Eg1
+Inside Same package
+class A{ 
+  protected void test(){return} 
+}
+class B{ 
+  psvm(){ A a = new A(); a.test() } // Compiles
+}
+class C extends A{ 
+  psvm(){ this.test() } // Compiles
+}
+
+Eg2
+Inside different package
+class A{ 
+  protected void test(){return} 
+}
+class B{ 
+  psvm(){ A a = new A(); a.test() } // Does not compile because it does not extends
+}
+class C extends A{ 
+  psvm(){ this.test() } // Compiles
+}
+
+
+Public Access
+-Can be accessed from anywhere regardless of the package
+
+
+Designing Static Methods and Fields
+
+-Two main purpose for static method
+1)For utility or helper methods that don’t require any object state. Since there is no need
+to access instance variables, having static methods eliminates the need for the caller to
+instantiate the object just to call the method.
+
+2)For state that is shared by all instances of a class, like a counter. All instances must
+share the same state. Methods that merely use that state should be static as well.
+
+-We can use an instance of the object to call a static method. The compiler checks for the type of the reference and
+uses that instead of the object.
+-Static will only work with public access modifiers when accessing outside of the class in different package. Same package
+will allow protected, default and public
+
+class Koala{ public static int count = 0; }
+Koala k = new Koala();
+1 -> System.out.println(k.count); // Output 0. k is of Koala type
+2 -> k = null;
+3 - > System.out.println(k.count);  // Output 0. k is still of Koala type
+
+Line 1 sees that k is a Koala and count is a static variable, so it reads that static variable. 
+Line 3 does the same thing. Java doesn’t care that k happens to be null. Since we are looking for a static, it doesn’t matter.
+
+
+
+Static vs Instance
+-Static can only call static members or methods
+-Instance can access instance methods or members
+
+Static Initialization
+
+private static final int NUM_SECONDS_PER_HOUR;
+static {
+ int numSecondsPerMinute = 60;
+ int numMinutesPerHour = 60;
+ NUM_SECONDS_PER_HOUR = numSecondsPerMinute * numMinutesPerHour;
+}
+
+-The static initializer runs when the class is first used.
+-The static final members are referred to as constants and it should be assigned either at the initializing level
+or when the static initializer is run
+
+Eg:
+
+private static int one;
+private static final int two;
+private static final int three = 3;
+private static final int four; // Does not compile because it is never initialized
+static {
+one = 1;
+two = 2;
+three = 3; // Does not compile because it is re-assigned
+two = 4; // Does not compile because it is re-assigned
+}
+
+Static Imports
+-The way of importing any static members or methods is different than normal import. We have to add static keyword after
+import. Like in Arrays class we have asList static method. We can do
+..
+import static java.util.Arrays.asList;
+List<String> values = asList("Hello", "World");
+
+-If we have our own implementation of asList in our class, java will give preference to our implemented method rather
+than the asList static method of the Arrays class.
+
+Overloading Methods
+-Everything other than the method signature can vary for the overloaded method.
+-We are not allowed to overload the method with the same paramter list.
+
+Eg1
+public void fly(int numMiles) { }
+public int fly(int numMiles) { } // Does not compile because it only differ by return type
+
+Eg2
+public void fly(int numMiles) { }
+public static void fly(int numMiles) { } // Does not compile as one is instance and other is static
+
+Eg3
+public void fly(int[] lengths) { }
+public void fly(int... lengths) { } // Does not compile because java treats varargs as they were an array
+
+Eg4
+public void fly(int numMiles) { }
+public void fly(Integer numMiles) { }
+
+-Calling fly(1) will call the "int numMiles" version of fly because java tries to use the most specific paramter list.
+However if we dont provide the "int numMiles" version, then java will autobox and call the "Integer numMiles" version
+of the fly
+
+Eg5
+public void fly(int numMiles) { }
+public void fly(long numMiles) { }
+
+fly(123) // Will call the int paramter version
+fly(123L) // Will call the long paramter version
+
+-Java works in a similar way with primitives also. It finds the most specific type. However if we remove the fly method
+with int paramter list than in both the fly calls, java will call the long paramter version of fly.
+-Java can accept wider types. An int can be passed to a method taking long paramter. But a long cannot be passed to a 
+method with int paramter. We have to cast it down to int type.
+
+Eg6
+public void fly(Long numMiles) { }
+public void fly(Long... numMiles) { }
+
+fly(4L) // Will call the fly method with Long paramter
+fly(4)
+-Does not compile because Java can convert to int to long or int to Integer. It cannot perform 2 step by converting
+int to long and then long to Long. if we have a method like fly(Object o) then java will call this method because an
+int can be converted to Integer and an Integer is an Object.
+
+
+Final Fields
+-Final instance variables must be assigned a value exactly once.
+-The assignment can be done at the constructor level as as constructors are part of the initialization process
+
+Eg
+private final int value;
+private final String name = "Usama";
+
+public Class(){ this.value = 10; }
+
+
+
+Order of the Initialization
+1) If there is a super class, initialize it first
+2) Static variable declaration and static initializer in the order they appear
+3) Instance variable declaration and instance initializer in the order they appear
+4) The constructor
+
+-These 4 rules are applied if there is a new instance created
+-If there is no new instance is created then only first 2 rules are applied because next 2 are related to instance and
+constructors
+
+
+Creating Immutable Classes
+-One way is to omit the getters.
+-But what if we want to set the initial value. We do so with constructors
+
+Eg1
+class Immutable{
+  private int value;
+  public Immutable(int value){ this.value = value; }
+  public int getValue(){ return this.value; }
+}
+
+Eg2
+class NotImmutable{
+  private StringBuilder sb;
+  public Immutable(StringBuilder sb){ this.sb = sb; }
+  public StringBuilder getValue(){ return this.sb; }
+}
+
+StringBuilder sb = new StringBuilder("Hello");
+NotImmutable not = new NotImmutable(sb);
+sb.append(" World");
+StringBuilder sb_1 = not.getValue();
+sb_1.append(" Test");
+Sout(not.getValue()) Output: Hello World Test
+
+-In this class we have only getter but we can see that it is not immutable as we are setting the reference to StringBuilder
+and the caller gets the same reference. To avoid this we will have to create a new object
+
+class NotImmutable{
+  private StringBuilder sb;
+  public Immutable(StringBuilder sb){ this.sb = new StringBuilder(sb); }
+  public StringBuilder getValue(){ return new StringBuilder(this.sb); }
+}
+
+
+
+Lambdas
+-Lambdas work with interfaces that have only one method. These are called functional interfaces
+-Java replies on context when figuring out what lambda expressions mean.
+-If a interface method takes one parameter of type int or any class type and the return type
+is boolean then our lambda should reflect the same thing
+
+Eg
+
+class Animal{
+  boolean canHop, canSwim
+  boolean canHop(){return this.canHop;}
+  boolean canSwim(){return this.canSwin;}
+}
+interface Test{
+  boolean test(Animal a)
+}
+
+public static void print(List<Animals> animals, Test t)
+psvm(){
+  List<Animals> animals = ....
+  print(animals, a -> a.canHop())
+  Or
+  print(animals, a -> a.canSwim())  
+}
+
+-Without lambda we would have to do something like this
+
+public class CheckIfHopper implements Test {
+ public boolean test(Animal a) {
+ return a.canHop();
+ }
+}
+-The calling will be done as print(animals, new CheckIfHopper());
+-And similairy for the canSwim we have to create a new class for it CheckIfSwim
+
+We’d have to create lots of interfaces like this to use lambdas.
+Java recognizes that this is a common problem and provides such an interface called Predicate which 
+takes Generic parameter and returns boolean.
+..
+public interface Predicate<T>{
+  boolean test(T t);
+}
+
+Now we can simply do
+
+public void print(List<Animals> animals, Predicate<Animal> pred)
+and call it as
+print(animals, a -> a.canHop());
+
+
+Extras
+--
+-We cannot call this() to call default ctor from any where inside instance method
+-The default constructor is only written by the compiler if no user-defined constructors were provided. this() can only 
+be called from a constructor in the same class. Since there can be no user-defined constructors in the class if a default 
+constructor was created, it is impossible to call the default constructor written by the compiler using this().
+- Both instance and static initializers are able to access static variables

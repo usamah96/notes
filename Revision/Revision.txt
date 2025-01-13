@@ -1,0 +1,443 @@
+Pillars of OOP
+
+Abstraction: Hiding of information and only. User not concerned how the work is
+done. User only concerned about the work that is being done.
+
+Encapsulation: Binding of data and preventing it from interference from outside.
+Providing getters and setters. Using condition in setter to avoid setting invalid
+values of a variable.
+
+Inheritance: Parent Child relationship
+Single Level: One Child extends Base class
+Multi-level: Grant Parent, Parent, Child relationship
+Multiple: Child having multiple parent (Not supported in java)
+Hierachical: Multiple Childs of a parent
+
+Polymorphism: Ability of object to take many forms like parent class referreing
+to child class eg: Base b = new Child();
+
+Static and Dynamic
+Static: Method overloading
+Dynamic: Method overriding
+
+-------------------------------------------------------------
+Upcasting
+Base obj = (Base) new Child();
+
+DownCasting
+Base obj = new Child();
+Child c = (Child) obj;
+
+-------------------------------------------------------------
+Object class is the base class of everything in Java.
+
+Static class cannot be instantiated. Can contain only static members. Cannot be
+inherited. eg: Temperature class converting Celcuis to Farenhiet. Math class in C#
+Static methods can not be overridden because they are not part of the object's 
+state.
+
+--------------------------------------------------------------
+Linear vs Non-Linear Data structure
+
+Linear: Organized in order one by one
+Non-Linear: Hierarchical in a tree like format
+
+Linear: Easy traversing. Can be done in one go
+Non-Linear: Cannot be done in one go
+----------------------------------------------------------------
+
+Race condition occurs when 2 process attempt to change the value of certain thing
+at the same time. It can be prevented by serialization
+
+-----------------------------------------------------------------
+
+Sorting algorithms
+
+Selection
+-Every time the minimum element is fetched from unsorted array and put it at the
+beginning of array. Complexity O(n^2). Space O(1)
+
+Bubble
+-Swapping of adjacent element repeatedly if ther are in wrong order
+Complexity O(n^2). Space O(1)
+
+Insertion
+-Compares with all the previous values and put the values at right place
+Complexity O(n^2). Space O(1)
+
+Merge
+-Divinde and Conquer algorithm
+Complexity O(nLogn) because it divides the array (Logn) and merges in linear time (n).
+Space O(n)
+
+Quick
+-Using the pivot point for sorting. Using i and j for demonstration. Move j every
+time of loop and move i if j <= pivot
+Complexity: Worst O(n^2) selecting pivot last element and array is sorted. Best
+O(logn) selecting pivot as middle element
+
+Count
+-Maintain another array. First calculate number of times the element occurs in 
+the original array. Modify the array to update the index value by adding the 
+previous and current index value. Like i=0 and j=1; sum = arr[i] + arr[j];
+arr[j] = sum; Do this repeatedly till end. Then traverse original unsorted array
+in such a way that its individual value gives index of modified array. Access the
+value with that index and that value becomes the index of new sorted array with
+value from original array.
+Complexity O(n+k). Space O(n+k) 
+
+Radix
+-Sorting on the basis of least significant place to most significant place
+Complexity O(d*(n+b))
+
+Bucket
+-Create separate bucket for each index. Place the values in bucket according to the
+first digit. Like 26 and 23 will go in bucket 2. Sort each bucket separately. Take
+out elements from bucket and place in new sorted array.
+Complexity depends upon sorting algo used in bucket and number of buckets used.
+Worst case it takes O(n^2) when all elements are in one bucket.
+
+Heap
+-For max heap, first create a max heap in which the parent node will be bigger
+than its 2 child nodes. child node formula for parent => 2(n)+1 and 2(n)+2.
+Swap the first and last element and then create heap once again with one element
+less from last every time.
+Complexity O(nLogn) as building heap takes linear time O(n).
+
+Binary Search
+Complexity O(Logn)
+
+When to use which algo
+
+When items are few - Insertion
+When items are mostly sorted - Insertion
+
+-------------------------------------------------------------------
+
+Final vs Const
+
+-Final class cannot be inherited, Final methods cannot be overriden, Final variables
+cannot be changed. (String class. Immutable)
+-Const variables also cannot be changed
+-Const variable should have the value at compile time. Final can be declared and
+initialized at run time like in the constructor.
+
+To make static class in java use keyword final before class name and make all 
+functions static
+
+----------------------------------------------------------------------
+
+A class is a blue print from which individual objects are created
+An Object is a runtime entity whos state are its fileds and behaviors are methods
+
+Making a class abstract or creating a private constructor of a class will prevent
+
+A parameter is a variable of a method definition and arguement is the actual
+value of that variable (actual data that is being passed)
+
+If an abstract class contains only abstract method declarations, it 
+should be declared as an interface instead
+
+----------------------------------------------------------------------
+
+A Web Service is a collection of protocols and standards that is used
+for exchanging data between application
+
+SOAP is a XML based protocol for acessing the web service.
+
+REST is a web based architecture which provides data communication through
+http protocol for accessing the resource. THe resources can be represented by 
+text, xml and json.
+
+REST vs SOAP
+
+-Soap is a protocol, Rest is architecture
+-Soap defines its own security
+-Soap defines standards to be strictly followed
+-Soap only support xml based messaging which is difficult to parse, Rest can
+support Html, Xml, Json, Csv, Text. Json easy to parse hence sending data in json
+requires less computing power.
+-REST is also able to cache data transfers, so when another endpoint requests an 
+already completed query, the API can use the data from the previous request.
+-Rest can use SOAP. Soap cannot use RESt as it is a protocol.
+
+Client sending request and server responding to that request is termed as
+messaging in web services
+
+Core components of http request include
+Verb: GET POST PUT DELETE etc
+URI: Where resource is located
+Version: Version of http
+Request header: Contains metadata
+Request Body: Message content
+
+Core components of http response include
+Status Code
+Version
+Response header
+Response Body
+
+idempotent operation refers to same results no matter how many times the operation
+is invoked. PUT and DELETE method should be idempotent
+its instantiation
+
+------------------------------------------------------------------------
+
+Immutable object: Values and state cannot be changed after its creation. You have
+to create a new object. Like String and int
+
+Mutable: Changable Object values. StringBuilder / StringBuffer
+
+----------------------------------------------------------------------
+
+Data Structure is a way of organizing the data
+
+-Minimum 2 queues required to implement prioritty queue. One for storing data
+and one for storing priorities.
+
+-A hash function is used to map the data of any size onto the data of fix size
+
+Enumerator vs Iterator
+
+You can only traverse with enumerator. Iterator allows modification to the data
+while traversing like removing an item
+
+---------------------------------------------------------------------
+
+Early vs Late Binding
+
+The short answer is that early (or static) binding refers to compile time 
+binding(Overloading) and late (or dynamic) binding refers to runtime binding 
+(for example when you use reflection) (Overriding).
+
+--------------------------------------------------------------------
+
+Before Generics, we need to type cast.
+
+List list = new ArrayList();  
+list.add("hello");  
+String s = (String) list.get(0); //typecasting  
+After Generics, we don't need to typecast the object.
+
+List<String> list = new ArrayList<String>();  
+list.add("hello");  
+String s = list.get(0); 
+
+-------------------------------------------------------------------
+
+Tree traversal
+1- BFS
+2- DFS (post order, in order, pre order)
+
+---------------------------------------------------------------------
+
+DB
+
+ACID Properties
+
+We need ACID properties to maintain our database consistent. If a trnasaction
+satisfies these properties than db will be consistent
+
+Atomicity - A transaction should be in atomic nature which means either the
+instructions should execute completely or none of the instruction should be 
+executed. Partial execution of a transaction makes no sense.
+
+Consistency - If a db is consistent before the execution of transaction then it
+should also be consistent after the execution of transaction. if AID properties
+holds good then Consistency is automatically achieved. No individual requirement
+is there. It is a system's programmer responsibility.
+eg: transferring money from account A to account B. A+B should be equal before
+transferring and after transferring.
+
+Isolation - If in a dbms multiple transaction are executed at the same time and
+none of them are effected by each other then we can say that transaction
+enjoys isolation. We cannot do practical isolation, that is executing one 
+transaction at one time because that will make the system very slow.
+
+Durability = Whatever changes made to the database, that change should be 
+precise irrespective of hardware or software failure. The value updated to
+database should not be changed automatically until and unless somebody changes it.
+
+Functional Dependency
+
+If there is a functional dependency from alpha to beta, then on any value
+of alpha, there will be only single value of beta.
+For the same dependency, differenct values of alpha can have same value of
+beta.
+For the same dependency, on single value of aplha cannot there cannot be 
+different values of beta
+
+Normalization
+
+We do Normalization to organize our data to avoid data redundancy, insertion,
+update and delete anomaly.
+
+Insertion Anomly: Same piece of information gets repeated when adding the new
+record.
+
+Deletion Anomly: Deleting one piece of information results in deletion of
+another peice of information unintentionally.
+
+Update Anomly: Attribute will have to be updated in every row because of
+redundancy
+
+Student and Branch Information example
+
+Redundancy leads to inconsistency
+For example if HOD records changes in some of the record and some of the record
+contain previous HOD record then data will be inconsistent.
+
+Keys,
+
+Super Key: Single Or Set of attributes that can find all other attributes in a
+Database.
+For example: in R(A,B,C,D) 
+If AB -> CD then AB is a Super Key, also
+If A -> BCD then A is a Super Key
+
+Candidate Key: Minimal Super Key is a candidate key. If a subset of super key is
+also a super key then that subset will become a candidate key and previos set
+will only be considered as super key and not candidate key.
+For example:
+If ABC -> D, AB -> CD and A -> BCD then,
+ABC and AB will be considered as Super Key and Not Candidate Key, but
+A will be considered as Candidate Key and Super Key
+
+Primary Key: A Primary Key is also a candidate key. Primary Key is just a new
+name to candidate key given by database administrator 
+
+2NF: A Database is in 2NF if there is no partial dependency.
+A partial dependency refers to a subset of candidate key (prime attribute) is
+functionaly dependent upon a non prime attribute like,
+AB is a candidate key and
+AB -> D
+B -> C, here B->C refers to partial dependency
+
+Solution
+Create one table with only Candidate key and its dependecy
+Create one table that is related to partial dependency
+R1(A,B,D) and R2(B, C)
+
+3NF: A Database is in 3NF if there is no transitive dependeny
+A transitive dependeny refers to a non prime attribute is funtionally 
+dependent upon non prime attribute 
+for example: A is a candidate key and
+A -> B
+B -> C, here B->C refers to transitive dependency
+
+**To directly check for 3NF, check if alpha is a super key Or beta is a prime
+attribute. If one is satisfied then ok and if both not satisfied then table is not
+in 3NF
+
+Solution
+AB -> C
+A -> DE
+B -> F
+F -> GM
+D -> IJ
+
+Candidate key is AB
+Here A -> DE violates the rule. Separating the table
+R1(A,B,C)
+R2(A,D,E,I,J) = R2'(A,D,E) and R2''(D,I.J)
+B -> F also violating so,
+R3(B,F,G,M) = R3'(B,F) and R3''(F,G,M)
+
+*Check one by one the dependency and separate the tables accordingly.
+
+BCNF: A DB is in BCNF if there is no such dependecy of a prime/non-prime attribute
+is finding a prime atribute. In all dependecies, alpha must be a super key for
+BCNF to satisfy
+
+ER Diagram
+
+Entity: Any object in real world that has some set of attriutes or values that
+distinguishes it from other entity. Object can not always be an entity
+(Marker example)
+
+Tangible Entity: That exists physically eg: Locker of Bank, Car, Pen
+Intangible: That exists locally eg: Bank Account
+
+Entity Set: Collection of similar types of entities.
+
+Attributes
+Simple: Represent by oval connected to rectangle (entity set eg: Student)
+Composite: Represent by oval connected by oval (name: fname, lname, mname)
+Multivalued: Represent by double oval (phone num eg: person can have multiple
+phone num. Create another table in database for it)
+Derived: Represent by dotted oval (eg: age)
+
+Strong Entity (Rectangle): Entity Set having attributes that can be used as
+a candidate key to find records eg: Student
+Weak Entity (Double Rectangle): Entity Set having attributes cannot be used as
+a candidate key. They are dependent upon Strong entities eg: Payment
+eg:
+User(Strong) has a Profile(Weak).
+
+
+Recursive Relationship: Entity in a relationship with itself
+eg: User is a friend of a User.
+
+Ternary Relationship: 3 entities involved in a relationship
+eg: User Blog and Comments -> User comments on a blog. Entity 'Comment' is placed
+on 'comments' relationship
+Consider other 2 entities together when applying the cardinality on 3rd one.
+
+|| strictly one
+>o 0 or many
+>| 1 or many
+
+Er To Relational Model
+
+-For Multivalued attribute like Phone Number, create a separate table for it with
+foriegn key.
+-For 1:1, put foriegn key on either side
+-For 1:M or M:1, put FK on M side
+-For M:M, create another table for relation
+
+Stored Procedures
+-Can and cannot return a value
+-Can have input and output parameters
+-Can call a function
+-Cannot use between select statements
+
+Create Procedure Proc1 @Department Varchar(20), @Gender Integer
+As
+BEGIN
+Select * From emp Where Department = @Department And Gender = @Gender
+END;
+
+Calling:
+Execute Proc1;
+
+Functions
+-Should return a value
+-Cannot have output parameters
+-Cannot call stored procedure
+-Can be used between select statements
+
+Create Function Func1 (@parameter Integer)
+Returns Integer
+As
+Begin
+return (Select Sal From emp Where parameter = @parameter)
+End
+
+Calling:
+Func1(123)
+----------------------------------------------------------------------------
+
+A service-oriented architecture is essentially a collection of services. 
+These services communicate with each other via communication protocol
+
+CORBA is a standard which is developed to provide interoperability among 
+distributed objects. It allows programs at different locations and developed 
+by different vendors to communicate in a network through an "interface broker."
+
+Verification:
+Verification is a term that refers to the set of activities which ensure that 
+software implements a specific function.
+
+Validation:
+It refers to the set of activities which ensure that software that has been built 
+according to the need of clients.

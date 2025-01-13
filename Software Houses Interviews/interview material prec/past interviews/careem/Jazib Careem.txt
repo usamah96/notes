@@ -1,0 +1,85 @@
+Gave Interview at Careem
+they have multiple stages
+- pehle online test hai unka at hackerrank.com
+3 programming questions and 5 mcq, 
+programming mein 2 speed programming 
+(logical and easy )
+and aik data structure (i got BST)
+-uskay baat aik call per interview with HR
+she asks about yourself, what u like, whats your domain like kis technology py kaam krna chao gy and why
+careem ki HR is very tricky and asks about expected salary on phone jabkay expected salary bilkul end mein after all the interviews pochny chaye
+uskay baad they give u a date usdin apaky 5 interviews hoty hain
+-1 with HR
+-4 Technical Interviews without gap
+matlab gap sirf yeh ha
+aik banda uth k jaata ha 
+and aglay ko apna kaam chor k aanay ka time
+max 5-10 min
+HR interview is less of an interview
+woh sirf apkay preferences etc puchy gy and describe krengy
+how careem is how it works and how they are planning to expand. 
+She asks u ur domain 
+1- Java Backend
+2- Html css 
+3- android
+then they fix the interviewer accordingly
+technical mein they asked me
+-OOP k 4 pillars btao?
+and then yeh btao yeh android mein kahan hain like for Inheritance i said: Every thing is inherited from a Context Class. and every static functions needs/require a context variable to use its variables
+-Polymorphism kahan hain?
+to like findViewbyId() it returns a view type that is typecasted at run time is trhan
+-for encapsulation kyun krty hain variable hide krny ka faida?
+to i said: its not about secrecy. by example explain kia like human ki class ha with an int weight to koi meri class user krah ho
+he can access tha variable directly and minus mein weight set krskta ha
+but aik set k function mein i can validate
+setWeight(int weiight){
+if weight < 0
+throw exception
+isliye encapsulation to stop errors in coworking environment
+-Abstraction kyun krty hain?
+-design patterns py bohat ragar rahy hain
+i told them k mene design patterns as a course nhi parah ha
+he asked me k kn kn design patterns atay hain?
+i said:
+Singleton
+adapter
+oberver
+builder
+-singleton android mein kahan use hota ha
+-Adapter kahan use hoty hain
+-purpose of Adapter?
+-how do u think watsapp works? communicaiton kese hoty hain b/w users?
+-how do u think careem works from booking ride to captain recieves notification?
+uskay elawa sabny coding krwaye
+1- Linkedlist reverse krdo
+2- given time in seconds output a string with
+hours "colon" minutes
+3- u have a function that gets called everytime u receive a msg
+write another function than can tell me how many messages are recived per minute
+4- aik array dy huwe hain with
+strings (directory name) and 
+single dot (for root directory)
+double dot (for one directory above)
+given this array output krdo
+final directory kia hogy
+like
+{ aaa, aabb, cc, ..}
+its becomes
+\aaa \ aabb\ cc
+(and now there is double dot)
+\aaa, \aabb\
+threading k concepts
+deadlocks
+complexity
+procedures
+triggers
+mutable objects
+what is SOLID
+what is NP hard,
+aur bhe concepts thay
+i cannot recall everything
+1 day
+3 bje shru 
+6:30 tak
+3:30 hrs
+mein 5 interviews

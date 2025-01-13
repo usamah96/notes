@@ -1,0 +1,1415 @@
+Advance Javascript
+------------------------------------
+
+Foundation I
+-----------------------
+
+ECMA Script defines some standards that should be followed when creating a JS Engine
+The working of engine is totally upto the creater, but the standard should be followed.
+
+Call Stack and Memory Heap
+-Memory Heaps used for storing complex objects, arrays and other stuff
+Call Stack keeps track of where we are in our code at the moment and also store simple
+variables that points to some value.
+
+Javascript use Mark and Sweep algorithm for garbage collection
+
+Some examples of memory leaks
+1) Global Variables
+2) Adding event listeners and not removing it (Problem in SPA when user back and forths
+in a single page)
+eg: document.getElementById('button').addEventListener('click', ()=>{ // });
+3) setInterval()
+The setInterval runs piece of code after every time that is assigned and if there is
+memory allocation inside it, then the memory is allocated every time the code is run.
+
+Javascript Runtime
+-The browser has the call stack, memory heap and also Web Api that contains functions
+like setTimeout(), fetch(), etc which the call stack doesn't care because it runs
+in the background
+If setTimeout function gets pushed into call stack, the call stack identifies that 
+it is something related to Web Api so it sends the function to Web Api where the timer
+is started. When the timer ends, the Web Api pushes the code into a Callback Queue.
+There is a thing called Event Loop which continuously checks the callback queue that
+if there is something in it to be added into call stack. If it finds something, then 
+it checks 2 thing. 1) If the call stack is empty, 2) If the whole code has run. If
+the 2 conditions satisfies, then it takes the code from callback queue and pushes into
+the call stack where it gets run.
+
+eg:
+console.log(1);
+setTimeout(()=>{console.log(2)}, 3000);
+console.log(3);
+
+Output: 1 3 2
+
+Even if we put 0 seconds like setTimeout(()=>{console.log(2)}, 0)
+No matter how fast the setTimeout executes, when the call stack gets empty and whole
+code has run, only then it will be fetched from callback queue and gets executed.
+-------------------------------------------------
+
+Foundation II
+---------------------------------
+
+Execution Context
+-The JS Engine creates a global execution context initially when the JS file is created.
+This global context gets pushed in call stack and it is hidden. All other code and
+function calls get pushed after the global context.
+This global context provides 2 things. 1) this keyword and 2) global object (window) 
+where all the variables and function calls are written.
+Every time a function gets called and pushed into call stack, a new execution context
+is created in which there occur 2 phases. 1) creation phase and 2) execution phase
+
+
+
+Lexical Enviroment
+-It is where your code is written
+A new lexical enviroment can be created with curly braces {}
+eg:
+<script> </script>
+Initially the lexical enviroment is global
+
+<script>
+// global lexical enviroment
+
+{ // new lexical enviroment
+  { // another lexical enviroment
+  }
+}
+</script>
+
+
+
+Hoisting
+-It is the behavior of moving the function declaration and variables to the top of their
+respective enviroments.
+It occurs only with var and function keyword and to avoid hoisting use let and const
+Unlike functions, variables are partially hoisted which means that value is initially
+set to undefined to variables.
+The hoising occurs in the creation phase of execution context
+
+eg:
+console.log(temp) // undefined
+console.log(doWorK()) // something
+
+var temp = 'variable';
+function doWork(){ return 'something' }
+
+//function expression (hoisted with value undefined because of var keyword)
+var doWork = () => { return 'something' };
+
+//function declaration
+function doWork(){ // }
+..
+
+This does not gets hoisted because the JS engine sees '(' instead of var or function
+(function doWork(){ return 'something' });
+
+More eg on hoisting:
+..
+Without hoisting code,
+
+var favFood = 'grapes';
+
+var favTh = function(){ 
+console.log(favFood); 
+var favFood = 'sushi'; 
+console.log(favFood) 
+}
+
+favTh();
+Output:- undefined sushi
+
+With Hoisting code,
+
+var favFood = undefined
+var favTh = undefined
+favFood = 'grapes'
+
+favTh = function(){
+var favFood = undefined
+console.log(favFood)
+favFood = 'sushi'
+console.log(favFood)
+}
+
+favTh(); // New execution context gets created in which hoisting is done again in the
+creation phase. That is why we see undefined first.
+
+
+
+
+Function Invocation
+-Calling or Execution of a function
+By calling a function, a new execution context is created on top of a global execution
+context. Unlike global execution context, we get 2 things 1) this keyword and 
+2) arguments keyword
+
+
+
+Scope Chain
+-The JS Engine looks for the variable in the direct parent
+eg:
+..
+
+var x = 'x';
+
+function one(){ var a = 'a'; console.log(x) }
+function two(){ var b = 'b'; console.log(x) }
+Both will Output:- x
+The Scope Chain is such like:- one -> global and two -> global
+
+eg:
+..
+
+var g = 'global';
+function one(){
+ var a = 'a';
+ return function two(){
+  var b = 'b';
+  return function three(){
+   var c = 'c'
+  }
+ }
+}
+-One function can acess a and g. Two function can acess b,a and g. Three function can acess
+all a,b,c and g
+-The Scope Chain is such like:- three -> two -> one -> global. JS Engine moves down the
+chain to look for variables
+
+
+
+
+JS is wierd....
+
+'use strict' keyword allows us to prevent things that shuld not happen
+eg:
+
+function weird(){
+  height = 50;
+  return height;
+}
+
+weird(); // will return 50
+-Here height is not defined with either var, const or let but it still accept the
+variable and create for us with value 50 which should not happen.
+We have to use 'use strict' to avoid such cases like,
+
+'use strict'
+function weird(){
+  height = 50;
+  return height;
+}
+
+weird(); // height is not defined.
+
+
+
+
+IIFE - Immediately Invoked Function Expression
+Can be used to solve the global variable issue
+Global variable issues:
+-If there are too many then memory issue
+-If there are few then there is a possiblity of overriden variables like,
+
+<script> var a = 1 </script>
+<script> var aa = 2 </script>
+<script> var aaa = 3 </script>
+<script> var a = 4 </script>
+
+If you console.log(a) it will display 4. The value 1 is overriden although it is in
+another <script>. The JS Engine combines all script and make one execution context at
+the time of execution.
+
+For IIFE,
+All the variables will be function scoped and no global varbiables will be there. As
+soon as function ends, var will not be acessible.
+(function(){
+
+})()
+
+We can do this work with creating a named function and then simply calling it but
+it has other consequences like this function can be accidently called again because it
+is a named function which is why it pollutes the global variable. IIFE cannot be called 
+again.
+
+
+
+call, apply and bind
+We can borrow function from others.
+eg:
+
+const wizard = {
+  name: 'Wizard',
+  health: 50,
+  heal(){
+    this.health = 100;
+  } 
+}
+
+const archer = {
+  name: 'Archer',
+  health: 30
+}
+
+console.log(archer.health) // 30
+wizard.heal.call(archer);
+console.log(archer.health) // 100
+
+For call we can pass parameters after first arguement
+For apply we pass arguement as an array
+
+The bind returns a function which is then called
+console.log(archer.health) // 30
+const archerHeal = wizard.heal.bind(archer);
+archerHeal();
+console.log(archer.health) // 100
+
+We can also do function currying with bind
+Function currying refers to giving partial parameters and then later giving the 
+remaining parameter for reusability
+eg:
+
+function multiply(a,b){
+  return a*b;
+}
+
+let multiplyBy2 = multiply.bind(this, 2);
+console.log(multiplyBy2(4)) // 8
+console.log(multiplyBy2(10)) // 20
+
+let multiplyBy10 = multiply.bind(this, 10);
+console.log(multiplyBy10(2)) // 20
+console.log(multiplyBy10(4)) // 40
+---------------------------------------------------------------------
+
+Types
+
+Number, String, Boolean, Object, Undefined, Null, Symbol
+
+The primitive types are those which holds a single value like number, string, boolean,
+undefined, and null. They are immutable. Changing its value will create a new variable
+in the memory.
+
+Non-primitive types are like objects which donot contain direct value.
+
+
+
+
+Deep vs Shallow cloning
+
+In pass by reference an object points to some address, and copying that object into
+some another variable will make that variable point to same address. So chaning one
+variable's value will reflect the change in the other one.
+To create a new fresh copy of a object that points to different address we can do this
+by spread operator like,
+
+var obj = { a:1, b:2, c:3 }
+var obj1 = {...obj}; OR var obj = Object.assign({}, obj)
+
+This does shallow copy or shallow cloning which means that if this object has some
+key that is also an object, this nested/inner object will not have a fresh copy as
+the inner object will point to a new location.
+eg:
+..
+var obj = { a:1, b:2, c:{ deep: 'I am Deep Object'} }
+var obj1 = {...obj}
+obj.c.deep = 3
+console.log(obj1.c.deep) // Output: 3 because of shallow copy!!
+
+For Deep copy/cloning we take help from JSON like,
+var obj1 = JSON.parse(JSON.stringify(obj));
+
+**Note: If the object is complex and it has long nested objects and multiple nested
+objects, using JSON.parse and JSON.stringify will take time as it will create overhead.
+There are other ways to do Deep copy. For smaller objects, it is fine.
+
+
+
+
+We add Typescript to Javascript to make it Type Safe. We add types jo javascript
+
+---------------------------------------------------------------------
+The 2 Pillars (Closure and Prototype)
+
+Functions Are Objects
+-Functions are special types of objects that comes with a callable object (so that we
+can call it by () notation), name (name of a function). properties (like call apply
+and bind).
+-We can store the functions like objects as data to be used for different purposes.
+
+
+
+
+Functions are First class Citizen
+-3 properties of a function that makes it first class citizen in JS
+
+1) Functions can be assigned to variables => Function expression.
+2) Function can take another function as arguement to be executed inside body
+3) Function can return another function
+
+
+
+Higher Order function
+-Function that takes another function as arguement or return any function
+-This function tells what data to use and what to execute at runtime.
+
+
+
+
+First Pillar
+Closures
+-We can preserve data with closures
+-Combination of Funtion and Lexical Scope.
+eg:
+..
+function one(){
+ let grandpa = 'grandpa'
+ return function(){
+  let father = 'father'
+  return function(){
+   let son = 'son'
+   console.log(grandpa + father + son)
+  }
+ }
+}
+
+one()()() // grandpa father son
+
+eg:
+..
+function one(name1){
+ return function(name2){
+  return function(name3)
+   console.log(name1 + name2 + name3)
+  }
+ }
+}
+
+const fn1 = one('Hello');
+const fn2 = fn1('Beautiful');
+fn2('World');
+
+eg:
+..
+function callMeMaybe(){
+  setTimeout(function(){console.log(callMe)}, 4000);
+  const callMe = 'Call Me';
+}
+
+callMeMaybe(); // Output: Call Me
+-The output will be displayed because by the time setTimeout waits for 4000 seconds,
+the const callMe line will be executed and although callMe is being used inside a callback
+function it will be accessible due to closures.
+
+Two Benefits of Closures
+1) Memory Effecient
+-If anything is to be acessed multiple times, put them in a closure box
+eg:
+..
+We have a big array that is acessed every time
+
+functon heavyDuty(){
+ const bigArray = new Array(7000).fill('hello')
+ return function(index){
+  return bigArray[index];
+ }
+}
+
+const getHeavyDuty = heavyDuty();
+getHeavyDuty(100)
+getHeavyDuty(200)
+getHeavyDuty(300)
+
+2) Encapsulation
+-Not giving priviliges to modify the data, but can see the data
+eg:
+..
+const makeNuclearButton = () => {
+ let timeWithoutDestruction = 0;
+ const totalPeaceTime = () => timeWithoutDestruction;
+ const passTime = () => timeWithoutDestruction++;
+ const launch = () => {
+  timeWithoutDestruction = 0;
+  return 'boom'
+ }
+ setInterval(passTime, 1000);
+ return {
+ totalPeaceTime: totalPeaceTime
+ }
+}
+
+const nuclear = makeNuclearButton()
+nuclear.totalPeaceTime() // 3
+nuclear.totalPeaceTime() // 10
+nuclear.totalPeaceTime() // 19
+
+We can also give launch:launch in the return object and then calling like nuclear.launch()
+
+eg:
+..
+for(var i=0; i<3; i++){
+  setTimeout(()=>{console.log(i)}, 1000)
+}
+Output: 3 3 3
+-That is because var is function scoped. The loop will be run 3 times and there will be
+3 functions created that will be run after 1 second. Since var is function scoped every
+time the loop is run the value of 'i' is incremented by 1 to the same variable. This is
+why at the end of loop, the value of i is 3 and all functions carry value i as 3
+
+Solution
+..
+for(let i=0; i<3; i++){
+  setTimeout(()=>{console.log(i)}, 1000)
+}
+Output: 0 1 2
+-By using let, since it is block scope, every time the loop is run it will create a new
+variable of i. The previos i has value 0, the i has value 1 and so on and it will assign
+everytime new variable i to the function inside setTimeout
+
+Another Solution is by using IIFE
+..
+for(var i=0; i<3; i++){
+  
+  (function(i){
+    setTimeout(()=>{console.log(i)}, 1000)
+  )}(i)
+
+}
+
+
+
+
+Second Pillar
+Prototypal Inheritance
+-Same like Inheritance
+
+If you want to go up the chain in Inheritance, use __proto__
+
+Arrays are objects, which means arrays are inherited from object
+So if we do something like,
+const array = []
+array.__proto__.__proto__ we get access to the properties and methods of object as we go 
+up the chain
+
+Inheritance Eg:
+..
+
+let dragon = {
+  name: 'Dragon',
+  fire: true,
+  fight(){
+   return 5
+  },
+  sing(){
+   if(fire){
+     return 'I am +' this.name + ' with fire power = ' + this.fight
+   }
+  }
+}
+
+let lizard = {
+  name: 'Lizard',
+  fight(){
+   return 1
+  }
+}
+
+lizard.__proto__ = dragon
+console.log(lizard.sing()) Output: I am Lizard with fire power 1
+
+**Dont use this method for inheritance. It can cause performance problems. 
+
+The main OBJECT contains many methods by default. We can check it by
+const obj = {}
+obj.__proto__
+This __proto will point to the main parent Object
+
+To check if an object is inherited from another object, we can use default object method
+like,
+..
+console.log( dragon.isPrototypeOf(lizard) ) Output: true
+
+The PROTO
+-Arrays and Functions are both inherits from base Object
+-We know that when we define a function, we can access the methods like call apply and
+bind. These are the methods that are inherited from the base Function object.
+eg:
+..
+function hello() {}
+This function itself dont have call apply and bind, but has some properties like name.
+We can check by
+hello.hasOwnProperty('call') // will return false
+hello.hasOwnProperty('name') // will return true
+-We have to go up the chain where call apply and bind initially resides
+eg:
+..
+hello.__proto__.hasOwnProperty('call') // Will return true.
+If we do something like hello.__proto_.__proto__ It will point now to the main parent 
+Object
+
+Recommended way of Inheritance
+eg:
+..
+let human = {
+  mortal: true
+}
+
+let socrates = Object.create(human)
+socrates.age = 50
+console.log(human.isPrototypeOf(socrates)) // true
+
+Adding/Overriding existing functions of objects like
+Date dont has the function lastYear. We can add this by
+Date.prototype.lasYear = function(){
+  return this.getFullYear - 1;
+}
+
+console.log(new Date('2000-01-01').lastYear()) // Output: 1999
+
+**new Date().__proto__ = Date.prototype
+__proto__ points to prototype.
+Prototype is where all the methods and properties resides.
+
+-----------------------------------------------------------------
+Object Oriented Programming
+-Modelling the real world objects and relationships
+
+
+
+Constructor Functions
+-Should start with capital letter to ensure that it is to be executed with new keyword
+-When it is executed with new keyword, it automatically return an object and we can
+assign properties with this keyword.
+
+We know that Functions are special type of objects known as Callable objects that contain
+things like properties, invokable code, prototype, name. We can attach methods and
+properties to the prototype object that all the objects can share these methods and
+properties. This prototype is useless when creating a simple function, but is is
+useful when creating a constructor and assigning methods and properties.
+
+eg:
+..
+function Elf(name, weapon){
+  this.name = name;
+  this.weapon = weapon;
+}
+
+Elf.prototype.attack = function(){
+  return 'Attack by ' + this.name + ' with ' + this.weapon
+}
+*This function will be created once in the memory to be shared by different objects
+created. Hence memory effecient also.
+
+const peter = new Elf('Peter', 'Fire');
+const jack = new Elf('Jack', 'Stone');
+console.log(peter.attack() + '  ' + jack.attack());
+
+Classes with ES6
+
+class Elf{
+  constructor(name, weapon){
+    this.name = name;
+    this.weapon = weapon;
+  }
+  attack(){
+    return 'Attack by ' + this.name + ' With ' + this.weapon
+  }
+}
+
+-Every time we make instance of a class with new keyword, we know that constructor function
+is run and that should hold values that are unique. We can move the attack function 
+inside the ctor but that is something common to all and shared. Every time the object
+is created with new keyword, that attack function will also be created everytime making
+not memory effecient. That is why it needs to be outside.
+-Under the hood of classes, JS does prototypal inheritance. In other languages, classes
+means something. But in JS they are just objects like everything else. So it is 
+just a new way of doing prototypal inheritance we have been doing before.
+
+
+
+
+Inheritance
+-JS look up the prototype chain for functionalities instead of just copying things from
+super class
+
+class Character{
+  constructor(name, weapon){
+    this.name = name;
+    this.weapon = weapon;
+  }
+  attack(){
+    return 'Attack by ' + this.name + ' With ' + this.weapon
+  }
+}
+
+class Elf extends Character{
+  constructor(name, weapon, type){
+    super(name, weapon);
+    this.type = type;
+  }
+}
+*In a child class, the this keyword is only available after calling the super() method.
+
+We can check for object creation with
+const peter = new Elf('Peter', 'Fire', 'Dragon')
+if(peter instance of Elf) // true
+if(peter instance of Character) // true
+
+---------------------------------------------------------------------
+
+Functional Programming
+-All about Separation Of Concerns
+-Also separates Data and Functions
+
+
+
+
+Pure Functions
+-Functions that has no side effects
+-Functions that returns the same output on given the same input everytime
+
+No side effects means, functions that only uses the parameters passed and the local
+variables and does not touch the outside of the world nor modifies anything outside of
+itself
+eg:
+..
+const array = [1,2,3]
+function mutateArray(arr){
+  arr.pop();
+}
+mutateArray(array) // Not a pure function as it touches the outside world and modifies it.
+
+Improving it would be like,
+const array = [1,2,3]
+function mutateArray(arr){
+  const newArray = [].concat(arr)
+  return newArray.pop()
+}
+Now the outside array is not changed and the function only considers the things which
+is related to it
+
+eg:
+..
+function test(){
+  console.log('Hello')
+}
+Is this a pure function?
+No, because it has side effects. Because it consoles into the browser window which is
+outside of its function
+
+
+Similarly,
+function multiplyBy2(num){
+  return num*2
+}
+multiplyBy2(5)
+This is a pure function as it neither modifies or touches the outside of the world and
+it will return 10 everytime it is invoked.
+
+
+
+
+Referencial Transparency
+-An expression in a program is said to be referentially transparent if it can be replaced 
+with its value and the resulting behavior is the same as before the change. This means 
+that the program's behavior is not changed whether the input used is a reference or an 
+actual value that the reference is pointing to.
+eg:
+..
+
+function Add(num1, num2){
+  return num1 + num2;
+}
+function MultipyBy5(num){
+  return num*5
+}
+MultiplyBy5(Add(1,2)) Outputs: 15
+MultiplyBy5(3) Outputs: 15
+
+
+
+
+Imperative Code vs Declarative Code
+-Imperative tells the computer what to do and how to do
+-Declarative tels the computer what to do and what should happen
+
+eg of Imperative:
+..
+for(let i=0; i<1000; i++){
+  console.log(i)
+}
+Here we tell that declare the variable, check the condition, increment the variable and
+then print the value
+
+eg of Declarative:
+..
+[1,2,3].forEach(item => console.log(item))
+Here we just tell to forEach and does not care about declaring and incrementing variables
+and checking for conditions. We dont tell how to do it.
+
+
+
+
+
+Immutability
+-Means not changing the data or state
+-Making copies of data if something is changed.
+
+eg:
+..
+const obj = {name: 'Hello'}
+
+function clone(obj){
+  return {...obj}
+}
+
+function updateName(obj){
+  const newObj = clone(obj)
+  newObj.name = 'Name2'
+  return newObj
+}
+
+const updatedName = updateName(obj)
+console.log(obj, updatedName) Output: {name: Hello} {name: Name2}
+
+
+
+
+Currying
+-Technique of evaluating a function that takes multiple parameter to evaluating a
+function that take one parameter at a time
+-One arguement at a time
+eg:
+..
+
+Before currying
+function multiply(num1, num2){
+  return num1*num2;
+}
+
+console.log(multiply(5,5))
+
+After currying
+const curriedMultiply = (a) => {
+  return (b) => {
+    return a*b;
+  }
+}
+
+const multiplyBy5 = curriedMultiply(5);
+console.log(multiplyBy5(5)) Output: 25
+console.log(multiplyBy5(4)) Output: 20
+
+
+
+Partial Application
+-Similar to currying but with a small difference
+-In currying, we break all arguements into single arguement that is given to a function
+like multiply(2)(3)(4)
+-Partial Application expects small number of arguement on first class, and the
+remaining arguements on the second call. So only 2 times the function will be called.
+eg:
+..
+
+const multiply = function(a,b,c){
+  return a*b*c
+}
+
+const partialApplicationMultiple = multiply.bind(null, 5)
+partialApplicationMultiply(4,10); Output: 200
+**Using null in bind as we have no 'this' at the moment
+
+With currying we have to do something like,
+const curriedMultiply = (a) => (b) => (c) => a*b*c
+curriedMultiply(2)(3)(4)
+
+
+
+
+
+
+Memoization
+-Simple way to remember the solution of a solved problem
+-Simple way of implementing a cache
+-If a function is called with a parameter, it will solve the problem save it in cache
+and return the solution. If the function is called with same parameter again then it 
+will not solve the problem again, rather return the solution from the cache, hence 
+making computation fast.
+eg:
+..
+
+let cache = {};
+
+function addTo80(n){
+  if(n in cache[n]){
+    return cache[n]
+  }
+  else{
+    console.log('Long Calculation....')
+    cache[n] = n + 80;
+    return cache[n]
+  }
+}
+
+console.log(addTo80(5))
+console.log(addTo80(5))
+console.log(addTo80(6))
+
+Since the cache is in global scope and it will increase
+We can improve this by using closures like,
+..
+
+function addTo80(){
+  let cache = {}
+
+  return function(n){
+     if(n in cache[n]){
+     return cache[n]
+   }
+   else{
+     console.log('Long Calculation....')
+     cache[n] = n + 80;
+     return cache[n]
+   }
+  }
+}
+
+const memoized80 = addTo80()
+console.log(memoized80(5))
+console.log(memoized80(5))
+console.log(memoized80(6))
+
+
+
+
+
+Compose
+-Deals with the relationship between components (functions)
+-Components/Functions can be selected in various combinations
+eg: Multiplying the number by 3 and taking the absolute
+..
+const multiplyBy3 = (num) => num*3
+const takeAbs = (num) => Math.abs(num)
+
+const compose = function(f, g){
+  return function(data){
+    return f(g(data))
+  }
+}
+
+const mul3AndTakeAbs = compose(multiplyBy3, takeAbs)
+console.log(mul3AndTakeAbs(-50))
+
+In compose, the order of executing function is Right to Left
+
+
+
+
+
+
+
+Pipe
+-Same as Compose, but the only difference is that the order of executing the function
+is Left to Right
+eg: Considering same example
+..
+const compose = function(f, g){
+  return function(data){
+    return g(f(data))
+  }
+}
+const mul3AndTakeAbs = compose(multiplyBy3, takeAbs)
+console.log(mul3AndTakeAbs(-50))
+
+Library Like Ramada uses compose
+
+
+
+
+
+
+Arity
+-Simply ensures how many arguements a function receives
+-Like a function with 2 arguements has an arity of 2
+-Less value of arity makes functions more flexible and easy to curry, compose and pipe
+
+
+
+
+Solution Exercise:
+Implement following methods into user object
+1- Add Item to Cart
+2- Add Tax 30%
+3- Add Item to Purchases
+4- Empty the Cart
+
+let user = {name: 'kim',
+ status: 'active',
+  cart: [],
+  purchases: []
+};
+let item = {name: 'laptop', price: 200}
+
+
+
+
+const compose = function(f,g){
+	
+ return function(...args){
+    
+  return f(g(...args));
+  
+  }
+
+}
+
+
+
+function purchaseItem(...fns){
+	
+ return fns.reduce(compose);
+
+}
+
+
+const p = purchaseItem(
+	emptyCart,
+  addToPurchase,
+  addTax,
+  addItemToCart
+);
+
+
+console.log( p(user, item) )
+
+
+
+
+
+function addItemToCart(user, item){
+	
+  const newUser = Object.assign({}, user);
+  
+  newUser.cart = newUser.cart.concat(item);
+  
+  return newUser;
+
+}
+
+
+
+function addTax(user){
+	
+  const {cart} = user;
+  
+  const taxRate = 1.3;
+  
+  const updatedCart = cart.map(item => {
+
+  return {
+ name: item.name,
+ price: item.price * taxRate
+ }
+ });
+  
+  return Object.assign({}, user, {cart: updatedCart});
+
+}
+
+
+
+function addToPurchase(user){
+	
+  return Object.assign({}, user, {purchases: user.cart});
+
+}
+
+
+
+function emptyCart(user){
+	
+  return Object.assign({}, user, {cart: []});
+
+}
+
+-Using array.concat instead of array.push as this changes the real object
+-Using compose to execute functions in a right to left order fashion
+-This is easily extensible with the use of compose and reduce methods, as any new 
+functionality will be to add a function and then place this function inside purchaseItem 
+arguements.
+-Functions used are all pure and it does not touches the outside world (user object)
+
+------------------------------------------------------------------------
+
+Async JS
+
+
+Promises
+-Object that returns a value sometime in future
+-Can be of 3 possible states
+1) Fulfilled 2) Rejected 3) Pending
+
+eg:
+..
+const promise = new Promise((resolve, reject) => {
+  if(true){ resolve('Worked') }
+  else { reject('Not Worked') }
+})
+
+promise
+.then(result => { return result + '!' })
+.then(result1 => { console.log(result1) }) Output: Worked!
+
+Put the catch always at the end so that if any promise failed, it could be caught at the
+end
+eg:
+..
+
+promise
+.then(r => {  })
+.then(r1 => {  })
+.catch((e) => {  })
+.then(r2 => {  })
+
+If something goes wrong in r and r1, it would be caught, but if something goes wrong in
+r2 then exception will be thrown because nobody to catch the error. So catch should always
+be at the end.
+
+Promise.all returns a promise when all of the promises fullfiled. It  waits for all 
+promises to resolve and returns an array of their results
+
+eg:
+..
+
+const p1 = new Promise((res,rej)=>{ res(1) })
+const p2 = new Promise((res,rej)=>{ res(2) })
+const p3 = new Promise((res,rej)=>{ res(3) })
+
+Promise.all([p1,p2,p3])
+.then(v=>{ console.log(v[0] + ' ' + v[1] + ' ' + v[2]) }) Output: 1 2 3
+
+The fetch() function returns a pending promise
+eg:
+..
+const urlss = [
+
+'https://jsonplaceholder.typicode.com/users',
+
+'https://jsonplaceholder.typicode.com/posts',
+
+'https://jsonplaceholder.typicode.com/albums'
+
+];
+
+
+
+Promise.all( urlss.map(url=>{
+ 
+  return fetch(url).then(r=>r.json()).catch(()=>'error')
+
+}) )
+.then(v=>{ console.log(v[0]); console.log(v[1]); console.log(v[2]); })
+
+
+
+
+
+
+Async and Await
+-New in ES8
+-Built on top of Promises
+-Async function is a function that returns a promise
+-With async and await it is much easir to read
+-A code that is asynchronous looks synchronous with async and await
+
+eg:
+..
+With typical Promise we could have used,
+
+fetch('https://jsonplaceholder.typicode.com/users')
+  .then(resp=>resp.json())
+  .then(value=>{console.log(value)});
+
+async function getUsers(){
+  const response = await fetch('https://jsonplaceholder.typicode.com/users');
+  const data =  await response.json()
+  return data 
+}
+
+console.log(getUsers())
+
+For Promise.all
+
+const getData = async function(){
+ try{
+      const [users, posts, albums] = await Promise.all(urls.map(url=>{
+    fetch(url).then(response=>response.json());
+  }));
+
+  console.log(users);
+  console.log(posts);
+  console.log(albums);
+ }
+ catch(err){
+  console.log('Something Went Wrong');
+ }
+}
+
+
+
+
+
+
+3 New Features of ES9 (ES2018)
+
+1- Spread Operator
+
+eg:
+..
+const animals = {
+tiger: 25,
+lion: 30,
+bird: 40,
+monkey: 70
+}
+
+
+const {lion, monkey, ...rest} = animals
+
+console.log(lion); // 25
+console.log(monkey); // 70
+console.log(rest); // {lion:30, bird:40}
+
+2- Finally
+-The finally block in Promises which is always run no matter if the Promise resolves or
+rejects
+
+eg:
+..
+promise.then(v=>{console.log(v)}).catch(()=>{console.log('error')})
+ .finally(()=>{console.log('finally')})
+
+3- For Await Of
+-The for await of allow us to loop through the promises.
+
+eg:
+..
+const urls = [
+
+'https://jsonplaceholder.typicode.com/users',
+
+'https://jsonplaceholder.typicode.com/posts',
+
+'https://jsonplaceholder.typicode.com/albums'
+
+];
+
+const promises = await Promise.all(urls.map(url=>{return fetch(url)}));
+for await (let request of promises){
+  const responseJson = await request.json();
+  console.log(responseJson);
+}
+
+
+
+
+
+
+Job Queue
+-We know that when we call setTimeout function, it is a part of Web Api and after its
+timer, it s placed in a callback queue for event loop to check for.
+-We have similar queue known as Job Queue which has a higher priority than callback queue
+-When the promises are resolved or rejected, they are placed in a Job Queue for event loop
+to check for.
+-FOr callback queue, event loop checks if the call stack is empty and then fetch from
+callback queue and executes it.
+-For Job queue, as it has a higher priority, event loop doesn't wait for call stack to be
+empty. As long as there is something available in the Job Queue it fetches from it and
+place it in callstack to get executed.
+eg:
+..
+
+setTimeout(()=>{console.log('1')}, 0);
+setTimeout(()=>{console.log('2')}, 10);
+Promise.resolve('3').then(c=>{console.log(c)});
+console.log('4')
+
+Output:
+4
+3
+1
+2
+
+-Even though setTimeouts are before the Promise, but Promise will be executed first as it
+will be placed in the Job Queue
+-Some legacy browser still dont have the Job Queue in the JS Runtime Enviroment so
+we might get different results there. But in future, we surely will have all of them.
+
+
+
+
+
+Parallel, Sequence and Race
+-3 ways Promises can be executed
+
+Parallel
+-All promises to be executed in parallel
+
+Sequence
+-Promises to be executed one after another
+
+Race
+-The one who returned first, executes first.
+
+eg:
+..
+
+const promisify = function(data, timer){
+  return new Promise((res,rej)=>{
+    setTimeout(()=>res(data), timer)
+  })
+}
+
+const a = () => promisify('a', 100);
+const b = () => promisify('b', 5000);
+const c = () => promisify('c', 3000);
+
+const runInParallel = async function(){
+  const promises = [a(),b(),c()];
+  const [out1,out2,out3] = await Promise.all(promises);
+  return 'Parallel: ' + out1 + ' ' + out2 + ' ' + out3; 
+}
+
+const runInRace = async function(){
+  const promises = [a(),b(),c()];
+  const out = Promise.race(promises);
+  return 'Race: ' + out;
+}
+
+const runInSequence = async function(){
+  const out1 = await a();
+  const out2 = await b();
+  const out3 = await c();
+  return 'Sequence: ' + out1 + ' ' + out2 + ' ' + out3;
+}
+
+console.log(runInParallel().then(data=>{console.log(data)}));
+console.log(runInRace().then(data=>{console.log(data)}));
+console.log(runInSequence().then(data=>{console.log(data)}));
+
+-------------------------------------------------------
+
+Modules
+-Reusing the smaller parts to make bigger application
+-Provides a way to organize our variables and functions so that they can be grouped
+that make sense together.
+
+The Problem:
+..
+
+<script> function fight(){  ....code } </script>
+<script> var fight = 'hello' </script>
+
+-We know that JS combines all the script file and execute it once. So if we use fight,
+we get 'hello' and the function will be overriden. This is something polluting the 
+global scope and variables are not organized.
+-We can use Module Pattern that uses IIFE to solve this problem.
+-We can also use Module Pattern to give access of inside information to the outside
+world.
+
+eg:
+..
+
+The structure of Module Pattern
+<script> 
+  var fightModule = (function(){ 
+     var secret1 = '123'
+     var public = 'public'
+
+     function fight(){ ...code }
+     function privateFunc(){ ...code }
+
+     return { public: public, fight: fight } 
+   })()
+</script>
+
+<script> 
+  var anotherScript = (function(){ 
+    var fight = 'Hello';
+
+    console.log(fight) //  Hello
+    console.log(fightModule.fight()) // Some Code 
+  })(); 
+</script>
+
+By this we only gave access to fight function and one public variable and let another
+script or function use that in order to communicate.
+
+eg:
+..
+
+<script> var globalVar = '12345' </script>
+<script>
+   var anotherScript = (function(globalVar){
+      globalVar = 'Hello';
+
+      console.log(globalVar) // Hello
+   })(globalVar)
+</script>
+<script> console.log(globalVar) // 12345 </script>
+
+-We can also use the parameter inside IIFE
+-By changing the parameter value wont effect the global scope variable because JS first
+looks into the local scope if that have that variable name to be changed.
+
+Pros And Cons
+-We can only reveal variables and function to the global scope only if that is public and
+to be shared with other scripts/modules
+-We can still have name clashes. As we if there is a variable with fightModule in other
+script than our Module Pattern will be overriden
+-Also our script tags must be in the right order. If fightModule is used before it was
+created and returned, it will throw an error of not defined.
+
+For the Solution, we have ES6 Modules
+We can use this as
+..
+
+script.js
+
+var v1 = 'Hello';
+var v2 = 'World';
+
+export function test(){
+  console.log(v1 + v2);
+}
+
+and in the main file
+<script type="module" src="script.js"> </script>
+<script type="module"> 
+
+ import {test} from './script.js';
+ test();
+
+</script>
+
+If you have same class name / function or variable name we can use it as
+
+import {functionName as functionName1} from './JSFile.js';
+functionName1();
+
+----------------------------------------------------------------
+
+Error Handling
+
+-Using try{} catch{} for catching the synchronous Errors
+-Asynch Error handling is done by .catch() method discussed in Asynch JS previously
+-try catch is used in async and await
+-.catch() is used in Promises.
+
+We have 3 things in an error
+..
+const err = new Error('error')
+err.message // error
+err.name // Error
+err.stack // prints stack trace.

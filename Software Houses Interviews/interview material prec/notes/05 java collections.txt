@@ -1,0 +1,155 @@
+Before generics, we can store any type of objects in collection i.e. non-generic. 
+Now generics, forces the java programmer to store specific type of objects.
+
+Advantage of Java Generics
+
+1)	Type-safety : We can hold only a single type of objects in generics. It doesn’t allow to store other objects.
+
+2)	Type casting is not required: There is no need to typecast the object.
+
+Before Generics, we need to type cast.
+
+List list = new ArrayList();  
+list.add("hello");  
+String s = (String) list.get(0); //typecasting  
+After Generics, we don't need to typecast the object.
+
+List<String> list = new ArrayList<String>();  
+list.add("hello");  
+String s = list.get(0);  
+
+--------------------------------------------------------------
+
+Java ArrayList class:
+ ArrayList maintains index based system for its elements as it uses array data structure implicitly 
+which makes it faster for searching an element in the list. 
+
+Java ArrayList class can contain duplicate elements.
+Java ArrayList class maintains insertion order.
+Java ArrayList class is non synchronized.
+Java ArrayList allows random access because array works at the index basis.
+In Java ArrayList class, manipulation is slow because a lot of shifting needs to be occurred if 
+	any element is removed from the array list.
+
+Java Non-generic Vs Generic Collection
+Java collection framework was non-generic before JDK 1.5. Since 1.5, it is generic.
+
+Let's see the old non-generic example of creating java collection.
+ArrayList al=new ArrayList();//creating old non-generic arraylist  
+
+Let's see the new generic example of creating java collection.
+ArrayList<String> al=new ArrayList<String>();//creating new generic arraylist  
+
+--------------------------------------------------------------
+
+LinkedList implements doubly linked list which requires the traversal through all the elements for searching an element.
+
+Java LinkedList class can contain duplicate elements.
+Java LinkedList class maintains insertion order.
+Java LinkedList class is non synchronized.
+In Java LinkedList class, manipulation is fast because no shifting needs to be occurred.
+
+LinkedList<String> al=new LinkedList<String>();  
+---------------------------------------------------------------
+
+Java HashSet class is used to create a collection that uses a hash table for storage. It inherits the AbstractSet class and implements Set interface.
+
+The important points about Java HashSet class are:
+
+HashSet stores the elements by using a mechanism called hashing.
+
+----------------------------------------------------------------
+PriorityQueue 
+have to implement comparator for the object you are sending to priority queue 
+make a class that inplements comparator
+it must overrides compare method
+
+// Test.java
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
+public class Test
+{
+    public static void main(String[] args)
+    {
+        Comparator<String> comparator = new StringLengthComparator();
+        PriorityQueue<String> queue = 
+            new PriorityQueue<String>(10, comparator);
+        queue.add("short");
+        queue.add("very long indeed");
+        queue.add("medium");
+        while (queue.size() != 0)
+        {
+            System.out.println(queue.remove());
+        }
+    }
+}
+
+// StringLengthComparator.java
+import java.util.Comparator;
+
+public class StringLengthComparator implements Comparator<String>
+{
+    @Override
+    public int compare(String x, String y)
+    {
+        // Assume neither string is null. Real code should
+        // probably be more robust
+        // You could also just return x.length() - y.length(),
+        // which would be more efficient.
+        if (x.length() < y.length())
+        {
+            return -1;
+        }
+        if (x.length() > y.length())
+        {
+            return 1;
+        }
+        return 0;
+    }
+}
+---------------------------------------------------------
+HashSet contains unique elements only.
+Java HashSet class is used to create a collection that uses a hash table for storage
+List can contain duplicate elements whereas Set contains unique elements only.
+HashSet<String> set=new HashSet<String>();  
+  set.add("R");  
+  set.add("V");  
+---------------------------------------------------------
+Java HashMap class
+
+Java HashMap class implements the map interface by using a hashtable. It inherits AbstractMap class and implements Map interface.
+The important points about Java HashMap class are:
+A HashMap contains values based on the key.
+import java.util.*;  
+class TestCollection13{  
+ public static void main(String args[]){  
+  HashMap<Integer,String> hm=new HashMap<Integer,String>();  
+  hm.put(100,"Amit");  
+  hm.put(101,"Vijay");  
+  hm.put(102,"Rahul");  
+  for(Map.Entry m:hm.entrySet()){  
+   System.out.println(m.getKey()+" "+m.getValue());  
+  }  
+ }  
+}  
+---------------------------------------------------------
+TreeMap class
+It is same as HashMap instead maintains ascending order.
+---------------------------------------------------------
+Java Hashtable class implements a hashtable, which maps keys to values. It inherits Dictionary class and implements the Map interface.
+
+The important points about Java Hashtable class are:
+
+A Hashtable is an array of list. Each list is known as a bucket. The position of bucket is identified by calling the hashcode() method. 
+A Hashtable contains values based on the key.
+It contains only unique elements.
+It may have not have any null key or value.
+It is synchronized.
+------------------------------------------------------------
+Hashtable is synchronized, whereas HashMap is not. This makes HashMap better for non-threaded applications, 
+as unsynchronized Objects typically perform better than synchronized ones.
+Hashtable does not allow null keys or values.  HashMap allows one null key and any number of null values.
+5. Performance :  Hashmap is much faster and uses less memory than Hashtable as former is unsynchronized . Unsynchronized 
+objects are often much better in performance in compare to synchronized  object like Hashtable in single threaded environment.
+------------------------------------------------------------

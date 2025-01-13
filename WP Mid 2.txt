@@ -1,0 +1,27 @@
+WP Mid 2
+---------------------------------------
+
+HTML
+Css
+Php
+JS
+Jquery
+
+
+MVC
+-Controller contain reference to the view
+
+MVVM
+-Model View View Model
+-Instead of controller we have ViewModel
+-Unlike MVC, ViewModel doesnt have reference to View
+-View also doesnt contain reference to ViewModel.
+-There is something in between View and ViewModel and that is the binder
+
+MVP
+-Model View Presenter
+-The Presenter doesnt directly contain reference to view
+-There is a view protocol in between them
+
+MVVM and MVP both renamed the Controller and provided specific facilites in 
+way of implementing it

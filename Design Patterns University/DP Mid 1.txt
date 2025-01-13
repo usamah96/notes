@@ -1,0 +1,224 @@
+Design Pattern
+
+-----------------------------
+
+-A general reusable solution to a commonly occuring problem in software design
+-A template to how to solve a problem
+
+Why?
+
+-Design a new software
+-Understand existing software system
+
+
+Patterns:
+
+Creational (object creation like factory)
+Structural (object relationship like adapter)
+Behavioural (object communication like observer)
+Architectural (form of overall of system)
+
+Relationship Between Patterns
+-Patterns can be used together like composite pattern (iterator and visitor)
+-Some patterns are defined as alternatives to the other like prototype pattern is the
+alternative to abstract factory
+
+Pattern Scope
+
+1-Class Pattern (describe the relationship btwn classes. Static)
+2-Object Pattern (describe the relationship btwn objects. Can be changed at runtime)
+
+Problem Solved By DP
+
+-Finding objects
+-Finding granularity of objects
+-Specifying object interfaces
+-Specifying object implementation
+-Using reuse mechanism
+-Relating runtime and compile time structures.
+
+Avoiding Redesign
+-Explicitly decalring a class instance instead of using an interface
+-Dependence of specific operation like using hard coded requests
+-Limit the hardware and software from platform dependencies
+-Dependence on object representation and implementation
+-Algorithmic dependencies -- Algo that are likely to change should be isolated from the
+definition of object
+-Tight coupling
+-Subclassing to extend functionality -- instead of using inheritance or association, it
+will be more effecient to create one subclass associated with existing class.
+-Difficulty in altering classes
+
+Breaking down the problem
+-Describe the problem and its sub problem
+-Select the type of pattern
+-Compare the problem description with the pattern
+-Identify advantage and disadvantage of using the pattern
+-Choose pattern that best suits the problem
+
+UP
+-Unified Process is an iterative and incremental software development process 
+framework
+-Designed for flexibility and extensibility
+
+Characteristics of UP
+
+-Object Oriented
+-Use Case Driven
+-Architecture Centric
+-Iteration and Incrementation
+
+RUP
+
+-Method for managing Object Oriented Software Development
+Features Include
+1-Iterative Development
+2-Requirement Management
+3-Component Based Model
+4-Visual Modeling
+5-Quality Management
+6-Change Control
+
+UP Phases
+
+-Inception (define business case, 10% requirements are identified)
+-Elaboration (understanding of a problem / architecture, 80% req identified)
+-Construction (programming and testing)
+-Transition (Deployment)
+
+Enterprise Unified Process (EUP) adds 2 more phases
+-Production (keeping system productive after deployment)
+-Retirement (archiving, reusing, etc)
+
+Roles in UP
+-Stake Holders (end users)
+-Software Architect (maintains the architecture)
+-Process Engineers (keeps track of the working)
+-Graphic Artist (assists in user interface)
+
+UP Guidelines
+-Attack risk early
+-Develop executable software in early iteration
+-Prefer reuing of existing components
+-Maintain the quality
+
+6 UP Practices
+-Time boxed iteration (putting strict time around an iteration)
+-Reuse existing components
+-Verify quality every now and then
+-Visual modeling to explore design ideas
+-Find and track requirements through skillfull means
+-Manage change
+
+Unified Process
+Phases: Describe the steps needed to develop the software
+Workflows: Describe the tasks that the developer performs.
+
+Primary Workflows
+-Requirements (Who interact with the system are identified)
+-Analysis and Design (Design model is created and documented using component model,
+sequence model etc)
+-Implementation
+-Test (iterative process carried out in conjunction with implementation)
+-Maintainance
+
+Supplemantal Workflow
+-Planning
+
+Supporting Workflow
+-Configuration and Change Management (manages changes into the system)
+-Project Management (manages the system development)
+-Enviroment (making appropriate software tools to the development team)
+
+Software Project Management Plan
+-Once the client sign off as giving specification, a detailed planning and estimation
+is now done
+SPMP includes,
+.Cost Estimation
+.Duration
+.Deliverables
+.Milestones
+.Budget
+
+Post Delivery Maintenance
+-More money spent on this than any other activity
+-2 types of testing is done
+  .testing the changes made during maintenance
+  .regressiong testing
+-Problem can be arised by because of lack of documentation
+
+Retirmenet
+-Software can be made unmaintenable because a drastic change in the design has occured.
+-Documentation is inaccurate
+-Hardware is changed
+-Client no longer needs functionalities
+
+Object can be created in many ways. 3 factors should be considered
+-Scope
+-Creator class
+-Location 
+
+Coupling (degree of interaction btwn 2 modules)
+-Lower the coupling, better the program
+
+Content Coupling / Pathological coupling
+-One Module directly referring and modifying the content of another module
+
+Common Coupling / Global Coupling
+-2 modules sharing the same global data
+
+External Coupling
+-Module having dependency on external libraries
+
+Control Coupling
+-Module A passed as a parameter to Module B which controls the internal logic
+of Module B
+
+Stamp Coupling
+-Module 1 receiving data structure as a parameter containing many fields that
+needs only few.
+
+Data coupling
+-Communication of 2 modules using too many parameters. Module A passing data to 
+Module B and Module B utilizing all of its parameters
+
+Cohesion (degree of independece btwen 2 modules)
+-High cohesion, better the program
+
+Functional
+-Method does only one thing (single responsibilty)
+
+Sequential
+-Parts of module are grouped in a way that output from one part is the input
+to another part in a sequential mannar
+
+Communicatioanl
+-All functions of a module refer to and update the same piece of data, like
+finding a book, finding price of book, finding author of book, etc
+
+Procedural
+-Same as communicational cohesion but parts dont share data
+
+Temporal
+-Parts of module are grouped together to be executed at a specific tiime.
+
+Logical
+-Parts of a module dont share data, not related to each other and routine is
+selected by a flag passed by a parameter, like go by car / train / plane / etc.
+Methods related logically but not functionally.
+
+Coincidental
+-Parts of a module have no meaningful relationship with each other. They are 
+said to be in a relationship only because they are grouped together.
+
+----------------------------------------------------------
+
+Poor Design Symptoms. (vice versa => good design symptoms)
+-Rigidity (single change will forces many other changes in the system)
+-Fragility (tendency of a program to break when a single change is made)
+-Immobility (hard to separate system into reusable components because of risk)
+-Viscosity (hard to do right things)
+-Needless Complexity (Overdesign)
+-Needless Repetition (design contain repetetive code that can be unified 
+under single abstraction)
+-Opacity (difficult to understand the code)

@@ -1,0 +1,25 @@
+﻿“static/shared member or class level variable:”
+
+when a variable is shared among all 
+the objects of that class. eg. interestRate of savingsAccount. every object will 
+have the same interestRate thus it can be static.
+variable can change but it is 
+same throughout all objects.
+
+is accessed using class name 
+(SavingsAccount.interestRate). does not need object to change its 
+value.
+
+
+“static methods”
+can only access static variables. 
+SavingsAccount.setInterestRate(0.9)
+
+static members in uml are shown with underline.
+
+
+
+
+
+
+

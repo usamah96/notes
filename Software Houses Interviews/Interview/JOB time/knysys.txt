@@ -1,0 +1,6 @@
+Regular Expressions
+NFA DFA difference
+Software Frameworks kya hota hai
+Web server App server
+Design Patterns kya hota hai and MVC
+

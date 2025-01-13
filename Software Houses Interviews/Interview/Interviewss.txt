@@ -1,0 +1,126 @@
+Topics: 
+Access Modifiers -> Public, Private, Protected (sealed, internal)
+Final, Static - (Final variable in java, Final class in php, Static nested classes java)
+Abstract Vs Interface
+Pillars of Oops with example
+Overloading vs overiding (Polymorphism applies to overriding, not to overloading, Overriding is a run-time concept while overloading is a compile-time concept)
+Design patterns
+Autoloading (little but confusion)
+Difference between versions of 
+Types of erros in PHP (), (output buffering, user abort - Comet Programming)
+Traits (use traitName), Generators(saves state), Lambdas and Clousures (uses use keyword) (from cultt.com)
+SSL, TLS, Cryptography
+++a(pre inc), a++(post inc - return value inc after)
+elastic search, 
+sqlqueries
+
+js objects, prototype, properties, methods, object vs literal, literal vs constructor notation (It essentially boils down to if you need multiple instances of your object or not; object defined with a constructor lets you have multiple instances of that object. Object literals are basically singletons with variables/methods that are all public)
+
+function of var keyword and when to use it (
+If you're in the global scope then there's no difference.
+If you're in a function then var will create a local variable, "no var" will look up the scope chain until it finds the variable or hits the global scope (at which point it will create it))
+
+http://www.techflirt.com/tutorials/oop-in-php/overloading-and-overriding.html (in php overloading using __call magic method, and overriding is the same)
+
+__call() used for overloading in php. You can use splauto load to autoload classes
+
+
+http://www.tutorialspoint.com/java/java_polymorphism.htm (Polymorphism is the ability of an object to take on many forms. The most common use of polymorphism in OOP occurs when a parent class reference is used to refer to a child class object.)
+
+http://www.cs.utexas.edu/~cannata/cs345/Class%20Notes/14%20Java%20Upcasting%20Downcasting.htm (Done with pratical example)
+
+http://www.sitepoint.com/typing-versus-dynamic-typing/ (static typing - compile time, dynamic typing - runtime; Static Typing and Dynamic Typing versus Strong Typing and Weak Typing)
+
+http://programmers.stackexchange.com/questions/200115/what-is-early-and-late-binding (Anything that is decided by compiler while compiling can be refer to EARLY/COMPILE TIME Binding and anything that is to be decided at RUNTIME is called LATE/RUNTIME binding.)
+
+C# => We need to use virtual and override keywords to implement polymorphism as in java
+
+http://net-informations.com/faq/oops/binding.htm
+http://www.letsknowit.com/php-questions
+
+https://en.wikipedia.org/wiki/List_of_information_retrieval_libraries
+
+
+http://stackoverflow.com/questions/13423494/why-is-overriding-method-parameters-a-violation-of-strict-standards-in-php (Since PHP is weak typed, this is not possible to achieve, because the compiler can't know which of the methods you are actually calling. (hence the reason you can't have 2 methods with the same name, even if their signatures are different).
+
+A GOOD EXPLANATION: http://javarevisited.blogspot.ae/2011/12/method-overloading-vs-method-overriding.html
+
+PHP Web scrapping Gist -> https://gist.github.com/anchetaWern/6150297
+
+PHP namespaces -> http://daylerees.com/php-namespaces-explained/
+
+
+
+Number of repeated characters in php
+
+
+OOPS in JAVASCRIPT
+ASP.NET
+http://pimple.sensiolabs.org/
+sql queries practice
+progamming questions to code
+db normalization
+index, cluster, tree algo in db
+
+
+
+SQL Joins
+LEFT JOIN (TableA all and only TableB matching)
+RIGHT JOIN (TableA only matching and TableB all)
+INNER JOIN (Intersection of TableA & TableB)
+ALL OUTER JOIN (Cartesian product of TableA & TableB)
+CROSS JOIN (AKA Cartesian Product)
+SQL Joins in detail with illustrations (http://stackoverflow.com/questions/38549/difference-between-inner-and-outer-joins)
+
+Delete duplicate rows mainting the higher or lower id order and comparing the IsOpened bit cases
+
+
+authentication headers
+digest methods
+soap
+
+
+WP custom post types, page and post templates
+techno update in google sheets
+
+
+Linkedin and Dubai Talent Magazine
+JobVite adn Angel.co
+
+The fundamental difference between those two ways is that const defines constants at compile time, whereas define defines them at run time. This causes most of const's disadvantages
+
+http://www.docnet.nu/tech-portal/2014/06/26/ssl-and-php-streams-part-1-you-are-doing-it-wrongtm/C0
+
+Q: What is a class?
+A: In object-oriented programming, a class is an extensible program-code-template for creating objects, providing initial values for state (member variables) and implementations of behavior (member functions or methods).
+
+Q: What is OOP?
+A: Object-oriented programming (OOP) is a programming paradigm based on the 
+concept of "objects", which may contain data, in the form of fields, often known as attributes; and code, in the form of procedures, often known as methods.
+
+Javascript Inheritance:
+http://www.sitepoint.com/simple-inheritance-javascript/
+
+Q: Difference between Truncate and Delete?
+A: 
+* truncate is faster than delete
+* delete is DML and truncate is DDL
+* Delete does not recover space, Truncate recovers space
+* Delete can remove only some rows. Truncate removes all rows.
+* A truncate cannot be applied when an enabled foreign key references the table. Treatment with delete depends on the configuration of the foreign keys.
+* Delete can be conditional whereas Truncate cannot.
+
+
+http://culttt.com/2014/06/25/php-traits/
+
+Apache MPM (multi processing module) - prefork, worker, event(don't site idle)
+http://serverfault.com/questions/383526/how-do-i-select-which-apache-mpm-to-use
+
+Apache mod_deflate or mod_gzip?
+http://www.linuxjournal.com/article/6802
+
+Lossless and lossy compression
+http://www.makeuseof.com/tag/how-does-file-compression-work/
+
+regex and .htaccess
+() -> groups which are used as params

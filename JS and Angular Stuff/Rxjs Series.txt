@@ -1,0 +1,625 @@
+Rxjs Series
+---
+
+1) fromEvent
+-Use to emit stream of data from a given event target.
+
+Usage:
+
+In html file,
+<button #btnRef> Click </button>
+
+In TS file
+
+let counter:number = 0;
+@ViewChild('btnRef', {static: false}) buttonReference: ElementRef;
+ngAfterViewInit(){
+  fromEvent(this.buttonReference.nativeElement, 'click').subscrible(__ => {
+    console.log('Emmited Data: ' + this.counter++);
+  })
+}
+
+Now whenever we click that button we will get the response as follows
+Emmited Data: 0
+Emmited Data: 1
+Emmited Data: 2
+Emmited Data: 3
+..
+..
+..
+----------------------------------------------
+
+
+2) interval and timer
+-Interval operator is used to emit the stream of data after every specific interval of time
+
+Usage:
+
+let counter:number = 0;
+ngOnInit(){
+  let broadcast = interval(2000);
+  broadcast.subscribe(__ => { console.log(this.counter++); })
+}
+
+-This will emit data after every 2 seconds as soon as the component loads.
+-To stop emitting data, unsubscribe the subscription.
+
+Similarly the timer works in the same way. The only difference is that is takes the delay as the first parameter
+to tell when to start the timer.
+
+Usage:
+
+let counter:number = 0;
+ngOnInit(){
+  let broadcast = timer(5000, 2000);
+  broadcast.subscribe(__ => { console.log(this.counter++); })
+}
+
+-This will emit the data after every 2 seconds after 5 seconds of component load.
+----------------------------------------------
+
+
+3) of and from
+-The of operator takes multiple arguements and converts them into observable without any processing.
+
+Usage:
+
+Eg1
+ngOnInit(){
+  of(10,20,30).subscribe(res => { console.log(res); })
+}
+
+Output: 
+10
+20
+30
+
+Eg2
+ngOnInit(){
+  of([10,20,30]).subscribe(res => { console.log(res); })
+}
+
+Output:
+10,20,30
+
+-Similarly the from operator does the same but does some processing
+
+Usage:
+
+Eg1
+ngOnInit(){
+  from([10,20,30]).subscribe(res => { console.log(res); })
+}
+
+Output:
+10
+20
+30
+
+-It will take each item of array one by one
+-Similary if we pass string to from() then it will emit the string character by character
+-Similarly if we pass a promise to from() then it will emit once the promise resolves or rejects. In the case of of(),
+it will not wait for resolving or rejecting it will emit the whole promise as it was passed
+----------------------------------------------
+
+4) toArray
+-Once the observable completes emtting the data, all the data emmitted is converted into an array
+
+Usage:
+
+Eg1
+ngOnInit(){
+  from([10,20,30]).pipe(toArray()).subscribe(res => { console.log(res); })
+}
+
+Output:
+[10,20,30]
+
+-The from will emmit the values one by one from an array and the toArray() converts back all the emmitted value into an
+array
+
+Eg2
+ngOnInit(){
+  of("Hello", "From", "Rxjs").pipe(toArray()).subscribe(res => { console.log(res); })
+}
+
+Output:
+["Hello", "From", "Rsjs"]
+----------------------------------------------
+
+5) map
+-Convert the data or transform it into the required form
+----------------------------------------------
+
+6) pluck
+-Can be used if you want to get any property from an object by just using the key name
+
+Usage:
+
+Eg1 Without pluck
+
+let obj = [ {id: 1, name: "Usama"}, {id: 1, name: "Abubakar"} ]
+ngOnInit(){
+  from(this.obj).pipe(
+    map(data => data.name),
+    toArray()
+  ).subscribe(values => console.log(values))
+}
+
+Output: ["Usama", "Abubakar"]
+
+Eg2 Without pluck
+
+let obj = [ {id: 1, name: "Usama"}, {id: 1, name: "Abubakar"} ]
+ngOnInit(){
+  from(this.obj).pipe(
+    pluck('name'),
+    toArray()
+  ).subscribe(values => console.log(values))
+}
+
+Output: ["Usama", "Abubakar"]
+
+-What if we want to get nested objs
+
+Eg3 Without pluck
+
+let obj = [ 
+  {id: 1, name: "Usama", skilss: {front: "Angular", back: "Java"}}, 
+  {id: 1, name: "Abubakar", skilss: {front: "Vue", back: "Php"}} 
+]
+ngOnInit(){
+  from(this.obj).pipe(
+    pluck('skilss', 'front'),  // With map -> map(data => data.skills.front)
+    toArray()
+  ).subscribe(values => console.log(values))
+}
+
+Output: ["Angular", "Vue"]
+
+Difference between pluck and map?
+-We can perform random operations with map on the data whereas with pluck we can just fetch the value and cannot do any operation on it
+----------------------------------------------
+
+7) filter
+-Can be used to filter the data on provided criteria
+----------------------------------------------
+
+8) Tap / do
+-Transparently perform operation without any side-effects on the response
+-With tap we can check our data at a specific point, or perform any other operation like emitting the value to a subject,
+console logging the data, unsubscribing to the obervable etc...
+
+Usage
+
+let names = ["Usama", "Abubakar", "Hello", "123"]
+ngOnInit(){
+  const source = interval(1000);
+  let subs = source.pipe(
+    tap(res => if(res == names.length) subs.unsubscribe()),
+    map(res => 'Name : ' + names[res]))
+    .subscribe(res => console.log(res);)
+}
+
+-Will print
+Name : Usama
+Name : Abubakar
+Name : Hello
+Name : 123
+
+The tap will unsubscribe it when the array will reach end and nothing will get printed
+----------------------------------------------
+
+9) Take / TakeLast / TakeUntil
+
+-Take is used to pick the values from first
+-The observable is automatically unsubscribed after this.
+
+let numbers = [1,2,3,4,5,6,7,8]
+
+ngOnInit(){
+  from(this.numbers).pipe(
+    take(3),
+    map(res => 'Number ' + res)
+  ).subscribe(res => console.log(res))
+}
+Output:
+Number 1
+Number 2
+Number 3
+
+-TakeLast pick the values from last
+
+ngOnInit(){
+  from(this.numbers).pipe(
+    takeLast(3),
+    map(res => 'Number ' + res)
+  ).subscribe(res => console.log(res))
+}
+
+Output:
+Number 6
+Number 7
+Number 8
+
+-TakeUntil receives a condition in an observable form to stop when the condition is applied.
+
+Eg1
+-Emit the values until 5 seconds
+
+ngOnInit(){
+  const source = interval(1000);
+  const condition = timer(5000);
+  source.pipe(
+    takeUntil(condition),
+    map(res => 'Number ' + res)
+  ).subscribe(res => console.log(res))
+}
+Output until 5 seconds:
+Number 0
+Number 1
+Number 2
+Number 3
+Number 4
+
+Eg2
+-Emit the values until click event appears anywhere inside the DOM
+
+ngOnInit(){
+  const source = interval(1000);
+  const condition = fromEvent(document, 'click');
+  source.pipe(
+    takeUntil(condition),
+    map(res => 'Number ' + res)
+  ).subscribe(res => console.log(res))
+}
+----------------------------------------------
+
+10) Retry, RetryWhen, Scan, Delay
+
+-Retry operator tries to subscribe the observable again whenever the error is thrown
+-Takes arguement for how many time to retry
+
+Usage
+
+Eg1
+ngOnInit(){
+  this.http.get("www.abc.com").pipe(
+    retry(3)
+  ).subscribe(
+    res => console.log('Response', res),
+    err => console.log('Error', err)
+    )
+}
+
+-It will retry it 3 times to fetch data from abc.com if all attempts throws error
+-But it will immediately retry when the error is thrown. A good practice is to put a delay like when the error is thrown
+after 3 seconds it will retry it again.
+-For that we will use a combination of RetryWhen, Scan and Delay
+
+Eg2
+ngOnInit(){
+  this.http.get("www.abc.com").pipe(
+    retryWhen(err => err.pipe(
+      delay(3000)
+    ))
+  ).subscribe(
+    res => console.log('Response', res),
+    err => console.log('Error', err)
+    )
+}
+-RetryWhen takes a notifier which is an observable to specify the condition. We will have to chain the operators again.
+-This will retry after every 3 seconds when the error is occured but we will have to specify how many times to retry
+
+Eg3
+ngOnInit(){
+  this.http.get("www.abc.com").pipe(
+    retryWhen(err => err.pipe(
+      delay(3000),
+      scan(count => {
+        if(count >= 5) throw err
+        else { count++; return count; }
+      }, 0)
+    ))
+  ).subscribe(
+    res => console.log('Response', res),
+    err => console.log('Error', err)
+    )
+}
+-Scan will receive the counter and we specify that when the count becomes 5 then throw the error which means it will
+retry it 5 times. The second arguement is the seed which is 0
+----------------------------------------------
+
+11) DebounceTime and DistinctUntilChange
+
+-Used mostly in the search functionality
+-Debouncce Time executes the operation after a certain time limit
+-DistinctUntilChange verifies if the data is same then the same operation is not performed again
+
+Usage
+..
+
+ngOnInit(){
+  this.form.get('value').valueChanges.pipe(
+    debounceTime(500),
+    distinctUntilChange(),
+  ).subscribe(res => console.log(res))
+}
+----------------------------------------------
+
+12) Subject and BehaviorSubject
+
+Subject
+-Special type of observable
+-A subject at the same time can act as an Observable and Observer both. It can emit the data and it also can subscribe to the
+data
+-Like with @Output() we emit the data from child to parent, with Subject we emit the data anywhere we want (globally).
+-Subject is a multi-cast observable like the data will be received at the stage when the subject is subscribed. Previously
+emitted data will not be received. Example of a live streaming video. If we connected to a stream in the middle, the previous
+stream will be missed
+
+BehaviorSubject
+-Same as subject, but in subject we cannot set the initial value.
+-With bhavior subject we can set the initial value to be fetched by observables
+----------------------------------------------
+
+13) ReplaySubject
+
+-Similar behavior as BheaviorSubject but the difference is that we can set the amount of previous values to be fetched at the
+time of subscription
+-If the subject as emitted 6 7 values and we have set initial value to be 5 then any observable subscribed to this ReplaySubject
+will get the last 5 values emmitted as initial values.
+-Also we can set the time limit. As if we dont want to emit the initial values after a certain time limit has been passed
+
+Usage
+
+rSubj = new ReplaySubject(5, 5000);
+-Will emit last 5 values as initial value but only if the subscription is done within 5 seconds of emition
+----------------------------------------------
+
+14) Async Subject
+
+-Value will be emmitted (only the last value) once the AsyncSubject is completed.
+-No value will be emited before its completion
+----------------------------------------------
+
+15) Concat and Merge
+
+-Concat one by one merges the data emmitted by the observables
+
+Usage
+..
+
+ngOnInit(){
+  const source1 = interval(1000).pipe(map(value => 'Source Video One: ' + value), take(5));
+  const source2 = interval(1000).pipe(map(value => 'Source Video Two: ' + value), take(3));
+  const source3 = interval(1000).pipe(map(value => 'Source Video Three: ' + value), take(2));
+
+  const final = concat(source1, source2, source3).subscribe(res => {
+    console.log(res);
+  })
+}
+
+Output:
+Source Video One: 1
+Source Video One: 2
+Source Video One: 3
+Source Video One: 4
+Source Video One: 5
+Source Video Two: 1
+Source Video Two: 2
+Source Video Two: 3
+Source Video Three: 1
+Source Video Three: 2
+
+-Similarly the Merge will do the opposite. It will not wait for one observable to complete emition of data.
+-Merge will emit as soon as the data is available from any of the observable.
+----------------------------------------------
+
+16) MergeMap
+
+-Flattening operator (Nested Observables)
+-MergeMap is the combination of map and mergeAll
+-Useful to extract the values from the inner observables.
+-Like we get the values from observable one by one and then call an api from that data to get the final data.
+
+Usage (map)
+..
+ngOnInit(){
+  const source = from(['Tech', 'Comedy', 'News']);
+  source.pipe(map(res => this.getData(res);))
+  .subscribe(res => console.log(res));
+}
+
+getData(data){ return of(data + ' Video Uploaded'); }
+
+Output:
+[object Object] // Observable
+[object Object] // Observable
+[object Object] // Observable
+
+Usage (mergeAll)
+..
+const source = from(['Tech', 'Comedy', 'News']);
+  source.pipe(
+    map(res => this.getData(res);), 
+    mergeAll()
+  ).subscribe(res => console.log(res));
+
+Output:
+Tech Video Uploaded
+Comedy Video Uploaded
+News Video Uploaded
+
+Usage (mergeMap)
+..
+const source = from(['Tech', 'Comedy', 'News']);
+  source.pipe(
+    mergeMap(res => this.getData(res);)
+  ).subscribe(res => console.log(res));
+
+Output:
+Tech Video Uploaded
+Comedy Video Uploaded
+News Video Uploaded
+----------------------------------------------
+
+17) ConcanMap
+
+-Flattening Operator
+-The order is mattered in this operator unlike other flattening operator. If the nested observable takes time to subscribe and 
+fetch data, it will not move to the next value.
+
+Usage
+..
+ngOnInit(){
+  const source = from(['Tech', 'Comedy', 'News']);
+  source.pipe(concatMap(res => this.getData(res);))
+  .subscribe(res => console.log(res));
+}
+
+getData(data){ return of(data + ' Video Uploaded').pipe(delay(2000)); }
+
+Output: (each line will be printed after 2s)
+Tech Video Uploaded
+Comedy Video Uploaded
+News Video Uploaded
+
+-If we use mergeMap then initial delay will be 2s then all 3 items will be printed as mergeMap dont wait for the delay. It
+immediately moves to the next one.
+----------------------------------------------
+
+18) SwitchMap
+
+-Flattening Operator
+-Works with the latest results and cancels all previos results
+
+Usage
+..
+ngOnInit(){
+  const source = from(['Tech', 'Comedy', 'News']);
+  source.pipe(switchMap(res => this.getData(res);))
+  .subscribe(res => console.log(res));
+}
+
+getData(data){ return of(data + ' Video Uploaded').pipe(delay(2000)); }
+
+Output: (Will be printed after 2s)
+News Video Uploaded
+----------------------------------------------
+
+19) ExhaustMap
+
+-Flattening Operator
+-Prevents from delivering multiple requests when already a request is being generated
+-Example of user clickng on save buton multiple times to generate multiple requests
+
+Usage
+..
+<button #btn> Generate Request </button>
+
+num:number = 0;
+@ViewChild('btn') btn: ElementRef;
+ngAfterViewInit(){
+  fromEvent(this.btn.nativeElement, 'click').pipe(
+    exhaustMap(__ => this.onSave(this.num++))
+  ).subscribe()
+}
+
+onSave(data){
+  return this.dataService.save(data);
+}
+----------------------------------------------
+
+20) ShareReplay
+
+-Avoid multiple request if the data is same
+-Lets say we have a products page in which there are 3 sections namely "Laptop", "Moible" and "All"
+-Laptop displays laptop category products, mobile displays mobile category products and All displays all products
+
+Usage
+..
+
+allProducts: Observable<any>;
+mobiles: Observable<any>;
+laptops: Observable<any>;
+
+ngOnInit(){
+
+this.allProducts = this.http.get(this.url);
+this.mobiles = this.allProducts.pipe(filter(res => res['type'] === 'mobile'))
+this.laptops = this.allProducts.pipe(filter(res => res['type'] === 'laptop'))
+}
+
+Laptop:
+<div *ngFor="let laptop in laptops | async"> {{laptop.name}} </div>
+
+Mobile:
+<div *ngFor="let mobile in mobiles | async"> {{mobile.name}} </div>
+
+All:
+<div *ngFor="let all in allProducts | async"> {{all.name}} </div>
+
+-Here we will see in the network tab, 3 requests will be generated to the server to fetch the products
+-We can optimize it with shareReplay to avoid sending same request to the server
+
+this.allProducts = this.http.get(this.url).pipe(shareReplay());
+----------------------------------------------
+
+21) CombineLatest and WithLatestFrom
+
+CombineLatest
+-Combine the latest value of 2 streams and emit the value
+
+Usage
+..
+-Like we have 2 dropdowns namely Name and Color
+
+@ViewChild('name') name: ElementRef
+@ViewChild('color') color: ElementRef
+
+ngOnInit(){
+  const nameSource = fromEvent(this.name.nativeElement, 'change').pipe(
+    map(ev => ev.target.value)
+  )
+  const colorSource = fromEvent(this.color.nativeElement, 'change').pipe(
+    pluck('target', 'value')
+  )
+
+  combineLatest(nameSource, colorSource).subscribe([name, color]=> { cosole.log(name, color) })
+}
+
+WithLatesFrom
+-Uses the strategy of master and slave
+-We have to make one observable as master and one as slave
+-So whenver anything changes in the master, the value will be emitted and nothing happends when slave is changed.
+
+nameSource.pipe(withLatestFrom(colorSource)).subscribe([name, color]=>{console.log(name, color)})
+----------------------------------------------
+
+22) Zip and ForkJoin
+
+Zip
+-Zip emits the value when the value is emitted by both the observable
+-In combineLatest whenever any observable is changed, the combination of latest values are emitted no matter if the other
+observable is changed or not
+-Zip requires both to change everytime to emit the value
+
+ForJoin
+-It will only emit the value when both the observable are completed and no more values are to be emitted anymore
+-It will display the combination of last 2 values
+-To complete the observable use take() operator
+----------------------------------------------
+
+23) catchError and throwError
+
+-Throw error inside catch Error and respond in the 2nd arguement of subscribe
+..
+Usage
+..
+fetchData(){
+ return this.http.get(this.url).pipe(catchError(this.someService.handleError))
+}
+handleError(err:HttpErrorResponse){ return throwError('Some Error: ' + err); }
+
+this.dataService.fetchData().subscribe(res => console.log(res), err => console.log(err));

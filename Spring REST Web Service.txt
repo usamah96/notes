@@ -1,0 +1,125 @@
+Spring REST Web Service
+-------------------------------
+
+-Copy the maven project "spring-rest-demo" and import it in eclipse.
+-Update the dependencies for Spring framework, Jackson databind, Java Servlet
+and Maven War plugin to latest.
+-Jackson data bind is the dependency that helps converting the object
+into json or vice versa (to map the json string into the object reference).
+
+-Create the AppConfig
+-Create the WebInistialzer tht extends from AbstractAnno....Initializer
+and define the Config class and default path.
+
+-Creat Rest Controller as
+
+@RestController
+@RequestMapping("/test")
+public String HelloWorld(){
+  return "Hello World";
+}
+------------------------------------
+Retrieving the POJO as Json object (Done BTS by Jackson data binding)
+
+@RestController
+@RequestMapping("/api")
+public class StudentController {
+
+  @GetMapping("/students")
+  public List<Student> GetListOfStudents(){
+		
+    List<Student> students = new ArrayList<Student>();
+		
+    students.add(new Student("Usama", "Abubakar"));
+    students.add(new Student("Leo", "Messi"));
+    students.add(new Student("Cristiano", "Ronaldo"));
+		
+    return students;
+  }
+}
+-------------------------------------
+Using The Path Variable
+
+@GetMapping("/students/{studentId}")
+public Student GetSingleStudent(@PathVariable int studentId) {
+		
+  return this.students.get(studentId);
+}
+
+"/students/{studentId}"
+{studentId} is known as the path variable.
+--------------------------------------
+Exception Handling
+
+-Use Custom Global Exception Handling Mechanism that can be re-used by
+other controllers as well.
+..
+Create a Custom Response Message
+
+public class RestExceptionResponse{
+  public String message;
+  public int status;
+  public long time;
+
+  //Create no-arg and arg ctors with gets and sets
+}
+
+Create Not Found Class
+
+public class NotFoundException extends RuntimeException{
+  // Go to Source -> Generate super constructors and select bottom 3 checkbox
+
+  public NotFoundException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+  public NotFoundException(String message) {
+    super(message);
+  }
+
+  public NotFoundException(Throwable cause) {
+    super(cause);
+  }	
+}
+
+Update The StudentController
+
+@GetMapping("/students/{studentId}")
+public Student GetSingleStudent(@PathVariable int studentId) {
+
+  if(studentId >= students.size() || studentId < 0){
+    throw new NotFoundException("Student With Id: " + studentId + "Not Found");
+  }	
+  return this.students.get(studentId);
+}
+
+Create Global Handler
+
+@ControllerAdvice
+public class RestExceptionHandler{
+  @ExceptionHandler
+  public ResponseEntity<RestExceptionResponse> HandleStudentException
+  (NotFoundException exc){
+    RestExceptionResponse response = new RestExceptionResponse();  
+    response.setMessage(exc.getMessage());
+    response.setStatus(HttpStatus.NOT_FOUND.value());
+    response.setTime(System.currentTimeMillis());
+		
+    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler
+  public ResponseEntity<RestExceptionResponse> HandleStudentException
+  (Exception exc){
+    RestExceptionResponse response = new RestExceptionResponse();  
+    response.setMessage(exc.getMessage());
+    response.setStatus(HttpStatus.NOT_FOUND.value());
+    response.setTime(System.currentTimeMillis());
+		
+    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+  }
+}
+
+-The first method is the method for invalid integers
+-The second method is the generalized like giving string as the path
+variable that will give the error for invalid conversion type.

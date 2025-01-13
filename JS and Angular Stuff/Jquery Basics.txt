@@ -1,0 +1,241 @@
+Jquery Basics
+-------------------------------------------------------------
+
+Common Used Selectors
+
+$("p.intro") - select all p with class intro
+
+$("p:first") - selects the first p element
+
+$("ul li") - selects list items
+
+$("[href]") - selects all element with href attrtibute
+
+$("a[target='_self']") - selects all a element with attr target='_self'
+
+$("a[target!='_self']") - selects all a element with not attr target='_self'
+
+$("a.hello[target='_self']") - selects only a element with class='hello' and 
+attr target='_self'
+
+$("tr:even") - select even elemets of tr
+
+$("tr:odd") - select odd elemets of tr
+
+--------------------------------------------------------------
+
+Common Used Events
+
+$("p").click(function(){ // Code Block })
+
+$("p").dblclick(function(){ // Code Block })
+
+$("p").mouseenter(function(){ // Code Block }) - On Hovering the element
+
+$("p").mouseleave(function(){ // Code Block }) - On leaving the element
+
+$("p").mousedown(function(){ // Code Block }) - On Pressing mouse button
+
+$("p").mouseup(function(){ // Code Block }) - On Releasing mouse button
+
+$("p").hover( function(){ //Code For mouseenter }, function(){ // Code for mouseleave 
+} ) - Takes 2 function 1 for mouseenter and one for mouseleave
+
+$("input").focus(function(){ // Code Block }) - When input field is selected
+
+$("input").blur(function(){ // Code Block }) - When input field is left
+
+$("input").change(function(){ // Code Block }) - When text is changed in input field
+
+The on function takes one or more event handlers.
+
+$("p").on({
+
+mouseenter: function(){ // Code },
+mouseleave: function(){ // Code },
+click: function(){ // Code }
+
+})
+
+$("p").hide(1000) - Can take arguement as milliseconds to hide an element
+
+$("p").toggle(1000) OR $("p").toggle() - show and hide every time when trigerred.
+
+$("p").fadeIn() / $("p").fadeIn("slow") / $("p").fadeIn(3000)
+Same with fadeOut and fadeToggle
+
+$("p").fadeTo(1000, 0.15) - Takes arg as opacity to fade element
+
+$("p").slideDown("slow") / $("p").slideUp("slow") / $("p").slideToggle("slow")
+
+Animation
+
+$("button").click(function(){
+
+$("div").animate({ left: '250px' }) // will move div towards right side.
+
+})
+
+$("div").animate({ 
+
+height: '100px',
+width: '+=150px' // will add 150px width to previous width
+opacity: '0.5'
+
+})
+
+$("button").click(function(){
+
+$("div").animate({ left: '250px' }, "slow");
+$("div").animate({ left: '250px' }, "slow");
+$("div").animate({ left: '250px' }, "slow");
+
+//This will execute one by one
+
+})
+
+We can stop the animation in middle by $("div").stop(); 
+
+-----------------------------------------------------------------------
+
+$("#test").text() - returns inner text of tag
+$("#test").html() - returns inner text with html tags
+$("#test").val() - returns form field value
+$("#test").attr("href") - returns link of a tag
+
+$("#test").text("Hello") - sets inner text of tag
+$("#test").html("Hello <b> World </b>") - sets inner text with html tags
+$("#test").val("Hello") - sets form field value
+$("#test").attr("href", "www.google.com") - sets href value of a tag
+
+$("#test").attr({
+
+"href" : "www.google.com",
+"title" : "Hello",
+"class" : "btn btn-lg"
+
+}) // Can take multiple attribute elements to be set.
+
+$("#test").text(function(i, oldText){
+
+return oldText + ". New Text: Hello";
+
+}) // Can also take a call back function. Same with $("#test").html()
+
+$("p").append("Hello <b> World </b>") //  appends at the end of any element
+$("ul").append("<li> Item </li>")
+
+$("p").prepend("Hello <b> World </b>") //  appends at the beginning of any element
+$("ul").prepend("<li> Item </li>")
+
+3 ways to add html to the body
+
+var txt = "<p> Hello World </p>";
+var txt1 = $("<p></p>").text("Hello World");
+var txt2 = document.createElement("p");
+txt2.innerHtml = "Hello World";
+$("body").append(txt, txt1, txt2);
+
+$("p").after("<b> Hello </b>"); // Adds after the selected element
+$("p").before("<b> Hello </b>"); // Adds before the selected element
+
+$("#test").remove() - Removes the child element with the element itself
+$("#test").empty() - Removes the child element
+$("#test").remove(".test") - removes the element with the class test
+$("#test").remove(".test", ".demo") - removes the element with the class test and 
+demo
+
+$("div").addClass("important")
+$("h1, h2, h3").addClass("hello")
+
+$("div").removeClass("important")
+$("h1, h2, h3").removeClass("hello")
+
+$("p").css('background-color') // returns the color value
+$("p").css('background-color', 'yellow') // sets the color value
+$("p").css({
+
+"background-color" : "yellow",
+"color" : "red"
+
+}) // Multiple css values
+
+$("#test").width() - returns width of element excluding padding, border and margin
+$("#test").height() - returns height of element excluding padding, border and margin
+$("#test").innerWidth() - returns width of element including padding
+$("#test").innerHeight() - returns height of element including padding
+$("#test").outerWidth() - returns width of element including padding and border
+$("#test").outerHeight() - returns height of element including padding and border
+$("#test").outerWidth(true) - returns width of element including padding, border and margin
+$("#test").outerHeight(true) - returns height of element including padding, border and margin
+
+$(document).width() / $(document).height() - returns browser's dimension
+$("#test").width(100) / $("#test").height(100) - sets the dimension of element
+
+--------------------------------------------------------------------------
+
+$("li").parent() - will target the direct parent of element like,
+this will taget <ul>
+
+<ul>
+<li</li>
+</ul>
+
+$("span").parents() - will target all the parents up to the root
+this will taget all tags up to the starting <div> inclucind <ul> and <li>
+<div>
+<ul
+<li>
+<span></span>
+</li>
+</ul>
+</div>
+
+$("span").parents("ul") - will target specific element in the list of ancestors
+
+$("span").parentsUntil("div") - will return all element in the list of ancestors
+uptil before the div
+this will target <li> and <ul>
+
+<div>
+<ul
+<li>
+<span></span>
+</li>
+</ul>
+</div>
+
+$("span").children() - will target all the direct childs
+$("span").children("p.first") - can target specific child
+$("div").find("span") - will taget all the span under the div upto the end
+$("span").find("*") - will target all elements under span
+
+$("h2").siblings() - will target all the corresponding elements
+this will target h1, p and span
+<div>
+<h1></h1>
+<p></p>
+<h2></h2>
+<span></span>
+</div>
+
+$("h2").siblings("p") - can target specific sibling
+$("h2").next() - will target the next element after h2
+$("h2").nextAll() - will target all elements besides and after h2
+$("h2").nextUntil("h6") - will target element after h2 and before h6
+
+$("h2").prev() / $("h2").prevAll / $("h2").prevUntil works the same as next()
+
+$("div").first() - will return the first div among all the div
+same as $("div:first")
+
+$("div").last() - will return the last div among all the divs
+same as $("div:last")
+
+$("div").eq(1) - will return the second div among all the divs (because index
+starts from 0)
+
+$("div").filter(".intro") - will target div element of class intro only
+same as $("div.intro")
+
+$("div").not(".intro") - opposite of $("div").filter(".intro")

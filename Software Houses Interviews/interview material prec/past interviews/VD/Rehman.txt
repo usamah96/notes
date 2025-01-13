@@ -1,0 +1,41 @@
+[6:38 PM, 4/13/2017] Rehman: 4 pillars                        
+
+[6:38 PM, 4/13/2017] Rehman: :p                       
+ 
+[6:38 PM, 4/13/2017] Rehman: Toughest question??                        
+
+[6:40 PM, 4/13/2017] Rehman: Then har kisi ki example                        
+
+[6:40 PM, 4/13/2017] Rehman: Encapsulation ko detial me le gaya                        
+
+[6:40 PM, 4/13/2017] Rehman: Private kardye attributes                       
+ 
+[6:40 PM, 4/13/2017] Rehman: Mene setter bana dya                        
+
+[6:41 PM, 4/13/2017] Rehman: Ab me wesey bhi acccess kar skta                        
+
+[6:41 PM, 4/13/2017] Rehman: To koa faida                        
+
+[6:41 PM, 4/13/2017] Rehman: Encapsulation ka                        
+
+[6:41 PM, 4/13/2017] Rehman: Jab me manipulate karke koi bhi value daal skta hu                       
+ 
+[6:43 PM, 4/13/2017] Rehman: Link list ka head dya                        
+
+[6:43 PM, 4/13/2017] Rehman: Bola funxtion banao and batai this list is circular or not                        
+
+[6:43 PM, 4/13/2017] Rehman: Design pattern parhey hai ?                        
+
+[6:43 PM, 4/13/2017] Rehman: Yes                        
+
+[6:43 PM, 4/13/2017] Rehman: Single ton                       
+ 
+[6:43 PM, 4/13/2017] Rehman: Anstract factory                       
+ 
+[6:43 PM, 4/13/2017] Rehman: Factory                        
+
+[6:43 PM, 4/13/2017] Rehman: Factory method q banatey ?                       
+ 
+[6:44 PM, 4/13/2017] Rehman: Singleton ke andar getinstance ka function factory hai ya nahi ?                        
+
+[6:46 PM, 4/13/2017] Rehman: Iq question

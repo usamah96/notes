@@ -1,0 +1,1571 @@
+Angular 7
+---------------------------------------
+
+Installing Angular CLI
+npm install -g @angular/cli@latest
+
+Creating project
+ng new myProject
+ng serve
+
+Installing bootstrap
+npm install --save bootstrap@3
+-Go to angular.json (config file) where all the default configuration is set up. Go to
+styles array and put "node_modules/bootstrap/dist/css/bootstrap.min.css"
+
+---------------------------------------
+Project Structure
+
+-package.json: Contains all the packages required to run the angular app.
+dependencies are all the packages required to run the app on production server and
+devdependencies are only required on the development area and not on the production
+server.
+
+-node_modules: All those packages defined in package.json are in this node_modules
+folder.
+
+-e2e: Contains end to end test and configuration files.
+
+-.angular-cli.json: Angular Cli configuration file
+
+-karma.conf.js: Configuration for unit test runner
+
+-protactoer.conf.json: Configuration for e2e test runner
+
+-tsconf.json: Typescript compiler configuration file
+
+-tslint.json: Angular has a built in linting tool for checking typescript programmatic,
+stylng errors
+
+-----------------------------------------------
+
+The Basics
+
+-The Role of AppModule is to bundle different pieces into packages
+
+
+-The main.ts gets loaded when angular app is served with ng serve.
+-The last command is bootstrap.Module(AppModule). This starts our app_module.ts by passing
+it as an arguement to that method
+-In the app_module,ts we have the bootstrap array which should consist of all the
+components by the time angular analysis our index.html file. 
+-Now our index.html file can understand the selectors we have used in the form of
+components
+
+-We place all our components and html code into app.component.html as this is the
+root component
+
+
+Components
+Creation: ng g c hello
+
+Selector Methods
+selector: 'app-server' usage <app-server>
+selector: '[app-server]' usage <div app-server></div>
+selector: '.app-server' usage <div class="app-server"></div>
+
+
+Databindings
+-Communication between templates (html) and typescript class (business logic)
+Types:
+
+1) Output (From typescript class to templates)
+  .String interpolation: {{ data }}
+  .Property Binding: [property] = "data"
+
+2) React to User Events
+  .Event Binding: (event) = "expression"
+
+3) Combination of 1 and 2
+  .Two way data binding: [(ngModel)] = "data"
+
+String Interpolation
+eg:
+..
+<div> The Server with {{serverId}} is {{status}} </div>
+Can also call method
+<div> The Server is {{getServerStatus()}} </div> 
+
+Property Binding
+eg:
+..
+<div class="btn btn-primary" [disabled]="!allowNewServer"> Add Sever </div>
+
+Event Binding
+eg:
+..
+<div class="btn btn-primary" (click)="createServer()"> Create Server </div>
+- $event gives us access to the event data
+<input type="text" class="form-control" (input)="setServerName($event)" />
+<p> {{ serverName }} </p>
+-setServerName function will be called on every keystroke and we will see dynamic
+change in the paragraph element as we type in input box. This is how we can use the 
+$event object.
+
+setServerName(event){
+  this.serverName = event.target.value
+}
+
+Two way Databinding
+eg:
+..
+<input type="text" [(ngModel)] = "serverName" />
+<p> {{ serverName }} </p>
+-The input box will be pre populated with the serverName value. And if we change
+the value in the box it will automatically updated in the paragraph.
+
+
+
+Directives
+-Instructions to the DOM
+
+*ngIF: Structural Directive. It either add or it does not add to the DOM. It provides
+extra info to the Angular.
+-*nfIF should be an expression returning ture or false
+<div *ngIf="serverCreated"> {{ serverName }} was created </div>
+
+Using else condition
+<div *ngIf="serverCreated; else noServer"> {{ serverName }} was created </div>
+<ng-template #noServer> <p> No server created </p> </ng-template>
+
+*ngStyle: Attribute Directive. Doesn't change the DOM unline Structural Directive, but
+change the element where they are placed on
+-We add it like an attribute
+
+<div [ngStyle]="{backgroundColor: getColor()}"> {{serverName}} is {{serverStatus()}}
+In TS Class,
+constructor(){ this.status = Math.random() > 0.5 ? 'online' : 'offline' }
+serverStatus(){ return this.status }
+getColor(){ return this.status === 'online' ? 'green' : red }
+
+*ngClass: Attribute Directive. Adds a css class if a certain condition is true.
+
+css class: .online { color: white }
+<div [ngClass]="{online: serverStatus()==='online'}"> 
+  {{serverName}} is {{serverStatus()}}
+</dv>
+
+Other Includes,
+*ngFor
+*ngSwitchCase
+
+--------------------------------------------------------
+
+Bindings Advance
+
+
+**Chrome Extension 'Augury' helpls understanding and analysing the angular application with
+all its dependencies. 
+Add to Chrome and open Developer Tools to see.
+
+
+
+
+Custom Property Binding
+-Passing Data between components
+eg:
+..
+ServerComponent TS Class
+@Input() element: {name:string, type:string, capacity:number}
+
+AppComponent TS Class
+ServerElements = {name:'server', type:'blueprint',capacity:100}
+
+AppComponent Html
+<server-component *ngFor="let se of ServerElements" [element]="se"></server-component>
+
+-Displaying the server component for every server object in app component.
+
+
+
+
+Custom Event Binding
+-If something changes in the component, we want to inform the parent component which
+implements this component.
+-Emiiting the events.
+-Like if new server is added in AddServer component, we want to inform the AppComponent
+that new server is added.
+
+AppComponent TS Class
+ServerElements = {name:'server', type:'blueprint',capacity:100}
+
+onServerAdded(serverData){
+  this.ServerElements.push({ name: serverData.name, type: serverData.type, 
+  capacity: serverData.capacity })
+}
+
+AppComponent Html
+<add-server (serverCreated)="onServerAdded($event)"></add-server>
+
+AddServerComponent TS Class
+@Output() serverCreated: EventEmitter<{name:string, type:string, capacity:number}>();
+newServerName:string = '';
+newTypeName:String = '';
+newCapacity: number = 0;
+
+addServer(){
+  this.serverCreated.emit({ name:this.newServerName, type:this.newTypeName, 
+  capacity: this.newCapacity });
+}
+
+AddServerComponent Html
+<input type="text" [(ngModel)]="newServerName" />
+<input type="text" [(ngModel)]="newTypeName" />
+<input type="number" [(ngModel)]="newCapacity" />
+<button class="btn" (click)="addServer()"></button>
+
+Summary: When server is added in AddServerComponent, it emits the object which is received
+by AppComponent. AppComponent loop through all server elements and pass each object to
+ServerComponent. 
+
+
+
+
+
+Local References
+
+<input type="text" #serverName />
+<button (click)="addServer(serverName)"></button>
+
+addServer(inputData: HTMLInputElement){
+  console.log(inputData.value);
+}
+
+-Local reference can also be fetched with ViewChild
+eg:
+..
+<input type="text" #contentName />
+<button (click)="addContent()"></button>
+
+TS Class
+@ViewChild('contentName') contentName: ElementRef
+addContent(){
+  console.log(this.contentName.nativeElement.value);
+}
+
+
+
+ng-content
+-Whatever is placed between the opening and closing tag of the component, angular will
+place that inside ng-content
+eg:
+..
+server-element.component.html
+
+<h1> Hello World </h1>
+<div>
+  <ng-content></ng-content>
+</div>
+
+app.component.html
+<server-element> <p> Hola </p> </server-element>
+
+More on ng-content, ng-container, ng-template
+
+1) ng-template
+Angular wraps the host element (to which the directive is applied) inside <ng-template> and 
+consumes the <ng-template> in the finished DOM by replacing it with diagnostic comments.
+eg
+..
+
+<div *ngIf="sayHello" class="hello-world"> Hello World </div>
+
+Converted Element
+<ng-template [ngIf]="sayHello">
+  <div class="hello-world"> Hello World </div>
+</ng-template>
+
+
+
+2) ng-container
+The Angular <ng-container> is a grouping element that doesn't interfere with styles or layout 
+because Angular doesn't put it in the DOM.
+
+<div *ngFor="let item of items">
+  <div *ngIf="item.id"> {{ item.title }} </div>
+</div>
+We will get empty divs due to for loop div element
+
+Replace it with
+<ng-container *ngIf="let item of items">
+  <div *ngIf="item.id"> {{ item.title }} </div>
+</ng-container>
+We should use <ng-container> when we just want to apply multiple structural directives without 
+introducing any extra element in our DOM.
+
+
+3) ng-content
+They are used to create configurable components. This means the components can be configured 
+depending on the needs of its user. This is well known as Content Projection. Components that 
+are used in published libraries make use of <ng-content> to make themselves configurable.
+eg
+..
+project component html file.
+<div class="heading"> <ng-content select="h1"></ng-content>
+<div class="body"> <ng-content select="div"></ng-content>
+<div class="footer"> <ng-content></ng-content>
+
+app component file
+<project-template>
+  <div> Header </div>
+  <h1> Content </h1>
+  <span> Footer </footer>
+</project-template>
+
+
+
+4)*ngTemplateOutlet
+-They are used as a container to templates that can be reused at multiple places
+-Is used for two scenarios?—?to insert a common template in various sections of a view 
+irrespective of loops or condition and to make a highly configured component.
+
+Template Reuse
+Consider a view where you have to insert a template at multiple places. For example, 
+a company logo to be placed within a website.
+
+
+In html file
+..
+<ng-template #companyLogo>
+  <div class="logo">
+    <img [src]="logoUrl" />
+    <span> Title </span>
+  </div>
+</ng-template>
+
+<div>
+  <ng-container *ngTemplateOutlet="companyLogo"></ng-container>
+  ...........
+  ...........
+</div>
+
+<form (ngSubmit)="onSubmit()">
+  <ng-container *ngTemplateOutlet="companyLogo"></ng-container>
+  .....
+  .....
+</form>
+
+<div class="footer">
+  <ng-container *ngTemplateOutlet="companyLogo"></ng-container>
+  .....
+</div>
+
+Customizable Components
+-Receiving the template from the parent
+
+In project template html file
+
+<div class="header">
+  <ng-container *ngTemplateOutlet="headerTemplate ? headerTemplate : defaultHeader" />
+</div>
+
+<ng template #defaultHeader> Some Header ... </ng-template>
+
+In Project Ts File
+@Input() headerTemplate: TemplateRef<any>;
+
+Inside parent component html file
+<ng template #customHeader>
+  <div class="custom-header"> Custom Header </div>
+</ng-template>
+
+<project-template [headerTemplate]="customHeder"></project-template>
+
+
+Rendering according to the end-user component.
+
+Inside project component ts file
+
+@ContentChild(TemplateRef, {static: false}) customTmpl: TemplateRef<any>
+@Input() data;
+
+Inside project component html file
+<ng-container *ngFor="let item of data">
+    <ng-container *ngTemplateOutlet="customTmpl; context: {$implicit: item}"></ng-container>
+</ng-container>
+
+
+Inside app component html file
+<app-project [data]="customData">
+  <ng-template let-item>
+    <h1>{{item.name}}</h1>
+  </ng-template>        
+</app-project>
+
+customData = [
+    {
+      id: 1,
+      name: "Name 1",
+      age: 14
+    },
+    {
+      id: 2,
+      name: "Name 2",
+      age: 15
+    },
+    {
+      id: 3,
+      name: "Name 3",
+      age: 11
+    },
+    {
+      id: 4,
+      name: "Name 4",
+      age: 19
+    }
+  ]
+-------------------------------------------------------------------
+
+Advance Directives
+
+Building a Custom Directive.
+
+Attribute Directive
+-Create a directive with ng g d basic-dir
+-Inside it
+
+@Directive({ selector:'[basicDir]' })
+export class BasicDirective implements OnInit{
+  constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
+  ngOnInit(){
+    this.renderer.setStyle(this.elementRef.nativeElement, 'background-color', 'red');
+  }
+}
+
+-Using renderer is a better approch to acess the DOM element
+
+Now using a HostListener to listen to events
+-Like when we hover over the html element with our custom directive, we get the blue
+background and when we move away the mouse it should be displayed as normal
+
+@Directive({ selector:'[basicDir]' })
+export class BasicDirective implements OnInit{
+  constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
+  @HostListener('mouseenter') mouseOver(eventData: Event){
+    this.renderer.setStyle(this.elementRef.nativeElement, 'background-color', 'red');
+  }
+  @HostListener('mouseleave') mouseLeave(eventData: Event){
+    this.renderer.setStyle(this.elementRef.nativeElement, 'background-color', 'transparent');
+  }
+}
+
+Now Using HostBinding to avoid Renderer to access the html element. There is no harm in
+accessing the element using Renderer but a good way to code the custom directive is using
+a combination of HostBinding and HostListener.
+
+@Directive({ selector:'[basicDir]' })
+export class BasicDirective implements OnInit{
+  @HostBinding('style.backgroundColor') bgColor: string = 'transparent';
+
+  constructor() {}
+  @HostListener('mouseenter') mouseOver(eventData: Event){
+    this.bgColor = 'red';
+  }
+  @HostListener('mouseleave') mouseLeave(eventData: Event){
+    this.bgColor = 'transparent'
+  }
+}
+
+-HostBinding says that where ever the custom directive is put on, access its
+style.backgroundColor property and sets the value to bgColor.
+
+Dynamically setting the color values from outside.
+
+@Directive({ selector:'[basicDir]' })
+export class BasicDirective implements OnInit{
+  @Input() defaultColor = 'transparent';
+  @Input() highlightColor = 'blue'
+  @HostBinding('style.backgroundColor') bgColor: string;
+
+  constructor() {}
+  ngOnInit(){ this.bgColor = this.defaultColor; }
+
+  @HostListener('mouseenter') mouseOver(eventData: Event){
+    this.bgColor = this.highlightColor;
+  }
+  @HostListener('mouseleave') mouseLeave(eventData: Event){
+    this.bgColor = this.defaultColor;
+  }
+}
+
+<p basicDir defaultColor="red" highlightColor="yellow"> Hello World </p>
+
+
+
+Structural Directive
+-Creating a custom directive that is opposite of ngIf
+-Executes when a condition is false.
+-Create using ng g d unless
+
+@Directive({ selector:'[appUnless]' })
+export class UnlessDirective{
+
+  @Input() set appUnless(data: boolean){
+    if(!data){
+      this.vc.createEmbeddedView(this.tf);
+    }
+    else{
+      this.vc.clear();
+    }
+  }
+
+  constructor(private tf: TemplateRef<any>, private vc: ViewContainerRef) {}
+}
+
+<div *appUnless="showOdd">
+  <li *ngFor="let e of evenNumbers"> {{ e }} </li>
+</div>
+When the odd number condition is false, even number will be shown
+Opposite of it will be using *ngIf,
+
+<div *ngIf="!showOdd">
+  <li *ngFor="let e of evenNumbers"> {{ e }} </li>
+</div>
+
+-The use of 'set' is because whenever the input changes, we want to execute a method.
+So set is used for that. The function name should be similar to the selector
+-The TemplateRef means what to display, and ViewContainerRef means where to display or
+where to render the content.
+-Behind the scenes, angular connverts this structural directive into <ng-template>
+like format and to acess this ng-template, we use TemplateRef.
+
+
+
+Using *ngSwitch
+<div *ngSwitch="value">
+  <p *ngSwitchCase="5"> 5 </p>
+  <p *ngSwitchCase="10"> 10 </p>
+  <p *ngSwitchCase="50"> 50 </p>
+  <p *ngSwitchDefault> 500 </p>
+</div>
+
+--------------------------------------------------------------------------
+
+Pipes
+-Used to transform the output
+
+Built in pipes
+Uppercase, Lowercase, Dates etc
+
+{{ username | uppercase }}
+{{ birthdate | date:'fullDate' }}
+
+-The order of the pipe matters if chaining the pipe
+
+{{ birthdate | date:'fullDate' | uppercase }} // Works Fine
+{{ birthdate | uppercase | date:'fullDate' }} // Error
+
+
+
+
+
+
+Custom Pipes
+-Creating pipe that shortens the text to 10 characters
+-Create using ng g p shorten
+
+@Pipe({
+  name: 'shorten'
+})
+export class ShortenPipe implements PipeTransform{
+  transofrm(value: any){
+    return value.substr(0,10)
+  }
+}
+
+{{ description | shorten }}
+
+Passing the parameters.
+transofrm(value: any, limit: number){
+    if(value.length > limit){
+      return value.substr(0, limit) + ' ....';
+    }
+    return value;
+}
+
+{{ description | shorten:5 }}
+
+
+Pipes can also be used to transform the output of array. Like filtering with respect
+to the input.
+Creating with ng g p filter
+
+@Pipe({
+  name: 'filter'
+})
+export class ShortenPipe implements PipeTransform{
+  transofrm(value: any, filter: string, property: string){
+    if(value.length == 0) return value
+    const filteredArray = [];
+    for(let val of value){
+      if(val[property] === filter) this.filteredArray.push(val);
+    }
+    return filteredArray;
+  }
+}
+
+
+
+In Component
+
+serverStatus: string = '';
+servers = [
+  {name: 'Server 1', status: 'online'},
+  {name: 'Server 2', status: 'online'},
+  {name: 'Server 3', status: 'offline'},
+  {name: 'Server 4', status: 'online'},
+  {name: 'Server 5', status: 'offline'}
+]
+
+In Html
+<input type="text" [(ngModel)]="serverStatus" />
+<hr>
+<div *ngFor="let server of servers | filter:serverStatus:'status'">
+  <li> {{ server.name }} </li>
+</div>
+
+-Now the list will dynamically change as we type in input box
+-Here there is a problem. If we add a button and on that button click if we add new
+server object to that array and we are still in a filter mode, which means input box
+is typed with lets say 'online' and 3 list items are shown and we click on button the
+list will not change until and unless we change the input because the pipe calculates
+the data when the input box is changed
+-To handle this problem, we need to make the pipe impure. By default the pure property
+is set to true, we need to,
+@Pipe({ name: 'filter', pure: false })
+-Note that this can lead to performance issues. So do that when necessary!.
+
+--------------------------------------------------------------------------
+
+Services and Dependency Injection
+
+Services
+-Create Using ng g s myservice
+-Add the service in the providers array in app_module.ts
+-Used to centralize the data
+-Typical use cases could be
+  .Avoid data duplication
+  .Storing data for future use
+-Helps avoiding @Input() and @Output()
+
+We can use the service by creating the instance like,
+import { MyService } from ../myservice.service
+
+onServerAdded(){
+  const serv = new MyService();
+  serv.loggData();
+}
+
+But it is not a better option. Angular provides Dependency Injection method for
+using the service
+
+constructor(private serv: MyService) {}
+onServerAdded(){ this.serv.loggData(); }
+
+We Use @Injectable() to tell angular that this service can also be injected with other
+services in the constructor. If the service does not use any other service, not using
+@Injectable() will also work for the service.
+
+We can communicate between components through services via event emitter. Like if
+the status is changed in one component, we can run a piece of code in another component
+eg:
+..
+
+In MyService
+statusChanged = new EventEmitter<string>();
+
+In Component1
+onStatusChanged(statusValue){ this.myService.statusChanged.emit(statusValue); }
+
+In Component2
+constructor(){ this.myService.statusChanged.subscribe(value=>alert(value)); }
+
+-------------------------------------------------------------
+
+Routing
+
+In The app_module.ts just before @NgModule, declare the array of routes like
+..
+const appRoutes = [ 
+ {path: '', component: HomeComponent}, 
+ {path: 'users', component: UsersComponent},
+ {path: 'servers', component: ServerComponent}
+]
+
+
+Now inside imports array add another element in the array like
+imports = [
+ ...,
+ ...,
+ ..., 
+ RouteModule.forRoot(appRoutes)
+];
+
+*Add RouteModule from @angular/router
+
+Using it like, inside AppComponent
+<ul
+ <li routerLinkActive="active" routerLinkActiveOptions="{exact: true}"> 
+   <a routerLink="/"> Home  </a> 
+ </li>
+ <li routerLinkActive="active"> <a routerLink="/users"> Users  </a> </li>
+ <li routerLinkActive="active"> <a routerLink="/servers"> Servers  </a> </li>
+</ul>
+
+*Using routerLinkActiveOptions because without using it if we are at HomeComponent we 
+will se Home as active link, but if we go to like ServerComponent, the Servers will be
+marked as active but also Home will be marked as active. That is because the url is
+localhost:4200/servers and angular recognizes the slash '/' to be considered as 
+HomeComponent. So routerLinkActiveOptions will tell angular that Home link will be active 
+only if the url is exact and nothing after the slash.
+
+<div>
+ <router-outlet></router-outlet>
+</div>
+
+
+
+
+
+Understanding the routes (Relative and Absolute Path)
+-The meaning of slash '/' in the route is to tell to use the absolute path. The purpose 
+of relative path is to append the path with what is already there in the url. For
+example if we are in the servers component the url would be localhost:4200/servers.
+And in the component if we add anchor tag like <a routerLink="servers"> Reload </a>
+to reload the page with same routerLink, it will give error. Since it is the relative
+path it will append to url and url will become localhost:4200/servers/servers and we
+didn't have such route defined.
+-AppComponent is the root component and all
+the routing happens ther. AppComponent default link is localhost:4200 and if we use
+relative path the path will get appended like localhost:4200/users or localhost:4200/servers.
+-So when you are inside a component like servers component and if you want to reload the
+same page or go into another component like users component, then use the absolute path
+which is with the slash like <a routerLink="/servers"> Reload Page </a>
+
+
+
+
+
+Navigating Programmatically
+-Navigating like
+eg:
+..
+constructr(prvate router: Router){}
+onReload(){ this.router.navigate(['servers']) }
+-Unlike the routerLink, the Router does not know what currently component is loaded. So
+the relative and absolute path does not matter here. Whether we use servers or /servers,
+it will use it like absolute path.
+-However we can tell the Router about the current component like,
+eg:
+..
+constructor(private router: Router, private route: ActivatedRoute) {}
+onReload(){ this.router.navigate(['servers'], {relativeTo:route}) }
+-The ActivatedRoute helps us telling the current component. So Now if we use "servers"
+only, it will append with current url and we will get an error. Here we need to use
+"/servers" to make it complete absolute.
+
+
+
+
+
+Using The Parameters Effeciently
+-Suppose we have the routes like
+const appRoutes = [ 
+ {path: 'users' component: UsersComponent},
+ {path: 'users/:id/:name' component: UserComponent}
+]
+There are 2 components, user and users. UserComponent is the nested of UsersComponent.
+We can get access to parameter like,
+..
+users: {id:number, name:string};
+constructor(private route: ActivatedRoute){}
+ngOnInit(){ 
+ this.users.id = this.route.snapshot.params['id'];
+ this.users.name = this.route.snapshot.params['name'];
+}
+
+In UserComponent Html File we will have,
+<p> Id: {{ users.id }} with Name: {{ users.name }} </p>
+
+But here, we have a problem. The component is loaded and suppose the url currently is
+localhost:4200/users/1/usama and the data is displayed on page. But what if the id
+and the name is changed after the component is loaded. In simple words, what if the
+parameters are changed. How to track the changes and upadate the data? Well we can use
+the Params as observables like
+..
+users: {id:number, name:string};
+constructor(private route: ActivatedRoute){}
+ngOnInit(){ 
+ this.users.id = this.route.snapshot.params['id'];
+ this.users.name = this.route.snapshot.params['name'];
+
+ this.route.params.subscribe( (p:Params) => {
+   this.users.id = p['id'];
+   this.users.name = p['name'];
+ });
+}
+In UserComponent Html File we will have,
+<p> Id: {{ users.id }} with Name: {{ users.name }} </p>
+<a [routerLink]="['/users', 2, 'hola']"> Change Parameters </a>
+*localhost:4200/users/2/hola
+
+Now since we have subscribed to observable we need to unsubscribe to it. Because when you
+leave the component, the component gets destroyed but the subscription wont.
+
+
+
+
+
+Query Params and Fragments.
+-Query params refers to arguements in link like ?id=1&name=usama
+-Fragments refers to
+  .#page2 that scrolls our page to that link.
+-Creating a new route as {path: '/servers/:id/edit' component: EditServerComponent}
+
+Using it like
+<a [routerLink]="['/servers', 5, 'edit']"
+   [queryParams]="{allowEdit: '1'}"
+   fragment="loading"
+   *ngFor="let serv as servers"
+>
+  {{ serv.name }}
+</a>
+
+Using it porgramatically as
+onLoadServer(id){
+  this.router.navigate([ '/servers', id, 'edit' ], {queryParams: {allowEdit:'1'}, 
+   fragment:'loading'
+  })
+}
+
+Retrieving the query params and fragments same as params like
+..
+-When the component is loaded and query params / fragment not tend to change after the
+component is loaded
+constructor(private route: ActivatedRoute){}
+onLoadServer(){
+  this.route.snapshot.queryParams;
+  this.route.snapshot.fragment;
+}
+-When the values are to be chaged after the component is loaded then use this approach
+onLoadServer(){
+  this.route.queryParams.subscribe();
+  this.route.fragment.subscribe();
+}
+
+
+
+
+
+
+Setting up Child Routing
+-Configuring path with parent and child lile,
+{ path: '/servers', component: ServersComponent, children: [
+  { path: ':id', component: ServerComponent }, {path: ':id/edit', component: EditComponent}
+] }
+
+Inside ServersComponent
+
+<div class="row">
+  <div class="col-md-6" *ngFor="let serv of servers">
+    <a [routerLink]="['/servers', serv.id]" 
+       [queryParams]="{allowEdit: serv.id === 3 ? '1' : '0'}"
+     >
+      {{ serv.Name }} 
+    </a>
+  </div>
+
+  <div class="col-md-6">
+    <router-outlet>
+  </div>
+</div>
+
+Inside ServerComponent
+
+servers: {name: string, status: boolean}
+constructor(private service: ServerService, private router: ActivatedRoute, private
+            router: Router) {}
+ngOnInit(){
+  const id = +this.route.snapshot.params['id']; // + sign is to convert '1' into 1
+  this.servers = this.service.getServerById(id);
+  this.route.params.subscribe( (param: Params) => {
+    this.servers = this.service.getServerById(+param['id']);
+  })
+}
+onLoadServer(){
+  this.router.navigate(['edit'], {relativeTo: this.route})
+}
+
+Inside ServerComponent Html
+{{servers.name}} is {{servers.status}}
+<button (click)="onLoadServer()"> Edit </button>
+
+Inside EditServerComponent
+
+serverName: string
+serverStatus: string
+allowEdit: boolean = false;
+
+constructor(private service: ServerService, private route: ActivatedRoute) {}
+ngOnInit(){
+ this.route.queryParams.subscribe((param: Params) => { 
+  this.allowEdit = param['allowEdit'] === '1' ? true : false;
+ })
+ const servers = this.service.getServerById(1);
+ this.serverName = this.servers.name;
+ this.serverStatus = servers.status;
+}
+onUpdateServer(){
+  
+}
+
+Inside EditServerComponent Html
+
+<div *ngIf="!allowEdit">
+  Server Cannot Be Edited
+</div>
+
+<div *ngIf="allowEdit">
+  <input [(ngModel)]="serverName" type="text" />
+  <select [(ngModel)]="serverStatus">
+    <option value="online"> Online </option>
+    <option value="offline"> Offline </option>
+  </select>
+  <button (click)="onUpdateServer()"> Update </button>
+</div>
+
+-This Router Outlet will display the Child Component according to the URL
+-The Child Component will be displayed in the next col-md-6 col as the link is pressed.
+-But the problem is, initially when we click on the link we load the individual 
+ServerComponent with its name, status and button along with queryParams in the url.
+But when we click the edit button, we load our EditServerComponent but we looses our
+queryParams in the url
+
+
+
+
+
+Query Params Handling
+-To preserve our queryParams when going to EditServerComponent.
+-We have to modify our method as
+..
+onLoadServer(){
+  this.router.navigate(['edit'], {relativeTo: this.route, queryParamsHandling: 'preserve'})
+}
+
+
+
+
+
+Redirecting and Wildcard
+-When a user enter invalid url we need to redirect to n Page Not found
+-Configuring route as
+
+{path: 'not-found', component: PageNotFoundComponent}
+{path: '**', redirectTo: '/not-found'}
+
+
+
+
+
+
+Outsourcing the Routing
+-If your application have many routing, it will take much space in app_module.ts and 
+the file becomes much complex to read.
+-Instead have another module of routing and then importing that module into app_module like
+..
+
+Create a file -> app-routing.module.ts
+Inside it
+
+import ...............
+import ...............
+import ...............
+
+const routes: Routes = [
+  ................
+  ................
+  ................
+]
+
+@NgModule({
+ imports: [RouterModule.forRoot(routes)],
+ exports: [RouterModule]
+})
+
+export class AppRoutingModule{}
+
+-Move the declaration of RouterModule from app_module to new file
+-The purpose of export is to tell angular that what functionality this module wants to
+give to other module. In this case we want to give RouterModule to app_module.
+-If other module wants to access some functionality of this module,
+they can use the import keyword. 
+
+Inside app_module.ts
+-Inside imports array
+imports: [
+  ....
+  ....
+  ....
+  AppRoutingModule
+]
+
+--------------------------------------------------------------------
+
+Route Guards
+-Running some code before a component is loaded
+-Angular provides us 2 interfaces to protect our routes
+  1) canActivate, which protects a single route
+  2) canActivateChild, which protects all the child routes of a parent route
+
+eg:
+..
+Create auth guard service as ng g s auth-guard
+Create a fake authentication service as ng g s auth
+
+Inside AuthService
+
+loggedIn = false;
+authentication(){
+  const promise = new Promise((res, rej)=>{
+    setTimeout(()=>{
+      res(this.loggedIn);
+    }, 1000)
+  })
+ return promise
+}
+-Using promise as connecting to server and retrieving the information can take while.
+
+Inside AuthGuardService
+
+export class AuthGuard implements CanActivate, CanActivateChild{
+  constructor(private auth: AuthService, private router: Router){}
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) :
+  Promise<boolean> | Observable<boolean> | boolean {
+    return this.auth.authentication()
+           .then(authVal=>{ 
+                  if(authVal) return true 
+                  else this.router.navigate(['/']) 
+                 }) 
+  }
+  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot){
+    return this.canActivate(route, state);
+  }
+}
+-canActivate method returns either boolean of Observable, boolean of Promise, or simply
+boolean indicating it can be asynchronous and synchronous.
+
+Using in the routes as,
+{path: 'servers', canActivate: [AuthGuard], component: ServersComponent}
+Using in the child as,
+{path: 'servers', canActivateChild: [AuthGuard], component: ServersComponent, children: [
+  {path: ':id', component: ServerComponent}
+  {path: ':id/edit', component: EditServerComponent}
+]}
+-We can apply the child guard on the parent. It will automatically apply to all childs
+
+
+
+
+
+
+
+Protecting The Changes Saved
+-When a user is on edit page and something he updates but forgets to press the update button
+or accidently hits the back button, we want to confirm the changes
+-We can do this as a CanDeactivate to run the code before leaving the component
+
+Create Service with a new file
+can-deactivate-guard.service.ts
+Inside it
+
+export interface CanComponentDeactivate{
+  canDeactivate: () => Promise<boolean> | Observable<boolean> | boolean
+}
+
+export class CanDeactivateGuard implements CanDeactivate<CanComponentDeactivate>{
+  canDeactivate(component: CanComponentDeactivate
+                route: ActivatedRouteSnapshot
+                state: RouterStateSnapshot
+                nextState?: RouterStateSnapshot): 
+                Promise<boolean> | Observable<boolean> | boolean {
+    return component.canDeactivate();
+  }
+}
+
+Inside EditServerComponent
+changesSaved: boolean = false;
+
+onUpdateServer(){
+  // After Updating
+  changesSaved = true;
+  this.router.navigate(['../'], {relativeTo: this.route});
+}
+
+canDeactivate(): Promise<boolean> | Observable<boolean> | boolean {
+  if(!allowEdit) return true;
+
+  if((this.serverName !== this.server.name || this.serverStatus !== this.servers.status)
+      && !this.changesSaved) return confirm('You Sure to discard Changes?');
+  else return true;
+}
+
+In The routes
+{path: ':id/edit', canDeactivate: [CanDeactivateGuard], component: EditServerComponent}
+Make sure to register the service in provider array.
+
+
+
+
+
+
+
+
+Passing Data To The Route
+-Passing Static Data
+eg:
+..
+Create a new component
+ng g c error-page
+
+Inside it
+errorMessage: string
+constructor(private route: ActivatedRoute){}
+ngOnInit(){
+  this.errorMessage = this.route.snapshot.data['message'];
+  this.route.data.subscribe((data: Data)=>{ this.errorMessage = data['message']; })
+}
+
+Inside its HTML
+Error Message : {{ errorMessage }}
+
+Inside Route
+{path: "**", component: ErrorPageComponent, data:{message: 'page not found'}}
+
+-Passing Dynamic Data
+  .Loading of data in advance
+  .Like when we click on a server it fetches a particular server from the server service
+   via its id.
+  .So rather using the params and service in the ServerComponent, we load that individual
+   server in advance using the Resolve
+eg:
+..
+
+create service as server-resolver.servce.ts
+Inside it
+
+export interface Server{
+  id: number
+  name: string
+  status: string
+}
+
+@Injectable()
+export class ServerResolver implements Resolve<Server>{
+  constructor(private service: ServerService){}
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):
+  Observable<Server> | Promise<Server> | Server{
+    return this.service.getServerById(+route.params['id']);
+  }
+}
+
+Inside Routes
+{path: ':id', component: ServerComponent, resolve: {server: ServerResolver}}
+Make Sure to register ServerResolver in providers array.
+
+Inside ServerComponent
+-Remove all code of fetching with params and query params.
+ngOnInit(){
+  this.route.data.subscribe((data: Data)=>{ this.server = data['server'] })
+}
+
+-This approcah is useful when dealing with async data to be loaded as data is loaded
+in advance of the loading of the component.
+
+--------------------------------------------------------------
+
+Observables
+
+-Follows an Observable Pattern. We have an observable and an observer
+-Helpls in Asynchronous execution of the task.
+-Observables are Data Sources that sends or emites data packages to the observer. The 
+observer is the code we write in angular application
+-The data package depends on the data source of the observable. Either the data package
+is received when the button is clicked, or it can be connected to the http request so
+when the response returns it is in the form of data package, and many more data sources
+can be there.
+-3 ways are there to handle the data package that is received
+  .Handle Data
+  .Handle Error
+  .Handle Completion
+THese are the hooks. What should happen when the Data is received, what should happen
+when the error occured and what should happen after the execution is completed.
+-Contain many operators which is one of the good advantages compare to callbacks and
+Promises.
+
+
+
+
+
+
+
+npm install --save rxjs-compat
+This will unlock all the older methods of observables if working with older version
+of angular.
+
+
+
+
+
+
+Creating Observables
+-Creating own observable that emits 3 types of data discussed before.
+
+import {Observable} from 'rxjx/Observable';
+import {Observer} from 'rxjx/Observer';
+import 'rxjx/Rx';
+
+const myObservable = Observable.create((observer: Observer<string>)=>{
+  setTimeout(()=>{ observer.next('first package') }, 1000);
+  setTimeout(()=>{ observer.next('second package') }, 4000);
+  setTimeout(()=>{ observer.error('Error') }, 5000);
+  setTimeout(()=>{ observer.complete() }, 6000);
+});
+
+myObservable.subscribe(
+  (data: string)=>{console.log(data);},
+  (error: string)=>{console.log(error);},
+  (completion: string)=>{console.log(completion);}
+)
+
+Now the package wont receive if it is emitted after the observable is completed.
+eg:
+..
+const myObservable = Observable.create((observer: Observer<string>)=>{
+  setTimeout(()=>{ observer.next('first package') }, 1000);
+  setTimeout(()=>{ observer.next('second package') }, 4000);
+  setTimeout(()=>{ observer.complete() }, 5000);
+  setTimeout(()=>{ observer.next('third package') }, 6000);
+});
+
+
+
+
+
+Subject
+-Can be used as an observer, to emit data, and as observable, to consume the data.
+-Can be used in cross component communication
+-We can emit data from anywhere and capture that data from anywhere in our application.
+eg:
+..
+
+create new file as users.service.ts
+Inside it
+
+import {Subject} from 'rxjx/Subject';
+export class UsersService{
+  mySubject = new Subject();
+}
+
+Inside Another Component
+<div class="btn btn-primary" (click)="onActivateUser()"> Activate </div>
+
+constructor(private u_serv: UsersService){}
+ngOnInit(){ this.id = this.route.snapshot.params['id'] }
+onActivateUser(){ this.u_serv.mySubject.next(this.id); }
+
+When displaying users
+<div>
+  {{ user1Name }} --- {{ user1Active ? '(active)' : '' }}
+  {{ user2Name }} --- {{ user2Active ? '(active)' : '' }}
+</div>
+
+constructor(private u_serv: UsersService){}
+ngOnInit(){
+  this.u_serv.mySubject.subscribe(
+    (data: number) => { if(data === 1) this.user1Active.true else this.user2Active = true; }
+  )
+}
+
+
+
+
+
+
+**If not using rxjx-compat then simply import statement will directly call rxjx like,
+import {Observable, Observer, Subscription, ........} from 'rxjx'
+import {map} from 'rxjx/operators'
+-Use pipe to chain all operators
+
+-------------------------------------------------------------
+
+Making Http Request
+
+-Create a new firebase project and set the rules to true on both read and write.
+eg:
+..
+
+Creating a service server.service.ts
+Inside it
+
+import {Http} from '@angular/http'
+
+constructor(private http: Http){}
+storeServer(data: any[]){
+  return this.http.post('firebase_url/data.json', data);
+}
+
+Inside Component
+
+servers = [ 
+            {name:'Test Server', id: this.generateId()}, 
+            {name:'Live Server', id: this.generateId()} 
+          ]
+
+constructor(private serv: ServerService){}
+onAddServer(){
+  this.serv.storeServer(this.servers).subscribe(
+    (response) => {console.log(response);},
+    (error) => {console.log(error)}
+  )
+}
+generateId(){
+  return Math.round(Math.random() * 10000);
+}
+
+*This post method will return ab observable which we will return to our calling method.
+The data wont get posted till we subscribe to it and get the response.
+*Using /data.json so that to avoid CORS error and firebase will store that inside data
+node as
+  data
+    K133JsjciL23
+      0
+        name: 'Test Server'
+        id  :  2211
+      1
+        name: 'Live Server'
+        id:   3342
+
+We can also add custom headers to our request like,
+const headers = new Header({
+  'Content-Type': 'application/json'
+})
+Use it like
+this.http.post('url/data.json', data, {headers: headers});
+
+
+
+
+
+
+Getting The Data
+
+Inside Service
+
+getData(){
+  return this.http.get('firebase_url/data.json');
+}
+
+Inside Component
+
+onGetData(){
+   this.server.getData().subscribe(
+     (response: Response) => {const resp = response.json(); console.log(resp);}
+   )
+}
+
+-response,json will convert the json string into javascript object that can be easily
+loop through
+-Post request will store the data by appending the data. In this case if we do post
+request again, it will generate new random id and put both server as an array inside it
+like 0 and 1.
+
+-To override the data, we must use PUT like,
+this.http.put(url/data.json, data)
+If we do this, then old array will be updated with new array
+
+
+
+
+
+
+Transforming the data
+-In the service
+
+getData(){
+  return this.http.get('url/data.json').pipe(
+    map(response: Response)=>{ 
+      const data = response.json();
+      for(const servs of data){
+        servs.name = 'Fetched_' + serv.name;
+      }
+      return data;
+    }
+  )
+}
+
+Inside Component
+onGetData(){
+  this.server.getData().subscribe(
+    (servers) => {this.servers = servers;}
+  )
+}
+
+---------------------------------------------------------------------
+
+Angular Modules
+
+-Consist of all the elements our angular app is using like components, directives,
+services, etc
+-Helps in optimizing and increase the performance of the app.
+
+-import is a feature of typescript and not angulat. It tells that what specific class
+or feature is located and is to be used in a specific area. In the end, webpack which is
+used by cli, go through all these imports and bundle them into one file to take all the
+dependencies into account
+-Angular module is totally different, it tells how our app looks like to angular
+
+
+Creating a Feature Module
+-Place all component and routing related stuff in a separate module
+Like if we have a store and we have an item's recepies. We will be having several
+stuff related to recepies
+
+Create another module as recepies.module.ts
+Inside it
+
+@NgModule({
+  declaratons:[
+    RecepiesComponent,
+    RecepiesStartComponent
+    RecepiesListComponent
+    RecepiesEditComponent
+    RecepiesDetailComponent
+    RecepiesItemComponent
+  ],
+  imports:[
+    ReactiveFormsModule,
+    CommonModule,
+    RecepieRoutingModule
+  ]
+})
+
+export class RecepiesModule{}
+
+-ReactiveFormsModule is needed as this programmable form is only used in one of these 
+components
+-CommonModule is needed so that basic builtin directive can be used like ngClass, ngIf etc.
+It will be needed in every FeatureModule created.
+
+Now If there are child routes then we need to create a separate routes file for that
+particular feature like in recepies component we display recepies list and by
+clicking any of the recepie we display its detail via router outlet like
+..
+<div class="col-md-6">
+  <app-recepie-list></app-recepie-list>
+</div>
+<div class="col-md-6">
+  <router-outlet></router-outlet>
+</div>
+
+Create another route file as recepie-routing.module.ts
+Inside It
+..
+const recepieRoutes = [
+  {path: 'recepies', component:RecepiesComponent, children:[
+    {path: '', component:RecepiesStartComponent},
+    {path: ':id', component:RecepiesDetailComponent},
+    ................................................,
+    ................................................
+  ]}
+]
+
+@NgModule({
+  imports:[
+    RouterModule.forChild(recepieRoutes)
+  ],
+  exports:[RouterModule]
+})
+
+export class RecepieRoutingModule{}
+
+**We will use forChild if routing is created other than app_module file and is imported
+indirectly into it. forRoot will be used if routing is imported directly into app_module.
+
+-This will work fine. But if there is something that is to be used in more than one
+places like creating a custom directive DropdownDirective and it is used in 2 Feature
+Modules, we will have to create a Shared Module for it.
+
+Create a file as shared.module.ts
+Inside it
+..
+
+@NgModule({
+  imports:[DropdownDirective],
+  exports:[CommonModule, DropDownDirective]
+})
+
+export class SharedModule{}
+
+-Use this SharedModule in both the imports of app_module.ts and recepies.module.ts
+
+
+
+
+
+
+Lazy Loading of Components
+-If a user never visits the Recepies section, dont render the components related to it.
+It will give a performance boost.
+-Only load components when a user visits it
+-For that we need to adjust the routes.
+
+
+In the app-routing.module.ts we need to re-add the recepie routing but with a different
+approach
+
+const appRoutes = [
+  {path: '', component: HomeComponent},
+  {path: 'recepies', loadChildren: './recepies/recepies.module#RecepieModule'}
+]
+
+-loadChildren will point to the module file we created as a Feature Module.
+The # sign will separate the file name with the class name
+
+Now in the routes of recepie-routing. We just need to remove the 'recepies' from the
+parent component.
+
+const recepieRoutes = [
+  {path: '', component:RecepiesComponent, children:[
+    {path: '', component:RecepiesStartComponent},
+    {path: ':id', component:RecepiesDetailComponent},
+    ................................................,
+    ................................................
+  ]}
+]
+
+-Remove the RecepieModule from the app_module.ts imports
+-To verify open NEtwork tab in developers mode in chrome and try loading the
+component lazily. The files related to that component will be rendered dynamically.
+
+-------------------------------------------------------------
+
+Angular State Management with ngrx
+
+In React we have Redux where there are Store (Application State), Reducers, Actions
+which in all combine to maintain the application state.
+In Angular we can do the same with ngrx
+
+-The actions are dispatched, which fires the reducers functions with some arguements.
+
+Install ngrx with npm install --save @ngrx/store
+
+
+
+
+
+Reducers
+-Receives the application current state and actions and returns new state of the
+applications by running some code.
+-At the start, there will be no current state so the state should be set to the 
+initial value.

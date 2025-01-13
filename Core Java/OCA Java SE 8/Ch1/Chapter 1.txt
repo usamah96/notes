@@ -1,0 +1,52 @@
+Java Building Blocks
+---
+
+Order Of Initialzation
+--
+-Fields and instance initializer blocks are run in the order in which they appear in the file.
+-The constructor runs after all fields and instance initializer blocks have run.
+
+Primitive Types
+--
+Java has eight built-in data types, referred to as the Java primitive types. These eight data types
+represent the building blocks for Java objects, because all Java objects are just a complex 
+collection of these primitive data types
+
+Examples
+--
+boolean - 0 or 1
+byte - 8 bit integral value
+short - 16 bit integral value
+int - 32 bit integral value
+long - 64 bit integral value
+float - 32 bit floating point value
+double - 64 bit floating point value
+char - 16 bit Unicode value
+
+
+Conversions
+--
+Java allows you to specify digits in several other formats:
+-Octal (digits 0–7), which uses the number 0 as a prefix—for example, 017
+-Hexadecimal (digits 0–9 and letters A–F), which uses the number 0 followed by x or X as a 
+prefix—for example, 0xFF
+-Binary (digits 0–1), which uses the number 0 followed by b or B as a prefix—for example, 0b10
+
+Examples
+--
+System.out.println(56); // 56
+System.out.println(0b11); // 3
+System.out.println(017); // 15
+System.out.println(0x1F); // 31
+
+The last thing you need to know about numeric literals is a feature added in Java 7. You
+can have underscores in numbers to make them easier to read:
+int million1 = 1000000;
+int million2 = 1_000_000;
+
+
+Reference Types
+--
+Unlike primitive types that hold their values in the memory where the variable is allocated, 
+references do not hold the value of the object they refer to. Instead, a reference “points” to 
+an object by storing the memory address where the object is located

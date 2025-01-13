@@ -1,0 +1,474 @@
+To Create a Laravel Project
+composer create-project laravel/laravel lsapp
+
+Installing All Dependencies
+npm install
+
+Compile after changing css
+npm run dev
+
+Keep a watch while css is changed and compile automatically
+npm run watch
+
+Create a new migration
+php artisan make:migration create_posts_table --create="posts"
+
+Migrate the mgration to database (Credentials and stuff in .env file)
+php artisan migrate
+
+To delete previously added table
+php artisan migrate:rollback
+
+To add column to already build table
+php artisan make:migration add_table --table="posts"
+
+To delete all tables
+php artisan migrate:reset
+
+To delete all tables then add all tables
+php artisan migrate:refresh
+
+To check if migrations have been ran or not
+php artisan migrate:status
+
+Create a Controller
+php artisan make:controller PostsController
+
+Create a Controller with functions (create, edit, show, destroy, update)
+php artisan make:controller PostsController --resource
+
+Create a model with migration in database
+php artisan make:model Post -m
+
+Show all routing lists
+php artisan route:list
+
+Make storage for storing files and stuff
+php artisan storage:link
+
+Run DB commands on terminal
+php artisan tinker
+----
+$post = new App\Post
+$post->title = 'Post 1';
+$post->body = 'Body';
+$post->save()
+----
+
+Creates files (layouts/app.blade.php and other) and enables authentication with
+Register and Login
+php artisan make:auth
+
+-------------------
+Command For Enabling FORMS
+composer require "laravelcollective/html":"^5.4.0"
+
+Add this to config app in providers
+Collective\Html\HtmlServiceProvider::class,
+
+Add this to aliases
+'Form' => Collective\Html\FormFacade::class,
+'Html' => Collective\Html\HtmlFacade::class,
+--------------------
+
+--------------------
+Command for enabling ckeditor
+composer require unisharp/laravel-ckeditor
+
+Add this to config app providers
+Unisharp\Ckeditor\ServiceProvider::class,
+
+Command for publishing
+php artisan vendor:publish --tag=ckeditor
+
+Add this to layout page
+<script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
+<script>
+ CKEDITOR.replace( 'article-ckeditor' );
+</script>
+---------------------
+
+Eloquent
+
+**Name your model Singular
+If you have a table name posts in database then name your model as 'Post' because
+laravel looks for plural lower case table names with respect to the name of model.
+If you have a Model name like PostAdmin and a database name as posts then you have
+to explicitly define the table name in PostAdmin class as,
+
+protected $table = "posts";
+
+**Laravel Model class considers primary key to be 'id' for the respective table.
+If the primary key is different in the table then define explicitly the primary
+key in Model Class as,
+
+$protected primaryKey = "posts_id";
+
+*Refering to posts table in database
+
+$result = Post::all() - get all records
+$result = Post::find(1) - get by id
+$result = Post::find([2,7]); - Or condition
+$result = Post::where('id', 3)->get(); - where condition
+$result = Post::where('id', '<', 3)->get(); - Using operator
+$result = Post::where('id', '<', 3)->orderBy('id', 'desc')->get();
+$result = Post::select('title', 'body')->where('id', '<', 3)
+->orderBy('id', 'desc')->get();
+
+$post = new Post;
+$post->title = 'Post';
+$post->body = 'Post Body';
+
+$post->save() - will insert new record into database with created and updated
+timestamps
+
+Post::where('id',2)->where('is_admin', 0)
+->update( ['title' => 'New Title', 'body' => 'New Body'] ); // Will update record
+
+Deleting
+
+$post = Post::find(1);
+$post->delete();
+
+OR
+
+Post::destroy(1);
+Post::destroy([2,3]); //For multiple delete
+
+OR
+
+Post::where('title', 'Title 1')->delete(); // Deleting On COndition
+
+OR
+We can temporarily delete a post by adding an extra column to posts table with name
+'deleted_at' which will contain the timestamp at which the post was deleted but
+it will not be removed from database. But if we do Post::all() from laravel, this
+post will not be shown.
+It is done like that,
+
+In a Post Model Class import this
+use Illuminate\Database\Eloquent\SoftDeletes
+
+inside the class type this,
+use SoftDeletes;
+
+Now create a migration to add this table
+php artisan:make migration add_new_col --table="posts"
+add this command to up() function
+$table->softDeletes()
+and this command to down() function
+$table->dropColumn('deleted_at')
+
+Now by default the deleted_at col will be Null in db
+if you Post::destroy(1) or Post::find(1)->delete() 
+then deleted_at will contain a timestamp() when it was
+deleted but not shown when read Post::all();
+
+return Post::withTrashed()->get() - returns all data with soft deletes
+return Post::onlyTrashed()->get() - returns only soft deletes.
+Post::withTrahsed()->restore() - restores the trashed posts.
+Post::withTrahsed()->where('id', 8)->restore() - restores the particular trashed 
+post.
+Post::withTrashed()->where('id', 8)->forceDelete() - permenantly deletes the post.
+
+-------------------------------------------------------------------
+
+Making Relationships
+
+One to One
+
+Creating a col in posts table as 'user_id' and adding a user in users.
+Giving 'user_id' the value of one of the user.
+
+In User Class defining One to One Function as
+public function getPostByUserId()
+{
+return $this->hasOne('App\Post');
+}
+
+This function will reference user_id in posts table.
+Laravel default searches for user_id column. If column name is changed to 
+something else like id_user then we have to specifiy it in return statement like
+return $this->hasOne('App\Post', 'id_user');
+
+Referencing like,
+User::find(1)->getPostByUserId // will return whole object
+User::find(1)->getPostByUserId->title // will return only title as string
+
+The inverse will be like,
+In Post Class defining Function as
+public function getUserByPostId()
+{
+return $this->belongsTo('App\User', 'user_id');
+}
+'user_id' is the foriegn key in posts table.
+
+**Difference between hasMany / hasOne and belongsToMany / belongsTo
+if A has a b_id column, then A belongsTo B
+If B has an a_id column, then A hasOne or hasMany B
+belongsTo you're telling Laravel that this table holds the foreign key that 
+connects it to the other table
+
+One To Many
+
+In User Class,
+public function getAllPostsByUserId()
+{
+return $this->hasMany('App\Post');
+}
+
+Acessing Like,
+
+$allPosts = User::find(1);    
+foreach($allPosts->getAllPostsByUserId as $post)
+{
+echo $post->title;
+}
+
+Many TO Many
+
+For Creating Roles.
+
+If we want to create roles for user then,
+there will be a table of 'roles' and to connect it to users table we need to name
+it like 'role_user' (all lowercase, alphabatical ordered and singular)
+For this naming convention, laravel will consider it as pivot table and we will
+get its default functionalities.
+
+Creating roles table with id and string
+Creating role_user table with role_id and user_id
+Creating a model name 'Role'
+We can create a model and migration by 'php artisan make:model Role -m'
+
+**hasMany refers to One-Many relationship wheresas belongsToMany refers to
+Many to Many relationship and we need 3 tables for it just like users, roles and
+role_user.
+Multiple Users can be Admin. (Many to Many)
+
+In User Class,
+public function getRolesByUserId()
+{
+return $this->belongsToMany('App\Role');
+}
+
+Acessing like,
+User::find(1)->getRolesByUserId;
+
+If we are not using the nameing convention like 'role_user', 'role_id' or 'user_id'
+we need to explicitly define the actual name and foriegn key colmns like,
+public function getRolesByUserId()
+{
+return $this->belongsToMany('App\Role', 'users_roles', 'id_users', 'id_roles');
+}
+
+Polymorphic Relation
+
+-Allows a model to belong to more than one other model in single association
+-Means that we can have comments on both pages and posts, so we have to make 
+separate table like postsComments and pagesComments and store the foriegn key
+to relate the comments. But with polymorphic relation we can have single table
+'comments' that will include commentable_id (either post or page) and 
+commentable_type (Model name like App\Page, App\Post).
+
+Here we will create a photos table with Photo model to store image path of
+both users and posts with imageable_id and imageable_path
+
+Creating in Photo model
+public function imageableData()
+{
+return $this->morphTo();
+}
+
+In User class
+public function morphToUser()
+{
+return $this->morphMany('App\Photo', 'imageable'); // this will search for imageable_id and imageable_type
+}
+
+In Post Class
+public function morphToPost()
+{
+return $this->morphMany('App\Photo', 'imageable');
+}
+
+----------------------------------------------------------
+Forms And Validation
+
+For PUT request
+use <form method="Post" action="/posts/{{$post->id}}" and inside it use
+<input type="hidden" name="_method" value="Put" />
+
+Laravel Collectivr From syntax and usage (refer upper command for installation)
+
+{!! Form::open() !!}} // opens the form tag with method POST and action Self page
+{!! Form::open(['method'=>'POST', 'action'=>'PostsController@store']) !!}
+{!! Form::close() !!} // close form tag
+{!! Form::text('title', null, ['class'=>'form-control']) !!} // first param specifies name attr, second the default value
+{!! Form::label('title', 'Title: ') !!} // first param specifies 'for' attr
+{!! Form::submit('Create Post', ['class'=>'btn btn-primary']) !!}
+{!! Form::model($post,['method'=>'PATCH', 'action'=>['PostsController@update', $post->id]]) !!} // using model and $post as first arg will set the form field to default values from db
+
+For validations
+
+In store method
+
+$this.validate($request, [
+
+'title' => 'required|max:50',
+'body' => 'required'
+])
+
+If this validate method fails to validate, there is $error variable maintained
+in laravel application which we can display to check what are the errors like,
+
+<ul>
+@foreach($errors->all() as $error){
+<li> {{ $error }} </li>
+}
+@endforeach
+</ul>
+
+For advance validation using the Request class
+php artisan make:request PostValidation
+Now inside Reuqest folder we will have this class with rules and authorize function
+
+Inside rules function specify the rules like
+return [ 'title'=>'require', 'body'=>'max:50' ];
+
+Now in store method change (Request $request) to (PostValidation $request)
+
+Working With files
+Uploading
+
+{!! Form::open('method'=>'POST', 'action'=>'PostsController@store', 'files'=true) !!}
+
+{!! Form::file('file', ['class'=>'form-control']) !!}
+
+Receving
+
+$file = $request->file('file') // returns the temp name of file
+echo $file->getClientOriginalName(); // original filename
+echo $file->getClientSize(); // filesize.
+
+-----------------------------------------------------------
+
+Playing around with dates
+using Carbon 
+use Carbon/Carbon
+If not included use composer require nesbot/carbon
+
+return Carbon::now() - returns current date and time
+return Carbon::now()->subMonths(5)->diffForHumans() - returns '5 months ago'
+return Carbon::now()->yesterday()->diffForHumans() - returns '1 day ago'
+return Carbon::now()->addDays(10)->diffForHumans() - returns '1 week from now'
+
+------------------------------------------------------------
+
+Using Acessor - Getting the data from database manipulated.
+
+In Post Model Class defin function like,
+public function getTitleAttribute($value){
+	return 'manipulated ' . $value;
+}
+Name convention matters. Using 'get', then column name 'title' and then 'attribute keyword'
+
+If we access $post->title, we get 'manipulated Title One';
+We can use this feature in specifying image directory path like,
+getting image name from column and automatically adding '/images/' to it and
+using $post->path to get full directory.
+
+-------------------------------------------------------------
+
+Get Current User
+$user = Auth::user();
+echo $user->name
+
+Check If User is logged in
+if(Auth::check())
+{
+}
+
+Redirecting the user 
+if(Auth::attempt( ['username'=>$username, 'password'=>$password] ))
+{
+return redirect()->intended();
+}
+If User tries to go to admin page and redirected to login, so when he logs in
+he will be redirected to admin automatically
+
+------------------------------------------------------------------
+
+Middlewares
+
+php artisan make:middleware RoleMiddleware
+register the middleware in Kernel.php in middleware array with a key
+
+php artisan down
+// Takes the website down and begins website in maintainance mode
+
+php artsian up
+// Live the website again
+
+2 ways to apply middleware
+
+1- in the constructor of Controller like
+public function __construct(){ $this->middleware('web'); }
+
+2- directly to the route like,
+Route::get('/admin/roles', [ 'middleware' => 'auth', function(){
+
+return "Hello";
+
+
+}])
+
+Multiple middlewares
+Route::get('/admin/roles', ['middleware' => ['auth', 'web'], function(){ /**/ }])
+
+Middleware Logic
+
+public function handle()
+{
+
+$user = Auth::user() // get current logged in user
+if($user->isAdmin()) // isAdmin() will be the class in User
+{
+return redirect()->intended();
+}
+
+}
+
+In User class
+public function isAdmin(){ 
+if($this->getRolesByUserId[0]->name == 'admin')
+return true;
+else
+return false;
+}
+
+//previously built function
+public function getRolesByUserId(){
+return belongsToMany('App\Roles');
+}
+
+--------------------------------------------------------------
+
+Session Maintain
+
+session()->all() // get all set sessions
+session(['sesson1'=>'value']) // set session value
+session('session1') // get session value
+
+session with respect to request
+$request->session()->put(['key'=>'value'])
+session()->get('key')
+
+session()->forget('key') // deleting specific session value
+
+session()->flash('message', 'Post Created') // Flash similar 
+to session but it only stays for shorter period of time. 
+
+session()->get('message')
+
+---------------------------------------------------------------
+

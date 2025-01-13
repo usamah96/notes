@@ -1,0 +1,98 @@
+CSS Basics
+-----------------------------------------
+
+Properties
+
+border-style : dotted / dashed / solid / double / inset etc....
+border-top-style
+border-right-style
+border-bottom-style
+border-left-style
+
+Margin generates space outside of element
+margin: auto // Horizontly center the element when width is given
+width: 50%;
+
+Padding generates space inside of element
+
+CSS Box model contains
+Content
+Padding
+Border
+Margin
+
+text-align: justify // each line stretched to make all lines equal
+
+text-decoration
+overline // a line above the texxt
+underline
+line-through // line in between text
+
+text-transform
+uppercase
+lowercase
+capitalize
+
+
+text-indent: 50px // first line will be indented 50px to right
+letter-spacing: 3px / -3px
+line-height: 0.8 / 1.8 etc // space between lines
+word-spacing: 5px / -5px etc
+
+text-shadow: 3px 2px red
+3px: horizontal
+2px: vertical
+red: color
+
+a:hover { color: red }
+a:visited { color: pink }
+a:active { color: yellow }
+a:link { color: green }
+
+Block level elements // takes full width of screen
+div, h, p, form etc
+Using max-width css property to adjust width on small dimension like,
+
+div { width: 50%, max-width: 500px, margin: auto }
+original width will be half and center of browser. when browser window gets 
+500px or less, it will adjust automatically.
+
+Inline elements
+spam, img, a
+
+Position
+static // by default
+relative // relative to the element position. can set top bottom left right props.
+Other elements not effected by its movement
+fixed // fix position irrespective of page scroll
+absolute // relative to the nearest positioned element which is relative
+If no nearest relative positioned element found then it will be relatvie to the
+document body
+
+<div style="position: relative">
+<div style="position: absolute"> </div>
+</div>
+
+Overflow
+hidden // will only show content according to the height of element
+<div style="overflow: hidden; height:10px; width: 20px"> Lorem ipsum ...... </div>
+This content will not be shown after 10px height value
+scroll // will add scroll bar
+auto // similar to scroll but will ad scroll bar when content gets larger than
+height
+overflow-x // adjust hidden / scroll / auto for horizontal 
+overflow-y // adjust hidden / scroll / auto for vertical
+
+div p {  } // will select all elements and grand elements under div like
+<div>
+<p></p>
+<p></p>
+<span> <p> </span>
+</div>
+
+div > p {  } // will select only direct child of div like
+<div>
+<p></p>
+<p></p>
+<span> <p></p> </span> // will not be selected
+</div>

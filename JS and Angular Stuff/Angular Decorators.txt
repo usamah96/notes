@@ -1,0 +1,90 @@
+Angular Decorators
+------------------------
+
+1) @NgModuke
+-Defines a module that contains components, directives, pipes, and providers.
+
+2) @Component
+-Declares that a class is a component and provides metadata about the component.
+
+3) @Injectable
+-Declares that a class has dependencies that should be injected into the constructor when 
+the dependency injector is creating an instance of this class.
+
+4) @Directive
+-Declares that a class is a directive and provides metadata about the directive.
+
+5) @Pipe
+-Declares that a class is a pipe and provides metadata about the pipe.
+
+6) @Input
+-Declares an input property that you can update via property binding
+
+7) @Output
+-Declares an output property that fires events that you can subscribe to with an event binding
+
+8) @HostBinding
+-Binds a host element property to a directive/component property
+
+9) @HostListener
+-Subscribes to a host element event (click) with a directive/component method (onClick).
+
+10) @ContentChild
+-Get reference to the first child component
+-Can be used only in ngAfterContentInit Lifecycle hook
+eg
+..
+
+Inside app.component.html
+<project>
+  <date> </date>
+</project>
+
+Inside project.component.ts
+@ContentChild(DateComponent) dateCmp: DateComponent;
+
+ngAfterContentInit(){ console.log(this.dateCmp); }
+
+11) @ContentChildren
+-Get reference to all the child components.
+eg
+..
+
+Inside app.component.html
+<project>
+  <date> </date>
+   <date> </date>
+   <date> </date>
+</project>
+
+Inside project.component.ts
+@ContentChildren(DateComponent) dateCmp: QueryList<DateComponent>;
+
+ngAfterContentInit(){ console.log(this.dateCmp.toArray()); }
+
+12) @ViewChild
+-Binds the first result of the component view query
+
+13) @ViewChildren
+-Binds the results of the component view query 
+
+
+
+@ContentChild / @ContentChildren vs @ViewChild / @ViewChildren
+-@Content looks for the Light DOM (provided by end-user of the component) and @View looks for 
+the Shadow DOM (creator of the component)
+
+test-component.html
+
+Example of Shadow Dom.
+<div> <h1> Hello </h1> </div>
+<test1> </test1>
+We can access test1 component inside test.component.ts using ViewChild
+
+Example of Light Dom
+Inside another component
+<test>
+  <div> <h3> Hello </h3>
+  <test2> </test2>
+<test>
+We cann access test2 component inside test.component.ts using @ContentChild

@@ -1,0 +1,23 @@
+process? a process is a program in execution
+a process has 5 states (new , ready, waiting, running, terminated)
+process information is contained in PCB(data structure used by OS)
+
+3 Schedulers: 
+	Long term: selects processes from queue and loads them into memory
+	Short Term: It is the change of ready state to running state of the process.
+	Medium: used for swapping of processes in and out of memory. other process moved to secondary storage.
+
+context switching: saving the current state of the running process before before removing it from cpu. so can resume from same place.
+
+Race Condition:
+A situation like this, where several processes access and manipulate the same data concurrently and the outcome of the execution depends on the particular order in which the access takes place, is called a race condition. 
+
+Critical Section:
+that part of code which accesses same part of the memory.
+
+A preemptive kernel allows a process to be preempted while it is running in kernel mode. A nonpreemptive kernel does not allow a process running in kernel mode to be preempted; a kernel-mode process will run until it exits kernel mode
+
+
+Mutex Locks:
+2 types of locks. acquire and release. hardware based problem. the disadvantage is busy waiting,process must wait in infinite loop. also called spin lock
+

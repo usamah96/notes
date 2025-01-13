@@ -1,0 +1,499 @@
+Data Structure and Algorithms
+
+Types Of DS
+
+1) Primitive DS (Pre defined by any programming language like Java)
+   -Integer -Float -Character -Boolean
+
+2) Non Primitive
+  *Physical (Implemented standalone and stored in RAM)
+   -Arrays -LinkedList
+  *Logical (Logical in nature and have their own concept. Their implementation is dependant upon
+  Physical DS)
+   -Stack -Queue -Tree -Graph
+
+---------------------------------------
+Recursion
+
+Properties
+-Perform operation multiple times with different inputs
+-Every step makes the problem smaller
+-Base condition which tells the system to stop recursion
+
+Recursion vs Iteration
+-Iteration Space efficient than Recursion because in recursion the stack memory is maintained
+-Iteration Time efficient than Recursion because in recursion the internal push, pop and other
+pointer related work is done with stack memory which needs some time.
+-Ease of code in Recursion than Iteration. Recursion can break problem into sub-problems.
+
+When to use recursion
+-When the problem can be easily break down into similar sub-problems
+-When we are ok to compromise time and space overhead.
+-When we need a quick solution instead of efficient one.
+
+Use of recursion
+-Stack 
+-Tree (Traversal, Searching, Insertion, Deleton)
+-Sorting (Quick Sort, Merge Sort)
+-Divide and Conquer
+-Dynamic Programming
+
+
+---------------------------------------------
+Algorithm Run Time Analysis
+
+-Omega: Lower bound of a given algorithm (Best)
+-Big-O: Upper bound of a given algorithm (Worst)
+-Theta: If upper bound and lowe bound are same or not. (Average)
+
+
+---------------------------------------------
+Arrays
+
+When to use
+-Store multiple similar type of data.
+-When random access is regular affiar (Randomly access to any cell as it gives O(1) time complex.)
+
+When to avoid
+-Data to be stored non-homogenous
+-Number of data to be stored is not known in advance
+
+Practical Use Of Arrays
+-Dynamic Programming
+-HashTables
+
+
+-----------------------------------------
+Linked List
+
+-Linear Data structure where each element is a separate object.
+
+Array vs Linked List
+-Separate Object
+-Variable Size
+-Random Access.
+
+Types
+-Single
+-Double
+-Circular
+-Double Circular
+
+Why so many types?
+-Single: Gives flexibility to add/remove nodes at runtime
+-Circular: Consider a game scenario where 4 players are playing. The turn comes one by one so
+after player 1,2,3 the turn comes back to player 4. It keeps on going until anybody is 
+declared to be a winner. So, circular linked list will be helpful here.
+-Double: Music player scenario where next and previous button can change songs.
+-Double Circular: Atl+Tab functionality on windows that shows all the process running and on
+pressing back and forward button we can navigate. Navigating forward on last process will
+go to the first process.
+
+
+---------------------------------
+Stack
+
+When To Use
+-Helps manage data in particular way (LIFO)
+-Data entry in the middle is not allowed
+
+When To Avoid
+-Random access is not allowed
+-Modificaton requires to pop out all the values entered above that particular value.
+
+----------------------------------
+Queue
+
+Types
+-Linear
+-Circular
+
+Linear and Circular can be implemented using Arrays only
+With Linked List Linear implementation is enough because space is not a problem.
+
+Why Circular Queue (Problem With Linear Queue)
+-With array implementation if we have inserted 10 - 20 - 30 - 40 inside an array of size 5, we
+have one space left. We dequeue 10 and 20 and the beginning now points to 30. We inserted 50 and now
+our queue is full. The problem here is that the first 2 cells of array are unused as they are
+dequeued but still it will show queue is full.
+-One solution is to move all elements to the extreme left after every dequeu operation but
+it will take O(n) time which is costly compare to O(1) dequeue operation. So the solution
+could be to use a Circular Queue.
+
+With circular queue we check if out top points to the end of the array we make the top value
+back to 0th index of array to start adding values from the start.
+
+---------------------------
+Tree
+
+-Store Data in a hierarchical form
+
+Height of a NOde vs Depth of a Node
+-Height is measured from the node to leaf node
+-Depth is measured from the root node to that node.
+
+Height of Tree -> Height of root node (Longest distance from root to the leaf)
+Depth of Tree -> Depth of root node (Always 0 because no parent of Root Node)
+
+Predecessor of a Node -> Immediate previous node in a in order traversal of a tree
+Successor of a Node -> Immediate next node in a in order traversal of a tree.
+
+
+Binary Tree
+
+-Node can chave 0, 1 or 2 child
+
+Types
+*Strict Binary Tree
+  -Node having 2 or none children
+eg:
+            *
+        *        *  
+     *     *
+   *  *  *   *
+
+*Full Binary Tree
+  -All Nodes having 2 children and all leaf node are at the same level.
+eg:
+               *
+        *               *  
+     *     *        *       *
+   *  *  *   *    *   *   *   *
+
+*Complete Level Tree
+  -All levels are filled except the last level and the last level nodes are as left as possible
+eg:
+               *
+        *               *  
+     *     *        *       *
+   *  *  *   *    *   
+Complete
+
+               *
+        *               *  
+     *     *        *       *
+   *  *  *   *    *   *       *      
+Not Complete
+
+
+Using Linked List
+
+Traversals
+*Depth First
+-Pre Order -> Root Left Right
+-Inorder -> Left Root Right
+-Post Order -> Left Right Root
+
+*Breadth First
+-Level Order -> Level by Level using a queue
+
+Searching
+-Do a level order traversal and when find the node return
+
+Insertion
+-Do a level order traversal with help of queue when find null when enqueueing the node, insert
+the new node there.
+
+Deletion
+-If the node is other than leaf node then first replace the node with the leaf node and then
+delete the leaf node.
+
+
+Using Array
+
+Traversals
+*Depth First
+-Preorder -> Root Left Right
+-Inorder -> Left Root Right
+-Postorder -> Left Righr Root
+
+**Do using regular recursion but for array implementation use 'index * 2' for temp.left and 
+'index * 2 + 1' for temp.right
+
+*Breadth First
+-Level Order -> Use regular traversal of array ony by ony index in a single loop
+
+Searching
+-Do a regular array search
+
+Insertion
+-Create empty array of size anything and just insert the value one by one on next index.
+
+Deletion
+-Find the element to be deleted. Replace it with last item of array with the help of 
+lastUsedIndex variable maintained and make the lastUsedIndex variable as 'lastUsedIndex - 1' so
+that last element points to one less than the previose index.
+
+For space effeciency Linked List implementation is better than array as there is no
+restriction for size of binary tree. In array we have to define the size at the start.
+
+
+
+Binary Search Tree
+
+-Implementing BST using array and linked list requires same operation time, but in linked
+list we get the space efficiency.
+-If we implement operation like searching, insertion using recursion with linked list then
+we can get the O(Logn) operation time which is better than using array -> O(n).
+
+Example of insertion of node in a BST using recursion
+..
+public Node insertNode(currentNode, valueToInsert){
+  if(currentNode == null){ create a node and insert the value }
+  else if(currentNode.value < valueToInsert){ currentNode.left = insertNode(currentNode.left, valueToInsert); }
+  else if(currentNode.value > valueToInsert){ currentNode.right = insertNode(currentNode.right, valueToInsert); }
+  return currentNode;
+}
+
+
+Deleting The Node.
+Cases
+1- If we node is a leaf node
+-Directly delete the node
+
+2- If the node has 1 child
+-Connect parent node with the child node of the deleted node.
+
+3- If the node has 2 children
+-Find the successor(minimum value node of the right subtree) of the node. Replace the node to
+be deleted with the successor and delete the node. The BST property will be maintained.
+There can be 2 cases here
+-If the successor has no children then simply replace and delete
+-If the successor has 1 child, repeat case number 2.
+
+
+All the traversals are same as Binary Tree and takes O(n) time.
+Preorder, Inorder, Postorder and levelorder
+
+
+
+
+AVL Tree
+-Balanced Binary Search Tree
+-Balancing is maintained by the balance factor which should be in between -1 and 1 between
+right and left sub-tree of a node.
+
+The Need for AVL Tree
+-There are cases where the data is in a format where the BST cannot hold its property
+like,
+Data: 10 20 30 40 50 60 70
+The tree will be like
+*
+ *
+  *
+   *
+    *
+     *
+The insertion is not a problem, but when it comes to searching, BST where it takes O(Logn)
+times, with this data it would now take O(n) times.
+So here AVL tree comes to the rescue. AVL tree prevents us from being in such kind of
+situation and helps maintaining the O(Logn) time operation with all the BST properties.
+
+Cases for Rotation
+-Left Left
+We do a right rotation
+
+rightRotate(currentDisbalancedNode){
+  newRoot = currentDisbalancedNode.left;
+  currentDisbalancedNode.left = newRoot.right;
+  newRoot.right = currentDisbalancedNode
+  currentDisbalancedNode.height = reCalculateHeight(currentDisbalancedNode);
+  newRoot.height = reCalculateHeight(newRoot);
+}
+
+-Left Right Rotation
+We do first left then right rotation
+
+currentDisbalancedNode.left = leftRotate(currentDisbalancedNode.left)
+leftRotate(currentDisbalancedNodeLeftChild){
+  newRoot = currentDisbalancedNodeLeftChild.right;
+  currentDisbalancedNodeLeftChild.right = newRoot.left;
+  newRoot.left = currentDisbalancedNodeLeftChild;
+  currentDisbalancedNodeLeftChild.height = reCalculateHeight(currentDisbalancedNodeLeftChild);
+  newRoot.height = reCalculateHeight(newRoot);
+  return newRoot;
+}
+rightRotate(currentDisbalancedNode)
+
+-Right Right
+We do a left rotation
+Same function leftRotate will be used. Previously we passed disbalanced node's left child
+as parameter, but here we will pass the disbalanced node itself.
+
+
+-Right Left
+We do right then left rotation
+Algorithm remains same for left and right rotate
+For right rotation we pass disbalanced node's right child as paramter and for left
+rotate we pass the disbalanced node itself.
+
+
+
+
+
+Binary Heap
+-Bnary Tree with some special properties.
+-Can have 0,1 or 2 child(s);
+
+Special Properties
+*Min-Heap: value of node should be less than or equals to child nodes.
+*Max-Heap: value of node should be greater than or equals to child nodes.
+*Complete Tree: all levels are completely filled except possibly the last level as left as
+possible. This makes binary heap ideal candidate for array implementation.
+
+Practical Usage of binary Heap
+*Prim's Algorith
+*Priority Queue
+*Heap Sort
+
+Implementation Options
+*Array
+*Linked List.
+
+Operations
+*peekOfHeap: first element of the heap
+*extractMin / extractMax: replace the first element with the last element and then run 
+heapifyTopToBottom to adjust the heap.
+heapifyTopToBottom -> For min heap, check both the children of the node replace the node
+with the minimum child node.
+*insertion: insert the node at the very end and then run heapifyBottomToTop for adjustment
+heapifyBottomToToo -> For min heap, check if parent is greater than the node then replace the 
+node with the parent node.
+
+Avoid linked list implementation of Binary heap because all the operations are very much
+similar to the array implementation but the heapifyBottomToTop and heapifyTopToBottom
+will take O(n) times. With array we can get O(logn) time with recursion. With linked list
+implementation, there is no way to find the last element until we traverse all the elements
+in a linked list. In array we can directly access with index.
+
+
+
+
+
+Trie
+-Search Tree which is typically used to store/search strings in space/time efficient way.
+-A Node can store non repetetive multiple character
+-A Node keeps track of end of the string.
+
+Usage Of Trie
+-Spelling Checker
+-Auto Complete
+-Etc...
+
+Operations
+-Insertion
+  Case1: Trie is blank (air)
+  Case2: New string prefix is already there (aio)
+  Case3: New string prefix is already present as a complete string (airk)
+  Case4: New string is already present in a Trie.
+
+-Searching
+Considering Trie as a -> b -> c -> EndOfWord
+  Case1: String does not exist. (xyz)
+  Case2: String exists. (abc)
+  Case3: String exists as some other String's prefix (ab)
+
+-Deletion
+  Case1: Some other word prefix is same as prefix of this word.
+  To Be Deleted: BCDE
+  Already Present: BCKG
+  Deletion always start from leaf node. First check is string exist then go up one by one 
+  to check the dependecies.
+
+  Case2: Word is prefix of some other word
+  To Be Deleted: BCDE
+  Already Present: BCDEF
+  We dont delete BCDE, we just update the EndOfWord variable to false after character 'E', so
+  when you search for BCDE it will return false.
+
+  Case3: Some other node is the prefix of this node
+  To Be Deleted: BCDE
+  Already Present: BC
+
+  Case4: No one is dependent on this node.
+  To Be Deleted: K
+-------------------------------------
+
+Hashing
+-Method for sorting and indexing the data.
+-Allow large amount of data to be indexed using keys created by a formula.
+
+Why Hashing
+-Can give O(1) time search/insert/delete operation in the best case and O(n) in the worst.
+
+Terminologies
+-Hash Function -> Generates hash value by a certain formula
+-Key -> Given by user for which hash is to be generated
+-Hash Value -> Returned by Hash function
+-Hash table -> Map key value pair.
+-Collision -> 2 different keys producing same hash value.
+
+Characteristics of good hash function
+-Distributes hash values across the table (Less number of collisions)
+-The hash function uses all the input data.
+
+Collision Resoolution Techniques
+1)Direct Chaining
+-Our array becomes array of references instead of array of just numbers.
+-Create a new node if there occur a collision and append to the end of the linked list
+
+2)Open addressing
+3 Cases under it
+*Linear Probing
+-We dont have the concept of linked list.
+-In case of collision, find the next immediate cell. Insert the value if its empty or check
+until the empty cell is found out.
+
+*Quadratic Probing
+-In case of collision, add the hashed value with the square of consecutive numbers until
+the empty cell is found out. (1^2, 2^2, 3^3 , .....)
+
+*Double Hashing
+-We have 2 hash functions (primary and secondary)
+-In case of collision, we apply the secondary hash function and get the new value. Then we
+add the new value with previous hash value and check if that cell is empty.
+
+Formula:
+  (primaryHashFunction() + n*secondaryHashFunction()) % totalSizeOfArray;
+where n = 1,2,3,......
+
+
+Situation When Hash Table is Full
+1)Direct Chaining: Will never arise because of dynamic linked list at every cell level.
+2)Open Addressing: Create a new hash table with double the size and traverse all values of
+previous hash table, generate new hash and copy in new hash table.
+
+
+Pros and Cons
+1) Direct Chaining
+  -No fear of exhausting Hash Table
+  -Linked List becomes too big. Search becomes O(n)
+
+2) Open Addressing
+  -Easy Implementation with no Node creation. Just a hash function with array
+  -Fear of exhausting Hash Table. Time consuming because previous hash table values are to
+be shifted to new hash table. Takes O(n) time operation.
+
+What to choose?
+-If input size is known, then use Open Addressing, else can use any of the two.
+-If deletion is very high, then we should go for Direct Chaining, because if we use Open
+Addressing deletion operation can cause lots of HOLES in our Hash Table.
+Example (Using linear probing):
+We have the Hash Table as
+ABC - DEF - GHI - JKL - MNO
+with DEF and GHI containing the same hash value as 1
+
+If we delete JKL and DEF there will be spaces in between values. If we search for GHI, it will
+give hash value as 1 and since index 1 is empty it will return false as Not Found. So to fix
+this we need to Restructure our Hash Table to compute hash values and store values again.
+
+
+
+Practical Use Of Hashing
+-Password verification/authentication
+-File storage in hard disk.
+
+
+Compare to Other DS
+-Can give O(1) time insert/delete/search operation
+-Can go to O(n) if hash function is not good enough.

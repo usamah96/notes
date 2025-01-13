@@ -1,0 +1,39 @@
+Observer
+Strategy
+
+
+Abstract vs interface
+Abstract/concrete to abstract/concrete inheritance possible?
+Can constructor be private
+Singleton ki examples btao
+Singleton me constructor private hota hai to uska single instance kese bnta hai? N how do u access it?
+
+Mvc kia hota hai
+Tell about any pattern you know
+ACID kia hota
+Biginteger me kia hota
+Stringbuilder
+Mutable or immutable kia hota
+Dictionary kia hota
+Map kia hota
+Dict vs array or list
+Array vs list
+Search and data access ki complexities for arrays n lists
+If u had to implement list yourself, how would u have done?
+What is Hashmap
+Hashmap vs encryption
+Post get put, what is each and how does each work?
+Webservice kia hota hai
+Careem ki app hai, uska server hai. Donu ko communicate krna hai how would they do?
+Rest vs soap
+Ever used AWS?
+
+Baqi codes
+String reverse normal and through stack
+Make a stack class
+Fibonacci func
+Permutation func
+Array ko manipulate kro such that all evens left pr ajaen or all odds right pr. Do in 0(n) complexity
+Get middle element of linked list
+Swap variables without temp var
+

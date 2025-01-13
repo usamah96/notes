@@ -1,0 +1,89 @@
+My Avanza Interview...
+
+1) Class B inherits Class A with boht classes having foo function printing their class names now what will be th output of following.. A a = new B() and B b = new A()
+
+a) a.foo();
+b) b.foo();
+
+2) delete a node from linked list.
+3) Breath first search algorithm.
+4) Threads and Processes , race condition and locks.
+5) What if class is static? what if function is static?
+6) Interface vs Abstract class
+7) Pros and cons of Arrays and linkedlist.
+8) What if hashing produce same index?
+9) Recursive Factorial function
+10) final keyword in java. 
+11) Inner class concepts.
+12) garbage collector.
+
+Avanza asked me a question. I cant remember properly. but was some thing like this:
+
+Considering two methods of function calling, and that both perform the same thing, which one is better? (ignore syntax and other errors)
+
+//Function calls it self recursively
+void func
+{
+int i=0;
+while(i<10)
+{ 
+func();
+i++;
+}
+}
+
+And
+
+//Function called inside a for loop
+for(i=0;i<10;i++)
+{
+func();
+}
+
+Q: Which method is more efficient?
+
+Avanza Second Interview ..
+
+Make a complete Queue class and all its funtions
+
+1) Enqueue
+2) Dequeue
+3) Print Queue
+4) isEmpty
+5) isFull
+
+Questions at Avanza first technical interview:
+
+1) Given a circular doubly linked list write the following functions:
+AddHead(int val)
+RemoveHead()
+RemoveTail()
+Node* Find(int val)
+AddBefore(Node *N, int val)
+AddAfter(Node *N, int val)
+
+2) Implement the following function iteratively and also recursively:
+bool isPalindrome(string s)
+Note: Function Definition cannot be changed
+
+3) Difference between encapsulation and abstraction
+
+4) Difference between mutex and semaphore
+
+5) Pros and Cons of Indexing
+
+6) Advantages of Stored Procedures(SP)
+
+7) Pros and Cons of using Threads
+
+8) What are constraints in database?
+
+9) How can I put a constraint that whenever some data is inserted in Table X than it should first check the insertion values based on some aggregate values from the tuples already in X. If the constraint is satisfied then insert it else don't insert it?
+
+10) What is a Hash Function? What are the properties of a good Hash Function
+
+11) Is MD5 irreversible?
+
+12) Difference between TCP and UDP?
+
+13) What will you use for video/audio streaming TCP or UDP? Why?

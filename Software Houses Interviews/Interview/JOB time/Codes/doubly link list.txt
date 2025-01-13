@@ -1,0 +1,220 @@
+Doubly Link List
+class Node
+{
+      private:
+              int value;
+              Node *next;
+              Node *prev;
+              public:
+                     Node(int e1)
+                     {
+                              value=e1;
+                              next=NULL;
+                              prev=NULL;
+                     }
+                     int GetValue ()
+                     {
+                         return value;
+                     }
+                     Node* next1()
+                     {
+                           return next;
+                     }
+                     Node* prev1()
+                     {
+                           return prev;
+                     }
+                     void Link (Node *node)
+                     {
+                          next=node;
+                     }
+                     void plink(Node *node)
+                     {
+                          prev=node;
+                     }
+};
+class DoubleLinkList
+{
+      private:
+              Node *head;
+              public:
+                     DoubleLinkList ()
+                     {
+                                    head=NULL;
+                     }
+                     void AddToHead (int e1)
+                     {
+                          Node *temp, *node;
+                          if (head == NULL)
+                          {
+                                      head = new Node (e1);
+                          }
+                          else
+                          {
+                              temp = head;
+                              node = new Node (e1);
+                              head = node;
+                              node->Link(temp);
+                              temp->plink(node);
+                          }
+                     }
+                     void DeleteFromHead (int e1)
+                     {
+                          Node *temp;
+                          temp=head;
+                          head = temp->next1();
+                          delete temp;
+                     }
+                     void AddToTail (int e1)
+                     {
+                          Node *curr, *node, *temp2;
+                          curr = head;
+                          node = new Node(e1);
+                          if(head == NULL)
+                          {
+                                  head = node;
+                          }
+                          else
+                          {
+                              while(curr->next1()!= NULL)
+                              {
+                                                    curr = curr->next1();
+                              }
+                              curr->Link(new Node(e1));
+                              temp2 = curr->next1();
+                              temp2->plink(curr);
+                          }
+                     }
+                     void DeleteFromTail ()
+                     {
+                          Node *curr, *temp;
+                          curr = head;
+                          while (curr->next1()->next1()!= NULL)
+                          {
+                                curr = curr->next1();
+                          }
+                          temp = curr;
+                          temp = temp->next1();
+                          curr->Link(NULL);
+                          delete temp;
+                     }
+                     void SearchList (int x)
+                     {
+                          Node *curr;
+                          int index = 0;
+                          bool found = false;
+                          curr = head;
+                          while ((curr != NULL) && (!found))
+                          {
+                                index++;
+                                if (curr->GetValue() == x)
+                                {
+                                                     found = true;
+                                }
+                                else
+                                {
+                                    curr = curr->next1();
+                                }
+                          }
+                          if(found == true)
+                          {
+                                   cout << "Number " << x << " Is Present At Index " << index << " !!" << endl;
+                          }
+                          else
+                          {
+                              cout << "Number Not Found!!" << endl;
+                          }
+                     }
+                     void CountElements ()
+                     {
+                          Node *curr;
+                          int count = 0;
+                          curr = head;
+                          while (curr != NULL)
+                          {
+                                curr = curr->next1();
+                                count++;
+                          }
+                          cout << "Total Elements In a List Is: "  << count << endl;
+                     }
+                     void GetElementAt (int x)
+                     {
+                          Node *curr;
+                          int count = 0;
+                          curr = head;
+                          while(curr != NULL)
+                          {
+                                     count++;
+                                     curr = curr->next1();
+                          }
+                          if(count > x)
+                          {
+                                   Node *temp;
+                                   temp = head;
+                                   for (int i=0;i<x;i++)
+                                   {
+                                       temp = temp->next1();
+                                   }
+                                   cout << "At Index " << x << " Element " << temp->GetValue() << " Is Present!!" << endl;
+                          }
+                          else
+                          {
+                              cout << x << " Index Is Not Present!!" << endl;
+                          }
+                     }
+                     void DeleteElement (int e1)
+                     {
+                          Node *temp, *curr, *temp2;
+                          int counter = 0;
+                          bool found = false;
+                          temp = head;
+                          while ((temp != NULL) && (!found))
+                          {
+                                counter++;
+                                if (temp->GetValue()== e1)
+                                {
+                                                       found = true;
+                                }
+                                else
+                                {
+                                    temp = temp->next1();
+                                }
+                          }
+                          if ((found) && (counter == 1))
+                          {
+                                      Node *temp;
+                                      temp = head;
+                                      head = head->next1();
+                                      delete temp;
+                                      cout << "The Element With Info " << e1 << " is Deleted!!" << endl;
+                          }
+                          if ((found) && (counter>1))
+                          {
+                                      curr = head;
+                                      while((curr->next1() != temp) && (curr != temp))
+                                      {
+                                                           curr = curr->next1();
+                                      }
+                                      temp2 = temp;
+                                      temp2 = temp2->next1();
+                                      curr->Link(temp2);
+                                      temp2->plink(curr);
+                                      delete temp;
+                                      cout << "The Element With Info " << e1 << " is Deleted!!" << endl;
+                          }
+                          else if (!found)
+                          {
+                               cout << "No Element With Info " << e1 << " Is Found!!" << endl;
+                          }
+                     }
+                     void print ()
+                     {
+                          Node *curr;
+                          curr = head;
+                          while (curr != NULL)
+                          {
+                                cout << curr->GetValue() << endl;
+                                curr = curr->next1();
+                          }
+                     }
+};

@@ -1,0 +1,186 @@
+Web Programmin
+
+----------------------------
+
+3-Tier Architecture
+
+Presentation Layer (The interface)
+Business Layer (Process of Data)
+Data Access Layer (Acess With Database)
+
+.DAL is only responsible for interaction with database and return the result
+.BL does the additional processing (calculations, logincal decisions) 
+on data given by PL
+
+Advantage
+
+Scalability (more and more clients can be added)
+Security (Database is not directly accessed by client as in 2-Tier)
+
+Disadvantage
+
+Maintainance
+--------------------------------
+
+Web Server And Application Server
+
+Web Server
+-For Web Application
+-Only Web Technology
+-Can Handle only http protocols
+-Plugins can be used to act like Application Server.
+-Apache, IIS, Nginix
+
+Application Server
+-Handles Business Logic
+-For Enterprise Application
+-Any Technology
+-Not limited to handle http protocols
+-Can do what a web server can do
+-GlassFish, Wildfly
+
+------------------------------------
+
+DNS
+
+www.example.com
+
+Browser sends the query to search for www.example.com
+-The first interaction is with recursive resolver which is operated by ISP.
+-The recursive resolver asks the query with the Root Server
+-Root Server knows DNS information about TLD (.com, .net, etc)
+-Recursive resolver asks root server for DNS information about .com
+-TLD stores the information about second level domain (example.com)
+-TLD return the ip address of domain's name server
+-Finally the recursive resolver asks sends the query to the domain's name server
+-This server knows the full ip address of www.example.com
+-Finally the ip address returns to recursive resolver and the page is displayed
+
+-------------------------------------
+
+Firewall
+
+-Network security system that monitors and controls incoming and outgoing 
+network traffic
+-Establishes a barrier between a trusted internal network and untrusted 
+external network
+
+1-Packet Filtering
+2-Stateful Inspection
+3-Proxy Firewall
+
+--------------------------------------
+
+-Session variables are special variables that exist only while the user's 
+session with your application is active. They are Stored on server side.
+-Http is stateless, it handles requests from same user as a new request 
+everytime so to maintain a session, session varaibles are required.
+-Can also be used to pass data between pages.
+
+-Cookies are stored on client's browser
+-Data stored in cookie can be stored for months or years, depending on the 
+life span of the cookie.
+-It is used to track a user's session
+-Stores information about what you are doing on a particular website, what
+links you have clicked, what products you have seen so that next time when 
+you visit the site you can see recommended products.
+-Cookies can be stolen by a third party website like by clicking an 
+advertisment
+
+----------------------------------------
+
+URI = Uniform Resource Identfiier
+.String of characters that identifies a resource by its name or address 
+(location)
+
+URL = Uniform Resource Locator
+.String of characters that identifies a resource by its address (location)
+
+URN = Uniform Resource Name
+.String of characters that identifies a resource by its Name
+
+-Every URL / URN is a URI
+-Two or more resource can have the same name so it is ineffecient to use URNs
+
+-----------------------------------------
+
+Http Methods
+
+GET, POST, PUT, DELETE
+
+HEAD - Same as GET but dont contain response body. Only contains header and 
+status line. Use to check information about the document.
+
+CONNECT - Can be used to open a tunnel with requested resource and starts a
+2-way communication with it.
+
+OPTIONS - Allows the client to determine the requirements associated with
+the resource or the capabillities of server. Returns the HTTP methods 
+supported by the server.
+
+TRACE - Echos the content of HTTP request back to the client which can be used
+for debugging purpose at the time of development
+
+PATCH - Request to make partial changes to the existing resource. it should be
+used if an existing resource is changed. PUT should be used if existing
+resource is entirely changed.
+
+----------------------------------------
+
+Forward Proxy
+
+-Used by the client
+-Can be on the same internal network like client or on the internet
+-Can bypass firewall restrictions to access the blocked website.
+-Can be used to cache the content that is downloaded or accessed many times.
+
+Reverse Proxy
+
+-Used by the server
+-Used to achieve load balancing (distribution of incoming traffic to the 
+backend server) and high availability.
+-Websites can contain many web servers. Reverse proxy takes request from
+the intetnet and pass the request to one of these servers.
+
+------------------------------------------
+
+Some New Tags
+
+<pre>
+<p title="Hello"></p> displays tooltip
+<q></q> puts quotes
+<blockquote></blockquote> indents the content
+<abbr title="Hello"></abbr>
+<address></address> italicises the content
+<p> <cite> </cite> </p>
+<bdo dir="rtl"></bdo> Displays text right to left
+<a target="_blank"><a> opens link in new tab
+<a target="_self"><a> opens link in same tab
+
+<img usermap="maps">
+<map id="maps">
+	<area shape="rect" coords="1,1,1,1" href=".com">
+</map>
+
+<picture>
+	<source media="(min-width: 650px)" srcset="1.jpg">
+	<source media="(min-width: 465px)" srcset="2.jpg">
+	<img src="3.jpg">
+</picture>
+
+<table>
+	<caption></caption>
+</table>
+
+<dl>
+	<dt>
+		<dd>
+		</dd>
+	</dt>
+</dl>
+
+<ul style="list-style-type: disc/square/circle">
+</ul>
+
+<ol type="none/1/A/a/i/I" start="50">
+</ol>

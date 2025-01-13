@@ -1,0 +1,36 @@
+Oop principles
+Class /object definition
+Database definitiob
+What is rdbms
+1nf 2nf etc etc
+All keys
+Primary /composite etc etc
+Queries likhna aaani chaeye
+Erd diagram
+Joins
+Left outer /inner etc etc
+Procedure and function definitions (function returns a value but procedure does not)
+Static classes and methods
+2d array 3d array
+Arraylist
+List
+Dictionary
+Hashmap
+All sortings
+Bubble quick yaad rakhna with code. Baaqi ke formulas and complexities
+Binary search
+Palindrome
+Linked list
+Stack
+Queue
+Hashtable. Collision in hashes
+Tree
+Casting parhlena
+Eg 
+A a = (A)new B()
+Yeh workforce may poochte hain
+Design patterns samajh ke jana
+Singleton
+Factory
+Radix sort
+Deadlock

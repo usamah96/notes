@@ -1,0 +1,216 @@
+Interview at VentureDive.
+Final Year Project - A detailed discussion and Q/A session for about 28-30 minutes.
+Advice: No matter whatever your contribution is, you must have the detailed understanding of your project. What are you doing, why are you doing. What are the alternatives that could have been done, and why didn’t you opt them?
+- 4 Pillars
+-- Detailed explanation
+-- How can we achieve each of them?
+-- Real CODE examples of each
+-- Abstraction vs Encapsulation
+-- Among the two, Abstraction vs Encapsulation, is any one of them is the subset of the other one?
+-- How is Encapsulation the subset of Abstraction?
+-- How are Abstraction and Inheritance linked with each other?
+-- Types of polymorphism
+-- Overloading and Overriding examples on paper, 13-15 mins of session, changing variables, values classes.
+- Composition vs Aggregation vs Association
+-- Verbal explanation
+-- On paper code examples of each of them
+-- All three examples must me on the same subject i.e. you can’t show Composition on a Car-Engine Relationship, Aggregation on a completely different subject for example Student-Department.
+- Miscellaneous
+-- Abastract vs Interface
+-- Can an Interface be extended
+-- Example of interface extension
+-- How many abstract classes can each class extend at max?
+-- How many interfaces classes can each class implement at max?
+-- How many interfaces classes can each interfaces implement at max?
+-- When to use Abstract vs Interface
+-- Difference between Abstraction vs making a class Abstract
+--
+- String Pool & Heap
+-- Basic concept?
+-- Questions: 
+1) Difference between ‘==’ operator and .equals() method while comparing a String? – By memory reference vs By value.
+2) 
+String a = “abc”; 
+String b = “abc”; 
+System.out.println(a==b); //What will be the output? – True
+3) 
+String a = “abc”; 
+String b = “ab” + “c”; 
+System.out.println(a==b); //What will be the output? – True
+4) 
+String a = “abc”; 
+String b = “ab” + “c”; 
+System.out.println(a==b); //What will be the output? – True
+5) 
+String a = “abc”; 
+String b = “ab” + “c”; 
+System.out.println(a.equals(b)); //What will be the output? – True
+6) 
+String a = “abc”; 
+String b = “ab” + “c”; 
+String c = new String (b);
+System.out.println(a==c); //What will be the output? – False
+System.out.println(a.equals(c)); //What will be the output? – True
+7) 
+String a = “abc”; 
+String b = “ab” + “c”; 
+String c = new String (b).intern();
+System.out.println(a==c); //What will be the output? – True
+System.out.println(a.equals(c)); //What will be the output? – True
+8) What does intern() function do?
+9) Where do all the function calls (instances) go in the memory when a recursive function is running? – Stack
+10) Where do all the variables go in the memory that are declared in the class (With a global Scope for class)? – Heap
+11) Where do all the variables go in the memory that are declared in any function of a class? – Stack
+- Static vs Instance
+-- Static Function vs Static Classes
+-- Static Classes vs Instance Classes*
+-- Static variables vs Instance Variables*
+-- Static Methods vs Instance Methods*
+*What one can do and other cannot?
+- Final
+-- Final Class vs Method vs Variable
+-- Difference between Final vs Finalize vs Finally
+- Exception Handling in Java
+-- Any idea about exception handling in Java?
+-- Exceptions Hierarchy 
+-- Exception vs Error
+-- Which class is the parent of Error and Exception? - Throwable
+-- Difference between 'throw' and 'throws'
+-- Types of exceptions (Checked/Unchecked)
+-- Difference between both the types
+-- Examples of each
+-- Code examples to identify each of them from the given examples
+-- Finally block
+-- Questions:
+1) Which exception in the following code will be caught? (ArithmeticException)
+int[] arr = {1,2,3,4,5};
+try {
+arr[7] = arr[1]/0;
+}
+Catch(ArithmeticException e)
+{}
+Catch(ArrayIndexOutofBoundException e)
+{}
+2) Which exception in the following code will be caught? (Compilation error - Because Exception is a parent class of the remaining two exceptions. Therefore any exception will be caught by the parent (Exception) class, hence the 2nd and the 3rd catch block becomes unreachable line of code)
+int[] arr = {1,2,3,4,5};
+try {
+arr[7] = arr[1]/0;
+}
+Catch(Exception e)
+{}
+Catch(ArithmeticException e)
+{}
+Catch(ArrayIndexOutofBoundException e)
+{}
+3) Which exception in the following code will be caught? (ArrayIndexOutofBoundException)
+int[] arr = {1,2,3,4,5};
+try {
+arr[5] = 4/2;
+}
+Catch(ArithmeticException e)
+{}
+Catch(ArrayIndexOutofBoundException e)
+{}
+Catch(Exception e)
+{}
+4) What is the output of the following code? (returns 9)
+try {
+return 1;
+}
+finally
+{
+return 9;
+}
+5) What is sequence of the following code? ("Finally running", return 1)
+try {
+return 1;
+}
+finally
+{
+System.out.println("Finally running");
+}
+6) Any condition when finally won't run? (JVM Crash or System.Exit())
+- Java Collections
+-- Any idea about Collections in Java? (A little)
+-- Have you used any? (ArrayList, LinkedList, Stack, Queue, Vectors, HashMap)
+-- Difference between ArrayList vs LinkedList vs Vectors
+-- Any idea about the hierarchy of Collections? (Yes)
+-- ArrayList implements List or Extends List? (Implements)
+-- Why? (List is an interface)
+-- List interface's parent interface? (Collection)
+-- What interface does interface LinkedList implement? (List and Deque both)
+-- Deque's parent Interface? Collections? (No, Queue)
+-- How does HashMap work?
+-- Key value pair?
+-- What is hashcode?
+-- What does the hashcode function do?
+- Data Structures:
+-- Complexities of Arrays vs LinkedList
+-- BinaryTree Complexity?
+-- Scenario when BinaryTree's example can be worst (1,2,3,4,5,6,7,8,9,10)
+-- Implementing HashTable on an array of Size 10, what's the access time? (O(1))
+-- What's solution to collision? (Linear Probing)
+-- Write an example code to implement linear probing
+-- 10/10 indexes are full on the HashTable, 11th value to be inserted and there is a collision. What's the solution? (Separate Chaining on LinkedList)
+-- Same scenario without Separate Chaining on LinkedList, what's the more optimal solution? (Another HashTable in the HashTable)
+- Database
+-- Explain normalization without using 1NF, 2NF etc
+-- Advantages of normalization?
+-- Disadvantages of normalization
+-- Indexes ka idea hai? (A little)
+-- Use of index?
+-- Types of Indexes
+-- What data structure is used in indexes
+-- When to use Clustered index?
+-- When to use a non-clustered index?
+-- Types of joins?
+-- 1 SQL query on emp vs dept, to display all the departments having no employees, only with Join.
+-- What is a stored procedure
+-- Difference between predefined functions vs Stored procedures
+-- Scenario:
+--- I have a task to do on my database every morning I arrive at work. It is such a heavy task that when I import and run SQL Script file in my DB, it takes 45 mins for the operation to finish.
+The task stays same and I need to execute it every morning with the same SQL script. Should I use a stored procedure or save the same file and re-execute it every morning?
+And why?
+-- Any idea about Triggers? (Basic)
+-- Define their use. An example will be a plus.
+-- Cursors (Me: NO)
+- OS (Me: I am NOT AT ALL any good at OS, Interviewer: Cool, you don't need to go in detail, Give me a basic idea only if you know)
+-- Process vs Threads
+-- Any idea about the States of a process?
+-- What is a Critical Section
+-- How to achieve multi-threading
+-- Semaphore vs Mutex
+-- Types of semaphores
+-- Differentiate between types
+-- What is a deadlock and when does a deadlock occur? Explain in detail (Me: Detail? Interviewer: Basic idea?)
+-- 4 necessary conditions behind a deadlock?
+-- FCFS ka thora sa idea dedo?
+-- How is FCFS implemented, idea hai? (FIFO Queue)
+-- What feature of an operating system plays the lead role in sending notifications to the user that your Careem car has arrived? (Sockets)
+-- Explain sockets, briefly. (Me: Explain or briefly? -_- Interviewer: Both)
+-- Lets suppose you are designing an Operating System (I won't. I would never). Let's just suppose it, what would be the best page size? What do you think? (Me: Main ab ro doonga *I swear I actually said that* Interviewer: Haha it's okay, let's stkip this!)
+Let's Code? 
+1) Find the second max number in an unsorted array 1-100.
+My solution:
+- Converted array to list using a predefined function
+- Remove max from list
+- Return max from lst
+Better solution? Decided by discussing complexitites of every single solution I proposed.
+2) Same array with 1-100 unsorted numbers. Write a code so that in the end the first half of the array has the even numbers and the second half has the odd numbers.
+Discussed complexity of every algorithm to do this, and did it with the best one.
+3) Modify the solution to last problem that the result array has two SORETED sections for even and odd numbers,
+Example
+Input: {1,34,2,37,23,78,19,63,72,30,23}
+Output: {2,30,34,72,78,1,19,23,23,37,63}
+4) Modify the solution to last problem that the result array is free of repeated values. You must not remove the values in the result array. Do it while sorting the array.
+Example
+Input: {1,34,2,37,23,78,19,63,72,30,23}
+Output: {2,30,34,72,78,1,19,23,37,63} //23 removed
+5)
+Last code
+Me: Aur kitnay?
+Interviewer: 2 
+Me: Aik
+Interviewer: Okay last one and we are done, a code to find the permutations of an incoming string.
+Edit:
+Output of int i = 0; i = i++ + ++i;

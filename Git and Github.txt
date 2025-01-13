@@ -1,0 +1,92 @@
+Git and Github
+----------------------------------------------
+
+Git helps you track of your files
+
+Initializing git to a project
+Go to project folder and type in Git terminal
+git init
+
+Creates new file
+touch index.html
+
+Helps you find what is currently going on
+git status
+
+Adds the new file from working area to the staging area
+git add index.html
+
+Add each and every file in project from working to staging area
+git add .
+
+Save changes to file with time.
+git commit -m "Added Commit"
+
+git add tells the Git that you want to include the particular changes to 
+a file in the next commit
+
+If you create new file like index.html and type git status then it will say
+the file index.html is untracked.
+If you git add index.html, then git status will show that new file added that is 
+index.html and git commit will save changes to that file
+
+Will show all the commit with hash values
+git log
+
+Will remove the commit and get back to that commit (hard reset)
+git reset --hard <hashvalue>
+
+Will remove the commit but will not get back to it. It will just remove the 
+commit and takes that file into working area (soft reset)
+git reset <hashvalue>
+
+Creating branches
+git checkout -b newcategory
+
+Changes in braches wont effect the Main branch until an unless it is combined
+
+To switch between branches
+git checkout master
+git checkout newcategory
+
+Merge branch
+git checkout master
+git merge newcategory
+
+Delete a branch
+git branch -d newcategory
+
+-----------------------------------------------------------------
+Github
+
+Signup, Signin and create new repository
+eg: repo name gitcourse
+
+Copy the repo link and inside your Pc's folder in git bash terminal type
+git clone <repo url>
+This will create gitcourse directory in your folder and inside this folder you
+can work
+
+**Inside gitcourse folder
+touch index.html
+git add .
+git commit -m "Added New File"
+
+git push origin master
+Will ask username and password and add index.html file to 
+github repository.
+
+Now if somebody contributes to the project and you want to get those changes to
+your computer. Go inside gitcourse folder and type
+
+git pull
+This will pull the changes and also the commit. If you git log then it will also
+show the commit name the user has typed when commiting
+
+If you want to contribute to the project
+Search for project
+Fork It (It will make a copy of that repo into your account)
+Then copy the repo link and git clone <repo url>
+Make changes and
+git push origin master (This will add changes to your account repo)
+New pull request and Create pull request!

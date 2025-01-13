@@ -1,0 +1,25 @@
+1) https://www.youtube.com/watch?v=ShON7KuwnXA
+
+2) https://www.youtube.com/watch?v=8aGhZQkoFbQ&t=1215s
+
+3) https://www.youtube.com/watch?v=HmxkYNv1ksg
+
+4) https://medium.com/javascript-in-plain-english/new-javascript-features-in-es2020-c2d76acf9c5a
+
+5) https://github.com/trekhleb/javascript-algorithms
+
+6) https://www.youtube.com/watch?v=CZ3wIuvmHeM
+
+7) https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html
+
+8) https://medium.com/better-programming/clean-code-5-essential-takeaways-2a0b17ccd05c
+
+9) https://indepth.dev/angular-11-towards-type-safety
+
+10) https://blog.angular.io/version-11-of-angular-now-available-74721b7952f7
+
+11) https://medium.com/better-programming/clean-code-5-essential-takeaways-2a0b17ccd05c
+
+12) https://backbencher.dev/javascript/es2021-new-features
+
+13) https://google.github.io/eng-practices/review/reviewer/looking-for.html

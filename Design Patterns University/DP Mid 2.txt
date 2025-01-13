@@ -1,0 +1,37 @@
+Dependency Inversion Principal
+
+-High level module should be reusable and should e uneffected by the 
+changes made in low level modules
+-High level and low level modules both to be dependent upon abstraction.
+-Detail should depend upon abstraction
+
+Eg: 
+There is a class MysqlDatabase (connect and disconnect function)
+Another class Database Handler (Has MysqlDatabase reference and calls connect
+and disconnect of it)
+
+It violates DIP, as in future if we want to add OracleDatabase as our 
+preference then we have to include OracleDatabase reference into DatabaseHandler.
+Code modification will be done which is a bad practice.
+
+Solution is abstraction
+Create interface of IDatabase (connect and disconnect function) and implement 
+Mysql and Oracle
+Hold IDatabase in DatabaseHandler and set the database passed in the constructor
+like public DatabaseHandler(Database db);
+In this way, th DatabaseHandler doesn't know which database is connected. It 
+just calls the connect and disconnect operation of preferred database. Any new
+database insertion will just be the implementation of IDatabase.
+
+Law Of Delimiter / Principle of Least Knowledge
+
+-A Method M Of Object O can call these methods
+1) Method of Object O
+2) Mthod Of Object passed as parameter to method M
+3) Object created locally in method M
+4) Method of Object which is an instance variable.
+
+Hollywood Principle
+
+-Dont call us, we will call you
+-Observer pattern follows this principle

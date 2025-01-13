@@ -1,0 +1,17 @@
+Workforce 1st Interview
+
+1-Complexity of linear Search
+2-Complexity of Binary Search
+3-can we apply binary search in link list
+4-where local variable will be declared ? stack or heap ?
+5-if you want to search a name which data structure you will use? hash map, hash table or dictionary.
+6-what is the difference b/w stack and queue
+7-if you want to perform fastest insertion which data structure you will use
+
+Workforce 2nd Interview
+
+Programs
+1-Make program to make all the possible permutation of specific string
+2-Reverse linklist
+3-parse data in string and compute total days b/w two dates and also do expectional handling
+4-delete node from link list

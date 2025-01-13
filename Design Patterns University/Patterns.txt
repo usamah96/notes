@@ -1,0 +1,87 @@
+Strategy Pattern
+-When we have multiple algorithm to perform a specific task and client decide which
+algorithm to execute
+-Eliminates conditional statements
+
+Strategy vs Inheritance
+-More dynamic
+-The purpose of the Strategy pattern is to promote the use of composition (has-a) over 
+inheritance (is-a). Instead of your class inheriting behavior from a super class, you 
+define the behavior in a separate class and your class has-a reference to it.
+-With Inheritance, if new functionality is added we have to create a bunch of classes
+in combination of other classes that exists already. With strategy we just have to
+create a separate concrete class of that strategy.
+
+
+Command Pattern
+-Lets you encapsulate the objet
+Order wala
+
+Template Method Pattern
+-Defines the skeleton of an algorithm
+-Deferring some steps in the sub class
+-Lets subclass redefine some method
+-Base class declares the placeholders, derived classes defines the placeholders
+
+Iterator Pattern
+-How we move thorugh a collection of data in a class
+-Provides a way to acess the elemnts without underlying the internal representation
+
+Composite Patern
+-Group of objects treated the same way as single instance of object.
+-Compose objects into tree like structure and each node is to perform a task
+
+Composite and Decorator have similar structure
+-Both follows recursive composition
+-Composite gives unified interface to leaf and composite while Decorator adds more
+functionality to the leaf while giving unified interface
+-Composite can be traversed using Iterator
+
+State Pattern
+-Change in the behaviour of object according to its state
+-More dynamic then Strategy Pattern. Strategy is bind-once
+-State objects are often singleton
+-State and Bridge have identical structure to solve a problem
+-State allows to change its behavior along with its state. Bridge's intent is to
+decouple abstraction from implementation
+
+Proxy Pattern
+-Allows to access real object with some restrictions
+-Client access Real object by passing through proxy
+Known Uses
+Java Collection: 
+.Allow only preferred method call. All other throw exception
+.ReadOnlyCollection: Wrap the collection object to ensure only read only calls
+.SynchronizedCollection: Wrap the collection object to assign only 1 thread to access the object
+
+Distributed Object: Client and Real Object may be at different machine. So direct
+call will not work. Need for a proxy
+
+Secure Objects: Different client have different levels. Proxy decided whether 
+to allow or not accessing the method
+
+Lazy Loading: Proxy only creates the expensive objects (that takes more resources
+to load) when client wants to use it. If client never intent to use it then heavy
+objects wont load.
+
+Copy On Write: Every Proxy acess the copy of the real subject whenever a write 
+operation is performed.
+
+Proxy vs Decorator
+-Both creates a wrapper around objects
+-Decorator adds more functionalities to object, Proxy restricts functionalities
+-Decorator organised into chain where each chain adds new functionality. Proxy
+not organised into chains.
+
+Consequences For Proxy
+-Isolates the real subject from client
+-May require duplicate implementation in Proxy as in Real Subject
+-Implementation issues. 3 types of proxy
+.Proxy used to hide the location of Real Subject in Remote Proxy
+.Performs optimization in Virtual Proxy
+.Performs additional maintainance in Housekeeping Proxy
+
+Variations of Proxy
+-Firewall (Remote)
+-Synchronization (Housekeeping)
+-Copy On Write (Virtual)

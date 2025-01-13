@@ -1,0 +1,368 @@
+Linq Basics
+------------------------------------------------
+
+Language Integrated Query
+
+-Can be used to fetch data from different data source like Ado.Net, Xml document, Object
+Memory etc
+-Developer building application which required data from different data source not 
+required to learn all the technologies, thus can use linq for that
+-Provides intellisense and compile time checking
+
+Different types of Linq Providers
+Linq to Sql
+Linq to Xml
+Linq to Object
+Linq to twitter / amazon / google
+etc
+
+-Linq is fed into the specific linq provider to convert that linq statement into 
+relevant command that the specific data source can understand.
+
+-------------------------------------------------
+
+Working with Sql Server,
+
+Create Linq to Sql Data classes using 'Add'
+Drag the tables into it
+See the name of Context in code behind file
+Create context object and write linq
+
+SampleDataContext context = new SampleDataContext();
+var result = from student in context where student.gender == "Male" select student;
+
+Working with in memory object,
+
+int numbers = { 1,2,3,4,5,6,7,8,9,10 };
+var evenNumbers = from number in numbers where (number % 2) == 0 select number;
+
+--------------------------------------------------
+
+Linq aggregate functions
+
+Min, Max, Count, Sum, Average
+Eg:
+Numbers.Min();
+Numbers.Max();
+Numbers.Count();
+Numbers.Sum();
+Numbers.Average();
+
+Filteration
+Find even maximum number
+Numbers.Where(n => n % 2 == 0).Max();
+
+Combining results with aggregate function
+
+Combining string
+string names[] = { "abc", "def", "ghi" };
+string result = names.Aggregate( (a,b) => a + ', ' + b );
+
+Combining integers (multiplying all the numbers)
+int num[] = { 1,2,3,4,5 };
+int result = num.Aggregate( (a,b) => a*b );
+We can also provide initial value as
+int result = num.Aggregate( 10, (a,b) => a*b );
+
+--------------------------------------------------------
+
+Print the name of all the Male Employees in the IT and HR department
+
+EmployeeDbContext context = new EmployeeDbContext();
+var departments = context.Department.Where(d => d.Name == "IT" || d.Name == "HR");
+
+foreach(var dept in departments)
+{
+
+Console.WriteLine(dept.Name.ToString());
+var employees = dept.Employees.Where(m => m.Gender == "Male");
+foreach(var emp in employees)
+{
+Console.WriteLine(emp.Name.ToString());
+}
+
+}
+
+---------------------------------------------------------------
+Projection Operator
+
+Select
+SelectMany
+
+Used for retrieving specific attributes and also provides to perform operation
+
+Select and SelectMany are projection operators. A select operator is used to select value 
+from a collection and SelectMany operator is used to selecting values from a collection of 
+collection i.e. nested collection.
+
+Using Select.
+
+class Employee{ id, name, gender }
+
+To fetch single attribute like employee Id
+var emp_ids = context.Employees.Select(e => e.id);
+foreach(int id in emp_ids)
+{ Console.WriteLine(id); }
+
+To fetch multiple attributes, we have to select via anonymus object like,
+var employee = context.Employee.Select(e => new { FirstName = e.name, Gender = e.gender });
+foreach(var emp in employee)
+{ Console.WriteLine( emp.FirstName + "--" + emp.Gender ); }
+
+To perform operation on any attribute
+var employee = context.Employee.Select(e => new { 
+FullName = e.firstName + " " + e.lastName,
+MonthlySalary = e.annualSalary / 12
+});
+foreach(var emp in employee)
+{ Console.WriteLine(emp.FullName + "--" + emp.MonthlySalary); }
+
+Using SelectMany
+
+class Employee{ int id, string name, string gender, list<string> courses }
+
+var emp = context.Employee.SelectMany(e => e.courses);
+foreach(string e in emp)
+{ Console.WriteLine(e); }
+
+If we will use Select for fetching of list<string> then we will have to use 2 loop
+as it will return list<list<string>>
+------------------------------------------------------------------------
+
+Ordering operator
+
+OrderBy
+OrderByDescending
+ThenBy
+ThenByDescending
+Reverse
+
+OrderBy can be used once if we want to sort with respect to one column
+We can use ThenBy followed by OrderBy if we want to use multple column for sorting
+OrderBy cannot be used multiple times in single linq query
+
+context.Employee.OrderBy(e => e.Name);
+Will be something like
+Albert
+John
+Peter
+
+context.Employee.ORderBy(e => e.Marks).ThenBy(e => e.Name).ThenByDescending(e => e.id);
+Will be something like
+800 Albert 105 
+800 Albert 104
+800 John 115
+900 Peter 103
+
+---------------------------------------------------------------------
+Partitioning Operators
+
+Take
+Skip
+TakeWhile
+SkipWhile
+
+TakeWhile and SkipWhile can take lamba expression to specify any operation
+
+context.Employee.TakeWhile(e => e.Name.Length > 2)
+This will perform length operation on every single name attribute of every record and
+select record until condition first becomes false.
+Eg: Name contains Usama, Ali, Asad, MU, Adeel, Ibad
+It will return Usama, Ali, Asad
+
+SkipWhile does opposite of TakeWhile
+context.Employee.SkipWhile(e => e.Name.Length > 2)
+This will return record after first condition gets false
+Eg: Name contains Usama, Ali, Asad, MU, Adeel, Ibad
+It wil return MU, Adeel, Ibad
+------------------------------------------------------------------------
+
+Cast and OfType operator
+
+Cast operator converts all the elements in a collection to a specified type. If any 
+element fails to be casted, then exception will be thrown
+
+ArrayList list = new ArrayList();
+list.Add(1); list.Add(2); list.Add(3)
+
+var list_casted = list.Cast<int>();
+foreach(int i in list_casted)
+{ Console.WriteLine(i); } // No Error
+
+list.Add("Abc");
+var list_casted = list.Cast<int>();
+foreach(int i in list_casted)
+{ Console.WriteLine(i); } // Will print 1, 2, 3 and then exception as Cast is deferred
+operator.
+
+Similarly, OfType operator will only cast the items that belong to the specified type
+and those which are not being casted are being ignored and no exception will be thrown
+
+ArrayList list = new ArrayList();
+list.Add(1); list.Add(2); list.Add(3)
+
+var list_casted = list.OfType<int>();
+foreach(int i in list_casted)
+{ Console.WriteLine(i); } // 1, 2, 3
+
+list.Add("Abc");
+var list_casted = list.OfType<int>();
+foreach(int i in list_casted)
+{ Console.WriteLine(i); } // 1, 2, 3
+operator.
+
+------------------------------------------------------------------
+
+AsEnumerable operator
+
+Consider the query to fetch top 5 male employee by salary
+
+var emp = 
+context.Employee
+.Where(e => e.Gender == "Male")
+.OrderByDescending(e => e.Salary)
+.Take(5);
+
+The linq to sql provider will generate a complex query to hit sql server to fetch record.
+What if we use AsEnumerable
+
+var emp = 
+context.Employee
+.AsEnumerable()
+.Where(e => e.Gender == "Male")
+.OrderByDescending(e => e.Salary)
+.Take(5);
+
+AsEnumerable operator moves the processing to the client side
+It breaks the query into 2 parts.
+The part before AsEnumerable (context.Employee) is the inside part (linq to sql) which is 
+executed against the sql server. It will just fetch all records from the table.
+The part after AsEnumerable (where orderby and take) is the outside part (linq to object) 
+which will beexecuted in the in memory object
+
+We can also use like this
+var emp = 
+context.Employee
+.Where(e => e.Gender == "Male")
+.AsEnumerable()
+.OrderByDescending(e => e.Salary)
+.Take(5);
+
+The result executed against sql server will contain only male employees as query will 
+be something like Select * From emp Where Gender = "Male";
+-----------------------------------------------------------------------
+
+Grouping by single attribute
+
+var emp = conext.Employee.GroupBy(g => g.dept);
+foreach(var group in emp)
+{ Console.WriteLine(group.Key + "  " + group.Count()); }
+**group.Key will display department name and group.Count will display total count of that 
+department
+
+If further iterate to all employee in specific department then,
+foreach(var employee in group)
+{ Console.WriteLine(employee.name); }
+
+Grouping by multiple attributes
+Eg: List employee name by specific department and gender.
+
+var emps = 
+
+context.SampleEmployees.GroupBy(g => new { g.dept, g.gender })
+.OrderBy(o => o.Key.dept).ThenBy(o => o.Key.gender)
+.Select(e => new
+{
+Dept = e.Key.dept, Gender = e.Key.gender, Employee = e.OrderBy(x => x.name)
+});
+            
+foreach(var group in emps)
+{
+
+Console.WriteLine(group.Dept + "--" + group.Gender + " Employees: " + group.Employee.Count());
+Console.WriteLine("---");
+
+foreach (var employee in group.Employee)
+{
+Console.WriteLine(employee.name);
+}
+
+}
+
+-------------------------------------
+Element Operator
+
+First operator will return the first element of sequence or first record
+context.Employee.First();
+Can also take lamba expression as .First(x => x.salary *12 == 100000);
+If no element found then it will throw exception
+
+FirstOrDefault is similar to First but it will not throw exception if nothing found
+in the collection.
+
+Similarly with Last and LastOrDefault
+
+Other includes,
+Single
+ElementAt
+DefaultIfEmpty
+----------------------------------------
+Joins
+
+Group Join
+Grouping the employees by department name
+
+Group join takes 4 arguements
+1- inner table
+2- outer key
+3- inner key
+4- result
+The table which calls group join is the outer table
+
+var empDept = 
+context.Department.GroupJoin
+(
+context.Employee, d=>d.id, e=>e.dept_id, (dept,emp)=>new{ Dept = dept, Emp = emp }
+);
+
+foreach(var emp_dept in empDept)
+{
+Console.WriteLine(emp_dept.Dept.name);
+
+foreach(var emps in emp_dept.Emp)
+{ 
+Console.WriteLine(emps.name); 
+}  
+
+}
+
+
+Inner Join
+Similar syntax to GroupJoin, only difference is that the emp object is not IEnumerable.
+It is the Employee object now.
+
+var empDept = 
+context.Department.Join
+(
+context.Employee, d=>d.id, e=>e.dept_id, (dept,emp)=>new{ Dept = dept, Emp = emp }
+);
+
+foreach(var emp_dept in empDept)
+{ Console.WriteLine(emp_dept.Dept.name + "  " + emp_dept.Emp.name); }
+
+
+Left Outer Join
+For this we have to use GroupJoin and SelectMany like,
+
+var emp_depts = context.Employee.GroupJoin(
+context.Department, e=>e.dept_id, d=>d.id,
+(emp, dept)=>new{ Emp = emp, Dept = dept }
+).SelectMany( z=>z.Dept, (a,b)=>new{ EmpName = a.Emp.name, DeptName = b.name } );
+
+foreach(var v in emp_depts)
+{ Console.WriteLine(v.EmpName + "  " + v.DeptName); }
+
+Using z=>z.Dept in SelectMany because when using GroupJoin, the inner table comes out
+as IEnumerable as grouping
+
+----------------------------------------------------------------

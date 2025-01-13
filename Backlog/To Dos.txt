@@ -1,0 +1,111 @@
+ToDos
+----
+
+1) Priority
+--
+1) Concurrency, Generics and OCP II remaining topics with exercises.
+2) Spring boot microservice docker section remaining.
+3) OAuth 2.0 Spring Security
+4) Event Driven Microservice
+5) CQRS, Saga and Axon in microservice
+6) ACL security
+8) LocalStak for AWS on local
+9) Junit timeout.times()
+10) Purpose of refresh token security
+11) @EnableGlobalMethodSecurity(securedEnabled = true) vs @EnableGlobalMethodSecurity(prePostEnabled = true)
+12) GraphQL and Kafdrop
+13) Java 8 vs Java 11 vs Java 17
+14) Jooq Persistence
+15) Flyway Migration
+16) Apache Avro
+17) Keycloak
+18) High Performance SQL / SQL Performance Explained (Check Vlad Linked in Post)
+19) Maven Dependency vs Plugin
+20) COnnecting local desktop via ssh (asymmetric encryption)
+21) Service Mesh, Sidecar Proxy & Canary Deployments (Kubernetes, DevOps)
+
+
+
+2) Self
+--
+Objectives (React)
+OCP Java SE 11 I and II
+Apache Kafka
+Redis
+Facade for connecting with different services
+Browerstack Basics To Advance
+New Relic Advance
+Webhooks
+Concurrency in Database
+Thread Safe vs Concurrency vs Locking
+Singleton Pattern 6 ways to implement
+Effective Java 3rd Edition
+Open Api
+Spring concepts from Baeldung
+Hibernate From Vlad
+Hibernate Best Practices from Thorban Janssen (Youtube)
+Testing (White Box and Black Box)
+AWS ELK S3 in depth
+Elastic Search
+Job Scheduling
+Entity Listeners Spring Boot
+Spring Events
+BigDecimal vs BigInteger
+Testing Framework Mockito in depth
+Server time zone in spring.datasource.url
+Docker and Kubernetes
+Spring Web Flux and Reactive Programming
+OWASP Top 10 Security Measures
+Zendesk
+Slack multiple integrations (Zendesk, Bitucket, Jira etc..)
+Job Data Quartz
+OWASP Top 10
+Js Based Frameworks (Webdriver.io, Puppeteer, Cypress)
+Wrap multiple annotation in single annotation
+How circuit breaker checks to re-direct the method call to the fall back method
+Multiple Data stores in a single micro service
+Elasticsearch
+Kibana
+OpenApi in depth
+Java 16 Record class
+How to write java docs
+Maven
+AWS CodeDeploy
+EC2 vs ECS
+Open Api Connect
+JHipster
+swagger config
+@JSonSrialize, @JsonDeserialize, @JsonFormat
+Mock vs MockBean vs InjectMock vs Spy
+Terrafom
+Portainer
+rebase vs merge
+Soap vs Rest vs GraphQL vs RPC
+
+
+
+
+3) Munchies
+--
+Payment Flow (Handshaking)
+Change from http to https or vice versa
+AWS deployment, logs and configuration
+TPL integration
+Google map distance calculation
+Referral COde dynamic short url
+
+
+
+
+
+
+
+Some Extras
+--
+The reason behind endianness
+https://stackoverflow.com/questions/13926760/the-reason-behind-endianness
+
+Why developers need byte order mark (BOM)
+https://stackoverflow.com/questions/1835430/byte-order-mark-screws-up-file-reading-in-java
+
+What if in a final class properties are made non final?

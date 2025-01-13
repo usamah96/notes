@@ -1,0 +1,66 @@
+OOP
+	definition
+	4 pillars in detail with coding examples
+	types of polymorphism with coding exmples
+	deep copy , shallow copy
+	abstract class vd interface
+	constructors (overloading/ overriding(caling sequence)/ copy constructor etc)
+	static (class , method , block, variable)
+	final/ const (class, method, variable)
+	diamond prob
+	Exception handling
+			types of exceptions
+			how to make
+			throw vs throws
+			multiple catch blocks (what is generic catch block is above specific one)
+			finally
+	Collections (list arraylist map etc)
+			
+	
+DS
+	linked list (all types)
+	sorts (bubble, quick, merge, selection, insertion ect)
+	binary trees
+	hashing
+	queues/ stack/ priority queue
+	complexity
+DB
+	definitions
+	types of dbs
+	erd (everything)
+	normalization
+	ACID proprties
+	indexing (not in detail)
+	Queries
+		joins
+		subqueries
+		group by
+	Views
+	stored procedures
+OS
+	multithreading
+	mutithreading vs multiprocessing
+	thread vs process
+	locks (mutex, semaphores)
+	race conditions
+JAVA
+	what is java?
+	jdk jvm jre
+	this keyword
+	covariant return type
+	super keyword
+	can we have attributes in interface (yes/static & final)
+	what is java 8
+	access modifiers
+	wrapper classes
+	inner classes
+	static class in java
+	collections (basic hierarcy) (complexities for all)
+		List
+		Arraylist vs linkedList
+		Queue, prioroty queue, stack
+		diff in hashmap and hashtable and treemap
+		enum
+		comparable interface vs comparator interface
+Codes
+	TBA		
